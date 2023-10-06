@@ -35,10 +35,10 @@ Currently: None
 Note: This is only for the mockup of the UI.
 Open a directory within your terminal to an empty folder
 
-$ git init
-$ git clone https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger
-$ gcc interface.c
-$ ./a.out
+>> git init
+>> git clone https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger
+>> gcc interface.c
+>> ./a.out
 
 ## Functionality
 Basic mockup of the planned UI.
