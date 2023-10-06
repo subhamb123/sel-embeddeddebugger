@@ -1,51 +1,57 @@
-Update your README.md using the template below. We are specifically interested in the installation instructions (e.g., all the gems, how to load real or seed data, etc.). This sample README was developed for a Rails project, so you can swap the "Gems" section of the "Installation" instructions to include add-ons that are relevant to you.
+# SEL Debugger
 
-If any of the sections in this template grows to more than one screen, consider placing it in its own file and linking to it from this file. Those files could live in a subdirectory called docs.
+## A debugger for an integrated system
 
-Make sure to check out the repo anew and test your installation instructions.
+### A debugger for an integrated systeam meant for the KV-260 SOM
 
-Provide a README file with the following information:
-Project Name
-Project summary
-One-sentence description of the project
+This project is to create a debugger for the KV-260 SOM for SEL that will take snapshots for debugginag and CPU restoration purposes.
 
-TODO: A 20-second elevator pitch of your project - its core idea summarized in one sentence.
-Additional information about the project
+### Additional information about the project
 
-TODO: Write a compelling/creative/informative project description / summary
-Installation
-Prerequisites
+Computers are imperfect, and therefore we must account for this. Inevitably, system errors will occur, which can crash a system. 
+An ability to reboot a system with as minimal of downtime as possible is critical. This project will allow for this, a restoration
+system for when a system inevitably crashes. Additionally, this data stored can be used for debugging purposes, mitigating problems
+in the future.
 
-TODO: List what a user needs to have installed before running the installation instructions below (e.g., git, which versions of Ruby/Rails)
-Add-ons
+## Installation
 
-TODO: List which add-ons are included in the project, and the purpose each add-on serves in your app.
-Installation Steps
+### Prerequisites
 
-TODO: Describe the installation process (making sure you mention bundle install). Instructions need to be such that a user can just copy/paste the commands to get things set up and running.
-Functionality
+Due to no deliverables for the hardware yet, instructions for running these are not provided yet until it can be fully sure of the requirements.
 
-TODO: Write usage instructions. Structuring it as a walkthrough can help structure this section, and showcase your features.
-Known Problems
+Hardware:
+Xilinx Kria_KV260 Vision AI Starter Kit (SK-KV260-G)
+XDS110 JTAG Debug Probe
 
-TODO: Describe any known issues, bugs, odd behaviors or code smells. Provide steps to reproduce the problem and/or name a file or a function where the problem lives.
-Contributing
+Software:
+GCC
+git
 
-TODO: Leave the steps below if you want others to contribute to your project.
+### Add-ons
 
-    Fork it!
-    Create your feature branch: git checkout -b my-new-feature
-    Commit your changes: git commit -am 'Add some feature'
-    Push to the branch: git push origin my-new-feature
-    Submit a pull request :D
+Currently: None
 
-Additional Documentation
+### Installation Steps
+Note: This is only for the mockup of the UI.
+Open a directory within your terminal to an empty folder
 
-TODO: Provide links to additional documentation that may exist in the repo, e.g.,
+$ git init
+$ git clone https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger
+$ gcc interface.c
+$ ./a.out
 
-    Sprint reports
-    User links
+## Functionality
+Basic mockup of the planned UI.
 
-License
+## Known Problems
+Coming soon!
 
-If you haven't already, add a file called LICENSE.txt with the text of the appropriate license. We recommend using the MIT license: https://choosealicense.com/licenses/mit/
+## Contributing
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request :D
+
+## Additional Documentation
+
