@@ -36,8 +36,10 @@ Note: This is only for the mockup of the UI.
 Open a directory within your terminal to an empty folder
 
 ```
+(clone repository)
 git init
 git clone https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger
+cd sel-embeddeddebugger
 gcc interface.c
 ./a.out
 ```
