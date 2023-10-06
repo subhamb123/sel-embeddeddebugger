@@ -2,7 +2,7 @@
 
 ## A debugger for an integrated system
 
-### A debugger for an integrated systeam meant for the KV-260 SOM
+### A debugger for an integrated system meant for the KV-260 SOM
 
 This project is to create a debugger for the KV-260 SOM for SEL that will take snapshots for debugginag and CPU restoration purposes.
 
