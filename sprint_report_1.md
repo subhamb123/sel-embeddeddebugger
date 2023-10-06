@@ -1,11 +1,12 @@
-# Sprint x Report (8/26/21 - 9/24/2021)
+# Sprint x Report (8/26/23 - 10/05/2023)
 
 ## What's New (User Facing)
  * User Interface Mockup
+ * Sprint video! https://youtu.be/y9P1kN8TdcE
 
 ## Work Summary (Developer Facing)
-Over this last month we have prepared for starting this project off. Due to its nature of working with a specific set of hardware, this has taken some time for us to get the hardware and get accustomed to the new environment.
-We have started looking into the different aspects that will contribute to our understanding of this system - namely the ARM exception model, common ARM instructions, and TCL - and will be shortly starting to use this in a more practical means.
+Over this last month we have prepared for starting this project off. Due to its nature of working with a specific set of hardware, this has taken some time for us to get the hardware and get accustomed to the new environment. 
+We have started looking into the different aspects that will contribute to our understanding of this system - namely the ARM exception model, common ARM instructions, and TCL - and will be shortly starting to use this in a more practical means. 
 Once we have a more solid understanding of this, we can start tackling the project properly. As we have laid out the components of this project's design, we can also examine what will take priority. 
 
 
@@ -25,15 +26,6 @@ Here are links to the issues that we completed in this sprint:
  * https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/issues/11 Solution Approach - Introduction
  * https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/issues/9 Distribute Hardware
  * https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/issues/8 Quickstart Guide for Development Boards
- * 
-
- Reminders (Remove this section when you save the file):
-  * Each issue should be assigned to a milestone
-  * Each completed issue should be assigned to a pull request
-  * Each completed pull request should include a link to a "Before and After" video
-  * All team members who contributed to the issue should be assigned to it on GitHub
-  * Each issue should be assigned story points using a label
-  * Story points contribution of each team member should be indicated in a comment
  
  ## Incomplete Issues/User Stories
  Here are links to issues we worked on but did not complete in this sprint:
