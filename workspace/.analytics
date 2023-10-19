@@ -1,0 +1,26 @@
+timestamp=[2023-10-17 13:00:23], mode=WORKBENCH_START, duration=0:00:28.213, duration_ms=28213, data={}
+timestamp=[2023-10-17 13:00:23], mode=WORKBENCH_UI_INIT, duration=0:00:00.008, duration_ms=8, data={editors_count=0, platform_editors_count=0, projects_count=0, platform_projects_count=0, active_platform_editor=false, projects=}
+timestamp=[2023-10-17 13:00:24], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.374, duration_ms=374, data={}
+timestamp=[2023-10-17 13:18:16], mode=WORKBENCH_START, duration=0:00:06.827, duration_ms=6827, data={}
+timestamp=[2023-10-17 13:18:17], mode=WORKBENCH_UI_INIT, duration=0:00:00.551, duration_ms=551, data={editors_count=0, platform_editors_count=0, projects_count=1, platform_projects_count=0, active_platform_editor=false, projects=RemoteSystemsTempFiles}
+timestamp=[2023-10-17 13:18:17], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.412, duration_ms=412, data={}
+timestamp=[2023-10-17 13:21:17], mode=APP_CREATION, duration=0:00:41.439, duration_ms=41439, data={name=TestProject, project_type=sdk, os=standalone, processor=psu_cortexa53, runtime=cpp, platform=kv260_ispMipiRx_vcu_DP, application_type=application}
+timestamp=[2023-10-17 13:35:13], mode=PLATFORM_GENERATION, duration=0:00:57.026, duration_ms=57026, data={name=kv260_ispMipiRx_vcu_DP}
+timestamp=[2023-10-17 13:35:14], mode=BUILD, duration=0:00:01.289, duration_ms=1289, data={name=TestProject, configuration=Debug, clean_build=false}
+timestamp=[2023-10-17 13:53:35], mode=WORKBENCH_START, duration=0:00:04.692, duration_ms=4692, data={}
+timestamp=[2023-10-17 13:53:35], mode=WORKBENCH_UI_INIT, duration=0:00:00.296, duration_ms=296, data={editors_count=3, platform_editors_count=0, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TestProject,TestProject_system,kv260_ispMipiRx_vcu_DP}
+timestamp=[2023-10-17 13:53:36], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.307, duration_ms=307, data={}
+timestamp=[2023-10-18 15:19:49], mode=WORKBENCH_START, duration=0:00:06.172, duration_ms=6172, data={}
+timestamp=[2023-10-18 15:19:49], mode=WORKBENCH_UI_INIT, duration=0:00:00.398, duration_ms=398, data={editors_count=3, platform_editors_count=0, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TestProject,TestProject_system,kv260_ispMipiRx_vcu_DP}
+timestamp=[2023-10-18 15:19:50], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.443, duration_ms=443, data={}
+timestamp=[2023-10-18 15:46:55], mode=WORKBENCH_START, duration=0:00:04.887, duration_ms=4887, data={}
+timestamp=[2023-10-18 15:46:55], mode=WORKBENCH_UI_INIT, duration=0:00:00.387, duration_ms=387, data={editors_count=4, platform_editors_count=0, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TestProject,TestProject_system,kv260_ispMipiRx_vcu_DP}
+timestamp=[2023-10-18 15:46:56], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.345, duration_ms=345, data={}
+timestamp=[2023-10-18 15:48:39], mode=WORKBENCH_START, duration=0:00:04.759, duration_ms=4759, data={}
+timestamp=[2023-10-18 15:48:39], mode=WORKBENCH_UI_INIT, duration=0:00:00.301, duration_ms=301, data={editors_count=4, platform_editors_count=0, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TestProject,TestProject_system,kv260_ispMipiRx_vcu_DP}
+timestamp=[2023-10-18 15:48:39], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.321, duration_ms=321, data={}
+timestamp=[2023-10-18 15:51:52], mode=PLATFORM_GENERATION, duration=0:00:39.915, duration_ms=39915, data={name=kv260_ispMipiRx_vcu_DP}
+timestamp=[2023-10-18 15:51:53], mode=BUILD, duration=0:00:00.600, duration_ms=600, data={name=TestProject, configuration=Debug, clean_build=false}
+timestamp=[2023-10-18 15:59:37], mode=BUILD, duration=0:00:00.482, duration_ms=482, data={name=TestProject, configuration=Debug, clean_build=false}
+timestamp=[2023-10-18 17:42:50], mode=BUILD, duration=0:00:00.155, duration_ms=155, data={name=TestProject, configuration=Debug, clean_build=true}
+timestamp=[2023-10-18 17:42:51], mode=BUILD, duration=0:00:00.637, duration_ms=637, data={name=TestProject, configuration=Debug, clean_build=false}
