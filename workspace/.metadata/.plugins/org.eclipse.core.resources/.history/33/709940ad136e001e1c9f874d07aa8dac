@@ -1,8 +1,0 @@
-# Make a dictionary to map extensions to descriptions
-set symbolTable [dict create 0000000000000d00 "main" 0000000000000d50 "valid" 0000000000000d74 "invalid"]
-
-
-# Simple read from the dictionary
-set address "0000000000000d00"
-set name [dict get $symbolTable $address]
-puts "$name is at $address"

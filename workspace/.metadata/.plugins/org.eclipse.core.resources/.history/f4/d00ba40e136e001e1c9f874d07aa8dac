@@ -1,6 +1,0 @@
-
-set symbolTable [dict create 0000000000000d00 main 0000000000000d50 valid 0000000000000d74 invalid]
-
-dict for {address name} $symbolTable{
-	puts "\n $address : $name" 
-	}

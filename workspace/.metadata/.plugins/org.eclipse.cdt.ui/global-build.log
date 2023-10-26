@@ -1,42 +1,5 @@
 Nothing to build in platform 'kv260_ispMipiRx_vcu_DP'
 
-17:42:50 **** Clean-only build of configuration Debug for project TestProject ****
-make clean 
-rm -rf  ./src/helloworld.o ./src/platform.o  ./src/helloworld.d ./src/platform.d  TestProject.elf.size  TestProject.elf
-' '
-17:42:50 **** Incremental Build of configuration Debug for project TestProject ****
+19:34:21 **** Incremental Build of configuration Debug for project TestProject ****
 make all 
-'Building file: ../src/helloworld.c'
-'Invoking: ARM v8 gcc compiler'
-aarch64-none-elf-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -IC:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/sw/kv260_ispMipiRx_vcu_DP/standalone_psu_cortexa53_0/bspinclude/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.o" -o "src/helloworld.o" "../src/helloworld.c"
-../src/helloworld.c: In function 'main':
-../src/helloworld.c:57:13: warning: implicit declaration of function 'valid' [-Wimplicit-function-declaration]
-   57 |     int x = valid(5,0);
-      |             ^~~~~
-../src/helloworld.c:58:13: warning: implicit declaration of function 'invalid' [-Wimplicit-function-declaration]
-   58 |     int y = invalid(5,0);
-      |             ^~~~~~~
-../src/helloworld.c:58:9: warning: unused variable 'y' [-Wunused-variable]
-   58 |     int y = invalid(5,0);
-      |         ^
-../src/helloworld.c:57:9: warning: unused variable 'x' [-Wunused-variable]
-   57 |     int x = valid(5,0);
-      |         ^
-'Finished building: ../src/helloworld.c'
-' '
-'Building file: ../src/platform.c'
-'Invoking: ARM v8 gcc compiler'
-aarch64-none-elf-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/platform.o" -IC:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/sw/kv260_ispMipiRx_vcu_DP/standalone_psu_cortexa53_0/bspinclude/include -MMD -MP -MF"src/platform.d" -MT"src/platform.o" -o "src/platform.o" "../src/platform.c"
-'Finished building: ../src/platform.c'
-' '
-'Building target: TestProject.elf'
-'Invoking: ARM v8 gcc linker'
-aarch64-none-elf-gcc -Wl,-T -Wl,../src/lscript.ld -LC:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/sw/kv260_ispMipiRx_vcu_DP/standalone_psu_cortexa53_0/bsplib/lib -o "TestProject.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-'Finished building target: TestProject.elf'
-' '
-'Invoking: ARM v8 Print Size'
-aarch64-none-elf-size TestProject.elf  |tee "TestProject.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  30428	   2176	  20676	  53280	   d020	TestProject.elf
-'Finished building: TestProject.elf.size'
-' '
+make: Nothing to be done for 'all'.

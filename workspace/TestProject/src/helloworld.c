@@ -46,28 +46,45 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "platform.h"
 #include "xil_printf.h"
 
+int add (int a, int b);
+int subtract (int a, int b);
+
+void printStack(uintptr_t baseAddress, size_t size) {
+    // Declare a pointer to an unsigned integer (assuming 4 bytes per word)
+    unsigned int *ptr = (unsigned int *)baseAddress;
+
+    // Iterate through the stack memory and print each value
+    for (size_t i = 0; i < size / sizeof(unsigned int); ++i) {
+        // Print the value at the current memory location
+        xil_printf("\n\rAddress: 0x%08lx, Value: 0x%08x", (unsigned long)(ptr + i), *(ptr + i));
+    }
+
+    // Send END
+    xil_printf("!");
+}
 
 int main()
 {
     init_platform();
-    print("Hello World\n\r");
-    int (*ptr) = &valid;
-    print(ptr);
-    int x = valid(5,0);
-    int y = invalid(5,0);
+    int x = add(5,0);
+    int y = subtract(5,0);
+    uintptr_t baseAddress = 0x000c0c0;  // Base address of the stack
+    size_t size = 12288;  // Size of the stack in bytes
+    printStack(baseAddress, size);
     cleanup_platform();
     return 0;
 }
 
-int valid(int a, int b)
+int add(int a, int b)
 {
 	return a + b;
 }
 
-int invalid(int a, int b)
+int subtract(int a, int b)
 {
-	return a/b;
+	return a - b;
 }
