@@ -1,0 +1,4 @@
+.global get_value
+get_value:
+    MRS X0,  SP_EL2 // Read L2ECTRL_EL1 into X0 register
+    RET

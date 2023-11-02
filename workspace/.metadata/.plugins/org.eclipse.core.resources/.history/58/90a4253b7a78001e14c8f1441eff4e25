@@ -1,0 +1,4 @@
+.global get_value
+get_value:
+    MOV X0, R0   // Move the value of R0 into X0 register (64-bit register)
+    RET          // Return from the function

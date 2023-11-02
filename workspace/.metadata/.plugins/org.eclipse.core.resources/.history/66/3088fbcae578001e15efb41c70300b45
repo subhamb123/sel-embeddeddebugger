@@ -1,0 +1,4 @@
+.global get_value
+get_value:
+    ADR X0, 1f      // Load the address of the next instruction into X0
+    RET             // Return from the function

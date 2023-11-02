@@ -1,0 +1,26 @@
+MISSING
+
+
+*** ARMv8-A Application Registers ***
+
+Register(s)			Size (bits)
+
+R0-R30				64
+SP					64
+PC					64
+Z0-Z31				Implementation Defined
+P0-P15				Implementation Defined
+FFR					Implementation Defined
+
+
+
+*** ARMv8-A System Registers ***
+
+Register			Size (bits)
+
+L2ECTRL_EL1 		32
+L2ACTLR_EL1 		32
+CPUACTLR_EL1 		64
+CPUECTLR_EL1 		64
+CPUMERRSR_EL1 		64
+L2MERRSR_EL1 		64

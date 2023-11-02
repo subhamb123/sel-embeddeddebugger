@@ -1,0 +1,4 @@
+.global get_value
+get_value:
+    MRS X0, SCTLR_EL1  // Read SCTLR_EL1 into X0 register
+    RET
