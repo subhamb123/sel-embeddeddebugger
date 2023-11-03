@@ -1,0 +1,14 @@
+#ifndef SNAPSHOT_H
+#define SNAPSHOT_H
+
+#include "xil_printf.h"
+void printStack(uintptr_t baseAddress, size_t size);
+void printXRegisters();
+void print32BitSystemRegisters();
+void printGICRRegisters();
+void print64BitSystemRegisters();
+void printVRegisters();
+void printSPRegister();
+void takeSnapshot();
+
+#endif

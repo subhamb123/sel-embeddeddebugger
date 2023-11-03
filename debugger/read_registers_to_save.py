@@ -62,7 +62,11 @@ def write_V_assembly():
             else:
                 j += 1
                 i += 1
-
+                
+def write_X_assembly():
+    with open("assemblyX.txt", 'w') as f:
+        for i in range(2,31):
+            f.write(f"STR x{i}, [x1, #{8*(i-2)}]\n")
 def main():
     # read registers
     registers = read_file()
@@ -104,6 +108,9 @@ def main():
     
     # write out assembly to read V registers
     write_V_assembly()
+    
+    # write out assembly to read X registers
+    write_X_assembly()
     
     
     
