@@ -1,4 +1,0 @@
-.global get_value
-get_value:
-    MRS X0,  R0 // Read L2ECTRL_EL1 into X0 register
-    RET

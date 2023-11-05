@@ -61,11 +61,9 @@ int subtract (int a, int b);
 int main()
 {
     init_platform();
-    int x = add(5,0);
-    int y = subtract(5,0);
-    uintptr_t baseAddress = 0x000c0c0;  // Base address of the stack
-    size_t size = 12288;  // Size of the stack in bytes
-    takeSnapshot();
+    xil_printf("Test"); // xil_printf throws exception on first use
+    start_up();
+    *((int*) 0xFFFFFFFF) = 42; // throw exception
     cleanup_platform();
     return 0;
 }

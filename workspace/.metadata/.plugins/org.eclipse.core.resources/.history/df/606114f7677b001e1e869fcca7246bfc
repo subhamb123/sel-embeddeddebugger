@@ -1,0 +1,19 @@
+#ifndef SNAPSHOT_H
+#define SNAPSHOT_H
+
+#include "xil_printf.h"
+
+extern uintptr_t baseAddress;  // Declaration of baseAddress
+extern size_t size;            // Declaration of size
+
+
+void printStack(uintptr_t baseAddress, size_t size);
+void printXRegisters();
+void print32BitSystemRegisters();
+void printGICRRegisters();
+void print64BitSystemRegisters();
+void printVRegisters();
+void printSPRegister();
+void takeSnapshot();
+
+#endif

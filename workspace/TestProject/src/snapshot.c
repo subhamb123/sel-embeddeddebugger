@@ -1,10 +1,58 @@
 #include "snapshot.h"
-
+void (*synchronous_interrupt_handler)(void); // Define the function pointer variable
 
 uintptr_t baseAddress = 0x000c0c0;  // Definition of baseAddress
 size_t size = 12288;                // Definition of size
 
-void printStack(uintptr_t baseAddress, size_t size)
+
+void set_exception_vector_table_entry(void* table_entry_address, uint32_t branch_instruction) {
+    // Store the branch instruction in the table entry
+    // Use inline assembly to do this
+    asm volatile (
+        "str %0, [%1]\n"  // Store the branch instruction into the table entry
+        :
+        : "r" (branch_instruction), "r" (table_entry_address)
+    );
+}
+
+void start_up()
+{
+	void* handler_address = (void*)(&exception_handler);
+
+	// Get the address of the Exception Vector Table
+	void* vector_table_address = get_vbar_el1_register_value(); // Obtain the address of the vector table
+
+	// Set the offset to +0x200
+	uintptr_t table_offset = 0x200;
+
+	// Calculate the address of the specific exception entry in the table
+	void* entry_address = vector_table_address + table_offset;
+
+	// Get original branch instruction
+	uint32_t original_branch = *((uint32_t*)entry_address);
+
+	// Extract offset
+	uint32_t original_handler_offset = original_branch & 0x03FFFFFF;
+
+	// Get Address of Original Handler
+	uint32_t original_address = original_handler_offset * 4 + entry_address;
+
+	// Set functionPointer to Original Handler
+	synchronous_interrupt_handler = (void (*)(void))original_address;
+
+
+	// Calculate the offset for the branch instruction
+	uintptr_t branch_offset = ((uintptr_t)handler_address - (uintptr_t)entry_address)/4;
+
+	// Create the branch instruction (B opcode is 0x14) with the offset
+	uint32_t branch_instruction = 0x14000000 | (branch_offset & 0x03FFFFFF);
+
+	// Set the branch instruction in the exception vector table entry
+	set_exception_vector_table_entry(entry_address, branch_instruction);
+
+}
+
+void print_stack(uintptr_t baseAddress, size_t size)
 {
     // Declare a pointer to an unsigned integer (assuming 4 bytes per word)
     unsigned int *ptr = (unsigned int *)baseAddress;
@@ -22,7 +70,7 @@ void printStack(uintptr_t baseAddress, size_t size)
     xil_printf("!");
 }
 
-void printXRegisters()
+void print_x_registers()
 {
 	// Allocate memory for register values
 	uint64_t register_values[31];
@@ -40,7 +88,7 @@ void printXRegisters()
 	}
 }
 
-void print32BitSystemRegisters()
+void print_32_bit_system_registers()
 {
 	// Allocate memory for register values
 	uint32_t register_values[64];
@@ -104,7 +152,7 @@ void print32BitSystemRegisters()
 	}
 }
 
-void printGICRRegisters()
+void print_gicr_registers()
 {
 	// Allocate memory for register values
 	uint32_t register_values[20];
@@ -172,7 +220,7 @@ void printGICRRegisters()
 	//}
 }
 
-void print64BitSystemRegisters()
+void print_64_bit_system_registers()
 {
 	// Allocate memory for register values
 	uint64_t register_values[20];
@@ -213,7 +261,7 @@ void print64BitSystemRegisters()
 	}
 }
 
-void printVRegisters()
+void print_v_registers()
 {
 	// Allocate memory for register values
 	//uint64_t register_values[32][2];
@@ -227,7 +275,7 @@ void printVRegisters()
 	}
 }
 
-void printSPRegister()
+void print_sp_register()
 {
 	uint64_t value = get_SPregister_value();
 	xil_printf("|SP: 0x%016llx|", value);
@@ -236,13 +284,14 @@ void printSPRegister()
     xil_printf("!");
 }
 
-void takeSnapshot()
+void exception_handler()
 {
-	printStack(baseAddress, size);
-	printXRegisters();
-	print32BitSystemRegisters();
-	printGICRRegisters();
-	print64BitSystemRegisters();
-	printVRegisters();
-	printSPRegister();
+	print_stack(baseAddress, size);
+	print_x_registers();
+	print_32_bit_system_registers();
+	print_gicr_registers();
+	print_64_bit_system_registers();
+	print_v_registers();
+	print_sp_register();
+	//synchronous_interrupt_handler();
 }
