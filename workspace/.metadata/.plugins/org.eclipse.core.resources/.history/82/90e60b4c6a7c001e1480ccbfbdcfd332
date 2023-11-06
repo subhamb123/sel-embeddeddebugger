@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="TestProject" location="C:/Users/deoch/workspace/TestProject" platform="C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/kv260_ispMipiRx_vcu_DP.xpfm" platformUID="xilinx:kv260_ispMipiRx_vcu_DP:kv260_ispMipiRx_vcu_DP:1.0(custom)" systemProject="TestProject_system" sysConfig="kv260_ispMipiRx_vcu_DP" runtime="cpp" cpu="standalone_psu_cortexa53_0" cpuInstance="psu_cortexa53_0" os="standalone" mssSignature="79e1dba6e1af6add2f1358df07e97241">
+  <configuration name="Debug" id="xilinx.gnu.arm.a53.exe.debug.1488650291">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.arm.a53.exe.release.564185996" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="hello_world"/>
+</sdkproject:SdkProject>

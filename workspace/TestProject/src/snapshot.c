@@ -60,14 +60,15 @@ void print_stack(uintptr_t baseAddress, size_t size)
     // Iterate through the stack memory and print each value
     for (size_t i = 0; i < size / sizeof(unsigned int); ++i) {
         // Print the value at the current memory location
-        xil_printf("|Address:0x%08lx,Value:0x%08x", (unsigned long)(ptr + i), *(ptr + i));
+        xil_printf("Address:0x%08lx,Value:0x%08x\n", (unsigned long)(ptr + i), *(ptr + i));
     }
 
     // Close delimiter
-    xil_printf("|");
+    xil_printf("+\n");
 
+    //sleep(1);
     // Send END
-    xil_printf("!");
+    //xil_printf("!");
 }
 
 void print_x_registers()
@@ -84,7 +85,7 @@ void print_x_registers()
 
 	// Print register values along with their names
 	for (int i = 0; i < 31; ++i) {
-		xil_printf("|x%d: 0x%016llx", i, register_values[i]);
+		xil_printf("x%d: 0x%016llx\n", i, register_values[i]);
 	}
 }
 
@@ -148,7 +149,7 @@ void print_32_bit_system_registers()
 
 	// Print register values along with their names
 	for (int i = 0; i < 44; ++i) {
-		xil_printf("|%s:0x%08x", register_names[i], register_values[i]);
+		xil_printf("%s:0x%08x\n", register_names[i], register_values[i]);
 	}
 }
 
@@ -209,7 +210,7 @@ void print_gicr_registers()
     for (int i = 0; i < sizeof(addresses) / sizeof(uint64_t); ++i) {
     		volatile uint32_t* addr_ptr = (volatile uint32_t*) addresses[i];
     	    uint32_t value = *addr_ptr;
-    		xil_printf("|%s: 0x%08x", register_names[i], value);;
+    		xil_printf("%s: 0x%08x\n", register_names[i], value);;
         }
 	// Call the assembly function and pass the array's pointer
 	//get_GICRregister_values(register_values);
@@ -257,7 +258,7 @@ void print_64_bit_system_registers()
 
 	// Print register values along with their names
 	for (int i = 0; i < 20; ++i) {
-		xil_printf("|%s: 0x%016llx", register_names[i], register_values[i]);
+		xil_printf("%s: 0x%016llx\n", register_names[i], register_values[i]);
 	}
 }
 
@@ -269,7 +270,7 @@ void print_v_registers()
 	get_Vregister_values(register_values);
 
 	for (int i = 0; i < 32; i++){
-		xil_printf("|v%d: 0x%016llx", i, register_values[i]);
+		xil_printf("v%d: 0x%016llx\n", i, register_values[i]);
 		//xil_printf("\n\rv%d.d[0]: 0x%016llx", i, register_values[i][0]);
 		//xil_printf("\n\rv%d.d[1]: 0x%016llx", i, register_values[i][1]);
 	}
@@ -278,14 +279,16 @@ void print_v_registers()
 void print_sp_register()
 {
 	uint64_t value = get_SPregister_value();
-	xil_printf("|SP: 0x%016llx|", value);
+	xil_printf("SP: 0x%016llx\n", value);
 
     // Send END
-    xil_printf("!");
+	//sleep(1);
+    xil_printf("!\n");
 }
 
 void exception_handler()
 {
+	xil_printf("\n|\n");
 	print_stack(baseAddress, size);
 	print_x_registers();
 	print_32_bit_system_registers();

@@ -7953,3 +7953,649 @@ configparams force-mem-access 0
 19:40:35 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
 19:41:09 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
 19:41:12 INFO  : Disconnected from the channel tcfchan#14.
+21:20:51 DEBUG : Logs will be stored at 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/IDE.log'.
+21:20:52 INFO  : Launching XSCT server: xsct.bat -n  -interactive C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\temp_xsdb_launch_script.tcl
+21:20:55 INFO  : XSCT server has started successfully.
+21:20:55 INFO  : Successfully done setting XSCT server connection channel  
+21:20:55 INFO  : plnx-install-location is set to ''
+21:20:55 INFO  : Successfully done setting workspace for the tool. 
+21:20:55 INFO  : Registering command handlers for Vitis TCF services
+21:20:56 INFO  : Platform repository initialization has completed.
+21:20:57 INFO  : Successfully done query RDI_DATADIR 
+21:25:12 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+21:25:23 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:25:48 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+21:25:48 INFO  : 'jtag frequency' command is executed.
+21:25:48 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+21:25:48 INFO  : Context for 'APU' is selected.
+21:25:49 INFO  : System reset is completed.
+21:25:52 INFO  : 'after 3000' command is executed.
+21:25:52 INFO  : Context for 'APU' is selected.
+21:25:52 INFO  : Cleared APU and A53 resets
+21:25:52 INFO  : Context for 'RPU' is selected.
+21:25:55 INFO  : Cleared RPU and R5 resets
+21:25:55 INFO  : Split mode is enabled for R5#1
+21:25:55 INFO  : Context for 'APU' is selected.
+21:25:56 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+21:25:56 INFO  : 'configparams force-mem-access 1' command is executed.
+21:25:56 INFO  : Context for 'APU' is selected.
+21:25:56 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+21:25:57 INFO  : 'psu_init' command is executed.
+21:25:58 INFO  : 'after 1000' command is executed.
+21:25:58 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+21:25:59 INFO  : 'after 1000' command is executed.
+21:25:59 INFO  : 'psu_ps_pl_reset_config' command is executed.
+21:25:59 INFO  : 'catch {psu_protection}' command is executed.
+21:25:59 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+21:25:59 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+21:25:59 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+21:25:59 INFO  : 'configparams force-mem-access 0' command is executed.
+21:25:59 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+21:25:59 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
+21:28:31 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+21:28:36 INFO  : Disconnected from the channel tcfchan#1.
+21:28:39 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:29:04 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+21:29:04 INFO  : 'jtag frequency' command is executed.
+21:29:04 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+21:29:04 INFO  : Context for 'APU' is selected.
+21:29:04 INFO  : System reset is completed.
+21:29:07 INFO  : 'after 3000' command is executed.
+21:29:07 INFO  : Context for 'APU' is selected.
+21:29:07 INFO  : Cleared APU and A53 resets
+21:29:07 INFO  : Context for 'RPU' is selected.
+21:29:10 INFO  : Cleared RPU and R5 resets
+21:29:10 INFO  : Split mode is enabled for R5#1
+21:29:10 INFO  : Context for 'APU' is selected.
+21:29:17 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+21:29:17 INFO  : 'configparams force-mem-access 1' command is executed.
+21:29:17 INFO  : Context for 'APU' is selected.
+21:29:17 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+21:29:18 INFO  : 'psu_init' command is executed.
+21:29:19 INFO  : 'after 1000' command is executed.
+21:29:19 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+21:29:20 INFO  : 'after 1000' command is executed.
+21:29:21 INFO  : 'psu_ps_pl_reset_config' command is executed.
+21:29:21 INFO  : 'catch {psu_protection}' command is executed.
+21:29:21 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+21:29:21 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+21:29:21 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+21:29:21 INFO  : 'configparams force-mem-access 0' command is executed.
+21:29:21 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+21:29:21 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
+21:31:01 INFO  : Disconnected from the channel tcfchan#2.
+21:31:09 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:31:34 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+21:31:34 INFO  : 'jtag frequency' command is executed.
+21:31:34 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+21:31:34 INFO  : Context for 'APU' is selected.
+21:31:34 INFO  : System reset is completed.
+21:31:37 INFO  : 'after 3000' command is executed.
+21:31:37 INFO  : Context for 'APU' is selected.
+21:31:37 INFO  : Cleared APU and A53 resets
+21:31:37 INFO  : Context for 'RPU' is selected.
+21:31:40 INFO  : Cleared RPU and R5 resets
+21:31:40 INFO  : Split mode is enabled for R5#1
+21:31:40 INFO  : Context for 'APU' is selected.
+21:31:48 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+21:31:48 INFO  : 'configparams force-mem-access 1' command is executed.
+21:31:48 INFO  : Context for 'APU' is selected.
+21:31:48 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+21:31:48 INFO  : 'psu_init' command is executed.
+21:31:49 INFO  : 'after 1000' command is executed.
+21:31:50 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+21:31:51 INFO  : 'after 1000' command is executed.
+21:31:51 INFO  : 'psu_ps_pl_reset_config' command is executed.
+21:31:51 INFO  : 'catch {psu_protection}' command is executed.
+21:31:51 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+21:31:51 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+21:31:51 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+21:31:51 INFO  : 'configparams force-mem-access 0' command is executed.
+21:31:51 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+21:31:51 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
+21:36:37 INFO  : Disconnected from the channel tcfchan#3.
+21:36:48 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+21:36:57 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:37:23 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+21:37:23 INFO  : 'jtag frequency' command is executed.
+21:37:23 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+21:37:23 INFO  : Context for 'APU' is selected.
+21:37:23 INFO  : System reset is completed.
+21:37:26 INFO  : 'after 3000' command is executed.
+21:37:26 INFO  : Context for 'APU' is selected.
+21:37:26 INFO  : Cleared APU and A53 resets
+21:37:26 INFO  : Context for 'RPU' is selected.
+21:37:29 INFO  : Cleared RPU and R5 resets
+21:37:29 INFO  : Split mode is enabled for R5#1
+21:37:29 INFO  : Context for 'APU' is selected.
+21:37:30 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+21:37:30 INFO  : 'configparams force-mem-access 1' command is executed.
+21:37:30 INFO  : Context for 'APU' is selected.
+21:37:30 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+21:37:31 INFO  : 'psu_init' command is executed.
+21:37:32 INFO  : 'after 1000' command is executed.
+21:37:32 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+21:37:33 INFO  : 'after 1000' command is executed.
+21:37:33 INFO  : 'psu_ps_pl_reset_config' command is executed.
+21:37:33 INFO  : 'catch {psu_protection}' command is executed.
+21:37:33 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+21:37:33 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+21:37:33 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+21:37:33 INFO  : 'configparams force-mem-access 0' command is executed.
+21:37:33 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+21:37:33 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
+21:41:13 INFO  : Disconnected from the channel tcfchan#4.
+21:41:15 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+21:41:23 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:41:48 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+21:41:48 INFO  : 'jtag frequency' command is executed.
+21:41:48 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+21:41:48 INFO  : Context for 'APU' is selected.
+21:41:48 INFO  : System reset is completed.
+21:41:51 INFO  : 'after 3000' command is executed.
+21:41:51 INFO  : Context for 'APU' is selected.
+21:41:52 INFO  : Cleared APU and A53 resets
+21:41:52 INFO  : Context for 'RPU' is selected.
+21:41:55 INFO  : Cleared RPU and R5 resets
+21:41:55 INFO  : Split mode is enabled for R5#1
+21:41:55 INFO  : Context for 'APU' is selected.
+21:41:55 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+21:41:55 INFO  : 'configparams force-mem-access 1' command is executed.
+21:41:55 INFO  : Context for 'APU' is selected.
+21:41:55 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+21:41:56 INFO  : 'psu_init' command is executed.
+21:41:57 INFO  : 'after 1000' command is executed.
+21:41:57 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+21:41:58 INFO  : 'after 1000' command is executed.
+21:41:58 INFO  : 'psu_ps_pl_reset_config' command is executed.
+21:41:58 INFO  : 'catch {psu_protection}' command is executed.
+21:41:58 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+21:41:58 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+21:41:59 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+21:41:59 INFO  : 'configparams force-mem-access 0' command is executed.
+21:41:59 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+21:41:59 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
+21:46:58 INFO  : Disconnected from the channel tcfchan#5.
+21:48:27 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+21:48:40 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:49:06 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+21:49:06 INFO  : 'jtag frequency' command is executed.
+21:49:06 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+21:49:06 INFO  : Context for 'APU' is selected.
+21:49:06 INFO  : System reset is completed.
+21:49:09 INFO  : 'after 3000' command is executed.
+21:49:09 INFO  : Context for 'APU' is selected.
+21:49:09 INFO  : Cleared APU and A53 resets
+21:49:09 INFO  : Context for 'RPU' is selected.
+21:49:12 INFO  : Cleared RPU and R5 resets
+21:49:12 INFO  : Split mode is enabled for R5#1
+21:49:12 INFO  : Context for 'APU' is selected.
+21:49:13 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+21:49:13 INFO  : 'configparams force-mem-access 1' command is executed.
+21:49:13 INFO  : Context for 'APU' is selected.
+21:49:13 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+21:49:14 INFO  : 'psu_init' command is executed.
+21:49:15 INFO  : 'after 1000' command is executed.
+21:49:15 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+21:49:16 INFO  : 'after 1000' command is executed.
+21:49:16 INFO  : 'psu_ps_pl_reset_config' command is executed.
+21:49:16 INFO  : 'catch {psu_protection}' command is executed.
+21:49:16 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+21:49:16 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+21:49:16 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+21:49:16 INFO  : 'configparams force-mem-access 0' command is executed.
+21:49:16 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+21:49:16 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
+21:50:47 INFO  : Disconnected from the channel tcfchan#6.
+21:51:15 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+21:57:27 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+21:57:33 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:57:59 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+21:57:59 INFO  : 'jtag frequency' command is executed.
+21:57:59 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+21:57:59 INFO  : Context for 'APU' is selected.
+21:57:59 INFO  : System reset is completed.
+21:58:02 INFO  : 'after 3000' command is executed.
+21:58:02 INFO  : Context for 'APU' is selected.
+21:58:02 INFO  : Cleared APU and A53 resets
+21:58:02 INFO  : Context for 'RPU' is selected.
+21:58:05 INFO  : Cleared RPU and R5 resets
+21:58:05 INFO  : Split mode is enabled for R5#1
+21:58:05 INFO  : Context for 'APU' is selected.
+21:58:06 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+21:58:06 INFO  : 'configparams force-mem-access 1' command is executed.
+21:58:06 INFO  : Context for 'APU' is selected.
+21:58:06 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+21:58:07 INFO  : 'psu_init' command is executed.
+21:58:08 INFO  : 'after 1000' command is executed.
+21:58:08 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+21:58:09 INFO  : 'after 1000' command is executed.
+21:58:09 INFO  : 'psu_ps_pl_reset_config' command is executed.
+21:58:09 INFO  : 'catch {psu_protection}' command is executed.
+21:58:09 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+21:58:09 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+21:58:09 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+21:58:09 INFO  : 'configparams force-mem-access 0' command is executed.
+21:58:09 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+21:58:09 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
+21:58:15 INFO  : Disconnected from the channel tcfchan#7.
+21:58:30 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+21:59:26 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:59:52 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+21:59:52 INFO  : 'jtag frequency' command is executed.
+21:59:52 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+21:59:52 INFO  : Context for 'APU' is selected.
+21:59:52 INFO  : System reset is completed.
+21:59:55 INFO  : 'after 3000' command is executed.
+21:59:55 INFO  : Context for 'APU' is selected.
+21:59:55 INFO  : Cleared APU and A53 resets
+21:59:55 INFO  : Context for 'RPU' is selected.
+21:59:58 INFO  : Cleared RPU and R5 resets
+21:59:58 INFO  : Split mode is enabled for R5#1
+21:59:58 INFO  : Context for 'APU' is selected.
+21:59:59 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+21:59:59 INFO  : 'configparams force-mem-access 1' command is executed.
+21:59:59 INFO  : Context for 'APU' is selected.
+21:59:59 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+22:00:00 INFO  : 'psu_init' command is executed.
+22:00:01 INFO  : 'after 1000' command is executed.
+22:00:01 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+22:00:02 INFO  : 'after 1000' command is executed.
+22:00:02 INFO  : 'psu_ps_pl_reset_config' command is executed.
+22:00:02 INFO  : 'catch {psu_protection}' command is executed.
+22:00:02 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+22:00:02 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+22:00:02 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+22:00:02 INFO  : 'configparams force-mem-access 0' command is executed.
+22:00:02 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+22:00:02 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
+22:03:25 INFO  : Disconnected from the channel tcfchan#8.
+22:03:59 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+22:04:08 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+22:04:34 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+22:04:34 INFO  : 'jtag frequency' command is executed.
+22:04:34 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+22:04:34 INFO  : Context for 'APU' is selected.
+22:04:34 INFO  : System reset is completed.
+22:04:37 INFO  : 'after 3000' command is executed.
+22:04:37 INFO  : Context for 'APU' is selected.
+22:04:37 INFO  : Cleared APU and A53 resets
+22:04:37 INFO  : Context for 'RPU' is selected.
+22:04:40 INFO  : Cleared RPU and R5 resets
+22:04:40 INFO  : Split mode is enabled for R5#1
+22:04:40 INFO  : Context for 'APU' is selected.
+22:04:41 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+22:04:41 INFO  : 'configparams force-mem-access 1' command is executed.
+22:04:41 INFO  : Context for 'APU' is selected.
+22:04:41 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+22:04:42 INFO  : 'psu_init' command is executed.
+22:04:43 INFO  : 'after 1000' command is executed.
+22:04:43 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+22:04:44 INFO  : 'after 1000' command is executed.
+22:04:44 INFO  : 'psu_ps_pl_reset_config' command is executed.
+22:04:44 INFO  : 'catch {psu_protection}' command is executed.
+22:04:44 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+22:04:44 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+22:04:45 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+22:04:45 INFO  : 'configparams force-mem-access 0' command is executed.
+22:04:45 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+22:04:45 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
+22:11:30 INFO  : Disconnected from the channel tcfchan#9.
+22:12:20 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+22:13:26 INFO  : Checking for BSP changes to sync application flags for project 'TestProject'...
+22:13:33 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+22:13:58 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+22:13:58 INFO  : 'jtag frequency' command is executed.
+22:13:58 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+22:13:58 INFO  : Context for 'APU' is selected.
+22:13:59 INFO  : System reset is completed.
+22:14:02 INFO  : 'after 3000' command is executed.
+22:14:02 INFO  : Context for 'APU' is selected.
+22:14:02 INFO  : Cleared APU and A53 resets
+22:14:02 INFO  : Context for 'RPU' is selected.
+22:14:05 INFO  : Cleared RPU and R5 resets
+22:14:05 INFO  : Split mode is enabled for R5#1
+22:14:05 INFO  : Context for 'APU' is selected.
+22:14:05 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+22:14:06 INFO  : 'configparams force-mem-access 1' command is executed.
+22:14:06 INFO  : Context for 'APU' is selected.
+22:14:06 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+22:14:06 INFO  : 'psu_init' command is executed.
+22:14:07 INFO  : 'after 1000' command is executed.
+22:14:08 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+22:14:09 INFO  : 'after 1000' command is executed.
+22:14:09 INFO  : 'psu_ps_pl_reset_config' command is executed.
+22:14:09 INFO  : 'catch {psu_protection}' command is executed.
+22:14:09 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+22:14:09 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+22:14:09 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+22:14:09 INFO  : 'configparams force-mem-access 0' command is executed.
+22:14:09 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+22:14:09 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
+22:15:50 INFO  : Disconnected from the channel tcfchan#10.
+22:15:53 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+22:16:18 INFO  : Jtag cable 'Digilent JTAG-HS3 210299B938DC' is selected.
+22:16:18 INFO  : 'jtag frequency' command is executed.
+22:16:18 INFO  : Sourcing of 'C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl' is done.
+22:16:18 INFO  : Context for 'APU' is selected.
+22:16:19 INFO  : System reset is completed.
+22:16:22 INFO  : 'after 3000' command is executed.
+22:16:22 INFO  : Context for 'APU' is selected.
+22:16:22 INFO  : Cleared APU and A53 resets
+22:16:22 INFO  : Context for 'RPU' is selected.
+22:16:25 INFO  : Cleared RPU and R5 resets
+22:16:25 INFO  : Split mode is enabled for R5#1
+22:16:25 INFO  : Context for 'APU' is selected.
+22:16:33 INFO  : Hardware design and registers information is loaded from 'C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa'.
+22:16:33 INFO  : 'configparams force-mem-access 1' command is executed.
+22:16:33 INFO  : Context for 'APU' is selected.
+22:16:33 INFO  : Sourcing of 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl' is done.
+22:16:34 INFO  : 'psu_init' command is executed.
+22:16:35 INFO  : 'after 1000' command is executed.
+22:16:35 INFO  : 'psu_ps_pl_isolation_removal' command is executed.
+22:16:36 INFO  : 'after 1000' command is executed.
+22:16:36 INFO  : 'psu_ps_pl_reset_config' command is executed.
+22:16:36 INFO  : 'catch {psu_protection}' command is executed.
+22:16:36 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+22:16:36 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+22:16:36 INFO  : The application 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf' is downloaded to processor 'psu_cortexa53_0'.
+22:16:36 INFO  : 'configparams force-mem-access 0' command is executed.
+22:16:36 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source C:/Xilinx/Vitis/2023.1/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -nocase -filter {name =~"APU*"}
+reset_apu
+targets -set -nocase -filter {name =~"RPU*"}
+clear_rpu_reset
+enable_split_mode
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw C:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/hw/kv260_ispMipiRx_vcu_DP.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/_ide/psinit/psu_init.tcl
+psu_init
+after 1000
+psu_ps_pl_isolation_removal
+after 1000
+psu_ps_pl_reset_config
+catch {psu_protection}
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+22:16:37 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
