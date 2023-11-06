@@ -35,6 +35,8 @@ Here are links to the issues that we completed in this sprint
     This took more time than anticipated to complete.
  * Integrate stack reading and decoding https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/issues/36
     We could not start this early enough to finish for this sprint, as it required sufficient progress from the previous issues before starting.
+ * Merge Documents into one https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/issues/21
+    This has just been low priority, especially as it will be continue to be added to over the project's life.  
 
 
 ## Code Files for Review
@@ -42,14 +44,13 @@ Please review the following code files, which were actively developed during thi
  * [read_serial.py](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/dochoa-Debugger/debugger/read_serial.py)
  * [snapshot.h](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/dochoa-Debugger/workspace/TestProject/src/snapshot.h)
  * [snapshot.c](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/dochoa-Debugger/workspace/TestProject/src/snapshot.c)
- * [extractSymbolTable.py] (https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/hpotter-StackDecode/extractSymbolTable.py)
- * [stackDecode.py] (https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/hpotter-StackDecode/StackDecode.py)
+ * [extractSymbolTable.py](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/hpotter-StackDecode/extractSymbolTable.py)
+ * [stackDecode.py](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/hpotter-StackDecode/StackDecode.py)
 
 ## Retrospective Summary
 Here's what went well:
   * Writing through the serial port
   * Extracting symbol table
-  * Item x
  
 Here's what we'd like to improve:
    * Consistency of reading in from the serial port
