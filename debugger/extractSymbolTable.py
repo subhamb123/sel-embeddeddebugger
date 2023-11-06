@@ -21,7 +21,7 @@ def extractSymbolsFromElf(elfPath, objdumpPath, outputFilePath):
 # Path to the ELF file and objdump tool
 elfPath = r"C:\\projects\\sel-debugger\\SELDebugger\\Debug\\SELDebugger.elf"
 objdumpPath = r"C:\Xilinx\Vitis\2023.1\gnu\aarch64\nt\aarch64-none\bin\aarch64-none-elf-objdump.exe"
-outputFilePath = "stackTable.txt"
+outputFilePath = "symbolTable.txt"
 
 # Extract symbols from the ELF file
 extractSymbolsFromElf(elfPath, objdumpPath, outputFilePath)
