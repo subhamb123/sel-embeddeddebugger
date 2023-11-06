@@ -1,0 +1,11 @@
+#ifndef SNAPSHOT_H
+#define SNAPSHOT_H
+
+printStack(uintptr_t baseAddress, size_t size);
+print32BitSystemRegisters();
+printGICRRegisters();
+print64BitSystemRegisters();
+printVRegisters();
+printSPRegister();
+
+#endif

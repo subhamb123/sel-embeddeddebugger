@@ -1,0 +1,5 @@
+.global get_value
+get_value:
+	FMOV D0, V0.D[0]  // Move the first element of vector register V0 to double-precision register D0
+	FCVTZS X0, D0     // Convert the double-precision floating-point value in D0 to a signed integer and store it in general-purpose register X0
+	RET

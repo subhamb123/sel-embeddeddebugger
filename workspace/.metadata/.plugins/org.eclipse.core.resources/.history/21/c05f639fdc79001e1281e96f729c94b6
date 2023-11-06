@@ -1,0 +1,4 @@
+.global get_x0register_value
+get_x0register_value:
+    ADD x0, SP, #0   // Add SP into X0 register
+    RET

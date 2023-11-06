@@ -1,0 +1,4 @@
+.global get_value
+get_value:
+	STR v0.d[0], x0
+	RET

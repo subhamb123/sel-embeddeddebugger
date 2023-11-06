@@ -1,0 +1,4 @@
+.global get_value
+get_value:
+    MOV x0, r0
+    RET

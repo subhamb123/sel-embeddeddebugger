@@ -1,0 +1,5 @@
+.global get_value
+get_value:
+	FMOV d0, v0.2d    // Move the lower 64 bits of v0 to d0 (64-bit NEON register)
+	INS x0, xzr, 0, 1 // Insert the lower 64 bits of d0 into x0
+	RET
