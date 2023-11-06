@@ -17,38 +17,42 @@ in the future.
 
 ### Prerequisites
 
-Due to no deliverables for the hardware yet, instructions for running these are not provided yet until it can be fully sure of the requirements.
-
 Hardware:
 Xilinx Kria_KV260 Vision AI Starter Kit (SK-KV260-G)
 XDS110 JTAG Debug Probe
+A Windows PC
 
 Software:
 GCC
 git
+xilinx vitis
+Python
 
 ### Add-ons
 
 Currently: None
 
 ### Installation Steps
-Note: This is only for the mockup of the UI.
-Open a directory within your terminal to an empty folder
-
-```
-(clone repository)
-git init
-git clone https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger
-cd sel-embeddeddebugger
-gcc interface.c
-./a.out
-```
+1.  Install xilinx vitis (https://www.xilinx.com/support/download.html). When installing, ensure devices for SoCs and UltraScale+ are included.
+2.  Connect the SOM to the PC with both the mini USB port and JTAG debugger
+3.  Ensure system can communicate with SOM by opening serial connection (for example, with putty)
+4.  Create a new application project, for the KV260 platform using the following .xsa file (https://github.com/Xilinx/kria-vitis-platforms/tree/main/kv260)
+5.  Create a 'hello, world' project, and debug this project to ensure SOM communication. This will be seen in a serial connection from step 3
+6.  Clone main branch into workspace - ensure snapshot.c is included in the build.
+7.  Run the read_serial.py python script.
+8.  Build and run your project in vitis.
+9.  Copy the stack outputted into the terminal to the text file named 'stack.txt' into the base directory.
+10. Run the extractSymbolTable.py script.
+11. Run the stackDecode.py script.
 
 ## Functionality
-Basic mockup of the planned UI.
+Read stack data from the SOM.
+Decode this stack data for its program counters and function names.
 
 ## Known Problems
-Coming soon!
+The stack decoding is not implemented correctly yet - it does not decode correctly.
+Integration needs to be completed to make this a more streamlined process.
+Vector table needs remapped to avoid exception throwing.
 
 ## Contributing
 1. Fork it!
