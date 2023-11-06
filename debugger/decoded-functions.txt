@@ -1,0 +1,7 @@
+Address: 0x0000C0C0, Function: _heap_start
+Address: 0x0000C0C4, Function: _heap_start
+Address: 0x0000C0C8, Function: _heap_start
+Address: 0x0000E0C0, Function: _heap_end
+Address: 0x0000E0C4, Function: _heap_end
+Address: 0x0000E0C8, Function: _heap_end
+Address: 0x0000E0CC, Function: _el3_stack_end
