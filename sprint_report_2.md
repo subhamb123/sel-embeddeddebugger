@@ -43,18 +43,18 @@ Here are links to the issues that we completed in this sprint:
 
 ## Code Files for Review
 Please review the following code files, which were actively developed during this sprint, for quality:
- * [Name of code file 1](https://github.com/your_repo/file_extension)
- * [Name of code file 2](https://github.com/your_repo/file_extension)
- * [Name of code file 3](https://github.com/your_repo/file_extension)
+ * [read_serial.py](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/dochoa-Debugger/debugger/read_serial.py)
+ * [snapshot.h](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/dochoa-Debugger/workspace/TestProject/src/snapshot.h)
+ * [snapshot.c](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/dochoa-Debugger/workspace/TestProject/src/snapshot.c)
  
 ## Retrospective Summary
 Here's what went well:
-  * Item 1
+  * Writing through the serial port
   * Item 2
   * Item x
  
 Here's what we'd like to improve:
-   * Item 1
+   * Consistency of reading in from the serial port
    * Item 2
    * Item x
   
