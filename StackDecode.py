@@ -3,59 +3,64 @@
 
 import struct
 import subprocess
+import re
 
-def extract_program_counters(stack_data):
-    program_counters = [address for address, _ in stack_data]
-    return program_counters
+def decodeStack(stackData, symbolTable):
+    decodedStack = []
+    decodedFunctions = []
+    for address, _ in stackData:
+        # Find the symbol corresponding to the address
+        functionName = None
+        for symbolAddress, symbolName in symbolTable:
+            if symbolAddress <= address < symbolAddress + len(symbolName):
+                functionName = symbolName
+                break
+        decodedStack.append((address, functionName))
+        if functionName and functionName != 'none':
+            decodedFunctions.append((address, functionName))
+    return decodedStack, decodedFunctions
 
-def extract_function_names(elf_file):
-    objdump_output = subprocess.check_output(["C:\\Xilinx\\Vitis\\2023.1\\gnu\\aarch64\\nt\\aarch64-none\\bin\\aarch64-none-elf-objdump.exe", "-t", elf_file])
-    function_names = []
-    for line in objdump_output.decode('utf-8').splitlines():
-        parts = line.split()
-        if len(parts) >= 6 and parts[1].lower() == 'f':
-            function_names.append(parts[-1])
-    return function_names
-
-def map_program_counters_to_functions(program_counters, function_names):
-    pc_to_function = {}
-    for pc in program_counters:
-        for func_name in function_names:
-            if func_name.startswith(hex(pc)):
-                pc_to_function[pc] = func_name
-    return pc_to_function
-
-def read_stack_data_from_file(file_path):
-    stack_data = []
-    with open(file_path, 'r') as file:
+def readStackFromFile(filePath):
+    stackData = []
+    with open(filePath, 'r') as file:
         for line in file:
             if line.startswith("Address:") and "Value:" in line:
-                address_value = line.strip().replace('Address:', '').replace('Value:', '').split(',')
-                address = int(address_value[0].strip(), 16)
-                value = int(address_value[1].strip(), 16)
-                stack_data.append((address, value))
-    return stack_data
+                addressValue = line.strip().replace('Address:', '').replace('Value:', '').split(',')
+                address = int(addressValue[0].strip(), 16)
+                value = int(addressValue[1].strip(), 16)
+                stackData.append((address, value))
+    return stackData
 
+def readSymbolsFromFile(filePath):
+    symbolTable = []
+    with open(filePath, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            match = re.match(r'^\s*([0-9a-fA-F]+)\s+[glld]\s+.+\s+(\w+)$', line)
+            if match:
+                address = int(match.group(1), 16)
+                symbol = match.group(2)
+                symbolTable.append((address, symbol))
+    return symbolTable
 
 def main():
     # Stand in for stack data - needs to be replaced with actual stack data.
-    stack_data = read_stack_data_from_file('stack.txt')
-    
-    # Extract program counters from stack data
-    program_counters = extract_program_counters(stack_data)
-    print("Program Counters:", program_counters)
-    
-    # Extract function names from .elf file
-    elf_file = "C:\\projects\\sel-debugger\\SELDebugger\\Debug\\SELDebugger.elf"
-    functions = extract_function_names(elf_file)
-    print("Function Names:", functions)
+    stackData = readStackFromFile('stack.txt')
+    symbolTable = readSymbolsFromFile('symbolTable.txt')
 
-    objdump_output = subprocess.check_output(["C:\\Xilinx\\Vitis\\2023.1\\gnu\\aarch64\\nt\\aarch64-none\\bin\\aarch64-none-elf-objdump.exe", "-t", elf_file])
-    print(objdump_output.decode('utf-8'))
+    # Decode the stack
+    decodedStack, decodedFunctions = decodeStack(stackData, symbolTable)
+
+    # Print the stacks to files
+    with open('decoded.txt', 'w') as outputFile:
+        for address, functionName in decodedStack:
+            outputFile.write(f"Address: 0x{address:08X}, Function: {functionName}\n")
     
-    # Map program counters to function names
-    pc_to_function_mapping = map_program_counters_to_functions(program_counters, functions)
-    print("Program Counters to Function Names:", pc_to_function_mapping)
+    # File with (function:none) addresses excluded.
+    with open('decoded-functions.txt', 'w') as functionsFile:
+        for address, functionName in decodedFunctions:
+            functionsFile.write(f"Address: 0x{address:08X}, Function: {functionName}\n")
+
 
 if __name__ == "__main__":
     main()
