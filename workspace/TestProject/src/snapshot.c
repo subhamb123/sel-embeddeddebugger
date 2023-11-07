@@ -62,13 +62,6 @@ void print_stack(uintptr_t baseAddress, size_t size)
         // Print the value at the current memory location
         xil_printf("Address:0x%08lx,Value:0x%08x\n", (unsigned long)(ptr + i), *(ptr + i));
     }
-
-    // Close delimiter
-    xil_printf("+\n");
-
-    //sleep(1);
-    // Send END
-    //xil_printf("!");
 }
 
 void print_x_registers()
@@ -280,21 +273,19 @@ void print_sp_register()
 {
 	uint64_t value = get_SPregister_value();
 	xil_printf("SP: 0x%016llx\n", value);
-
-    // Send END
-	//sleep(1);
-    xil_printf("!\n");
 }
 
 void exception_handler()
 {
-	xil_printf("\n|\n");
+	xil_printf("\n|\n"); // start saving delimiter
 	print_stack(baseAddress, size);
+    xil_printf("+\n"); // end stack delimiter
 	print_x_registers();
 	print_32_bit_system_registers();
 	print_gicr_registers();
 	print_64_bit_system_registers();
 	print_v_registers();
 	print_sp_register();
+	xil_printf("!\n"); // end saving delimiter
 	//synchronous_interrupt_handler();
 }

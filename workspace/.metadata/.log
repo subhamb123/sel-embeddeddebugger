@@ -2299,3 +2299,51 @@ Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.]. Thread: 
 
 !ENTRY com.xilinx.sdk.utils 0 0 2023-11-05 22:56:42.537
 !MESSAGE XSCT command with result: [disconnect tcfchan#12], Result: [null, ]. Thread: Thread-1640
+!SESSION 2023-11-07 11:02:23.771 -----------------------------------------------
+eclipse.buildId=2023.1
+java.version=11.0.16.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.ui 4 4 2023-11-07 11:02:37.243
+!MESSAGE Plug-in 'org.eclipse.ui.editors' contributed an invalid Menu Extension (Path: 'navigate' is invalid): org.eclipse.ui.edit.text.gotoLastEditPosition
+
+!ENTRY org.eclipse.launchbar.core 2 0 2023-11-07 11:02:40.911
+!MESSAGE Enablement expression is missing for descriptor type org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2023-11-07 11:02:40.911
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2023-11-07 11:02:40.912
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY com.xilinx.sdk.utils 0 0 2023-11-07 11:02:42.429
+!MESSAGE XSCT Command: [set sdk::sdk_chan tcfchan#0], Thread: Thread-21
+
+!ENTRY com.xilinx.sdk.utils 0 0 2023-11-07 11:02:42.429
+!MESSAGE XSCT Command: [plnx-install-path  ; ::scw::scw_mode gui], Thread: Thread-9
+
+!ENTRY com.xilinx.sdk.utils 0 0 2023-11-07 11:02:42.443
+!MESSAGE XSCT Command: [::hsi::utils::init_repo], Thread: Worker-0: Initializing s/w repositories
+
+!ENTRY com.xilinx.sdk.utils 0 0 2023-11-07 11:02:42.445
+!MESSAGE XSCT command with result: [set sdk::sdk_chan tcfchan#0], Result: [null, tcfchan#0]. Thread: Thread-21
+
+!ENTRY com.xilinx.sdk.utils 0 0 2023-11-07 11:02:42.446
+!MESSAGE XSCT command with result: [plnx-install-path  ; ::scw::scw_mode gui], Result: [null, ]. Thread: Thread-9
+
+!ENTRY com.xilinx.sdk.utils 0 0 2023-11-07 11:02:42.446
+!MESSAGE XSCT Command: [setws C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace], Thread: Thread-21
+
+!ENTRY com.xilinx.sdk.utils 0 0 2023-11-07 11:02:44.277
+!MESSAGE XSCT command with result: [::hsi::utils::init_repo], Result: [null, ]. Thread: Worker-0: Initializing s/w repositories
+
+!ENTRY com.xilinx.sdk.utils 0 0 2023-11-07 11:02:44.277
+!MESSAGE XSCT Command: [set query_var1 $::env(RDI_DATADIR)], Thread: Worker-0: Initializing s/w repositories
+
+!ENTRY com.xilinx.sdk.utils 0 0 2023-11-07 11:02:44.278
+!MESSAGE XSCT command with result: [setws C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace], Result: [null, ]. Thread: Thread-21
+
+!ENTRY com.xilinx.sdk.utils 0 0 2023-11-07 11:02:44.292
+!MESSAGE XSCT command with result: [set query_var1 $::env(RDI_DATADIR)], Result: [null, C:/Xilinx/SharedData/2023.1/data;C:/Xilinx/Vitis/2023.1/data]. Thread: Worker-0: Initializing s/w repositories

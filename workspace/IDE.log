@@ -8658,3 +8658,12 @@ configparams force-mem-access 0
 
 22:39:23 INFO  : Launch script is exported to file 'C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\TestProject_system\_ide\scripts\debugger_testproject-default.tcl'
 22:56:42 INFO  : Disconnected from the channel tcfchan#12.
+11:02:38 DEBUG : Logs will be stored at 'C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/IDE.log'.
+11:02:39 INFO  : Launching XSCT server: xsct.bat -n  -interactive C:\Users\deoch\Documents\WSU\CPTS_421\sel-embeddeddebugger\workspace\temp_xsdb_launch_script.tcl
+11:02:42 INFO  : Registering command handlers for Vitis TCF services
+11:02:42 INFO  : XSCT server has started successfully.
+11:02:42 INFO  : Successfully done setting XSCT server connection channel  
+11:02:42 INFO  : plnx-install-location is set to ''
+11:02:42 INFO  : Platform repository initialization has completed.
+11:02:44 INFO  : Successfully done setting workspace for the tool. 
+11:02:44 INFO  : Successfully done query RDI_DATADIR 
