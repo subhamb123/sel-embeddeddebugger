@@ -1,9 +1,6 @@
 import serial
 
-# Define the serial port and baud rate
-ser = serial.Serial('COM7', baudrate=112500, timeout=1)
-    
-def read_serial():
+def read_serial(ser):
     received_data = []
     record = False
     try:
@@ -12,7 +9,7 @@ def read_serial():
             data = ser.readline()
             if data:
                 decoded_data = data.decode().strip()
-                #print(decoded_data)
+                print(decoded_data)
                 if (decoded_data == "!"):
                     break
                 if (decoded_data == "|"):
@@ -48,9 +45,16 @@ def write_output(recieved_data):
             i += 1
 
 def main():
+    # Define the serial port and baud rate
+    ser = serial.Serial('COM7', baudrate=112500, timeout=1)
     
-    received_data = read_serial()
+    # Read Data
+    received_data = read_serial(ser)
+    
+    # Write Data
     write_output(received_data)
+    
+    # Close connection
     ser.close()
     
 if __name__ == "__main__":

@@ -1,0 +1,57 @@
+snapshot.h
+
+Header file for snapshot.c. Contains function declarations.
+
+snapshot.c
+
+C file that contains the function definitions.
+
+start_up()
+This functions integrates the exception handler with the vector table.
+It gets the address of the exception vector table.
+It sets the offset to 0x200 for the Synchronization exceptions.
+It stores the original branch instruction at table enty.
+It replaces it with a branch instruction to exception_handler().
+
+print_stack(uintptr_t baseAddress, size_t size)
+This function prints out the stack contents through the serial port.
+It takes in the base address and size which is from the ELF file.
+It iterates through the stack memory using a for loop.
+
+print_x_registers()
+This function prints out x0-x31 registers through the serial port.
+It uses assembly code to get the value of the registers.
+It uses a for loop to iterate through the registers
+
+print_32_bit_system_registers()
+This function prints out the 32 bit system registers through the serial port.
+It contains a hard coded set of registers.
+It uses assembly code to get the value of the registers in a specific order.
+It uses a for loop to iterate through the registers.
+
+print_gicr_registers()
+This function prints out the gicr registers through the serial port
+It contains a hard coded set of registers and addresses found through Vitis.
+It uses C code to get the value at the addresses.
+It uses a for loop to iterate through the registers.
+
+print_64_bit_system_registers()
+This function prints out the 64 bit system registers through the serial port.
+It contains a hard coded set of registers.
+It uses assembly code to get the value of the registers in a specific order.
+It uses a for loop to iterate through the registers
+
+print_v_registers()
+This function prints out v0-v31 registers through the serial port.
+It uses assembly code to get the value of the registers.
+It uses a for loop to iterate through the registers
+
+print_sp_register()
+This function prints out the SP register through the serial port.
+It uses assembly code to get the value of the register.
+This register is printed seperately since it uses the ADD function to get the value.
+
+exception_handler()
+This function calls all the other functions except start_up().
+It prints the stack first then the registers.
+The order matters since the python script is looking for stack first then registers.
