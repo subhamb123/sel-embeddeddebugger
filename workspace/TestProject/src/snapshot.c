@@ -78,7 +78,7 @@ void print_x_registers()
 
 	// Print register values along with their names
 	for (int i = 0; i < 31; ++i) {
-		xil_printf("x%d: 0x%016llx\n", i, register_values[i]);
+		xil_printf("r%d:0x%016llx\n", i, register_values[i]);
 	}
 }
 
@@ -130,10 +130,7 @@ void print_32_bit_system_registers()
     		"CNTHP_TVAL_EL2",
     		"CNTHP_CTL_EL2",
     		"CNTPS_TVAL_EL1",
-    		"CNTPS_CTL_EL1",
-    		"L2ECTRL_EL1",
-    		"L2ACTLR_EL1"
-
+    		"CNTPS_CTL_EL1"
 
     };
 
@@ -141,7 +138,7 @@ void print_32_bit_system_registers()
 	get_32register_values(register_values);
 
 	// Print register values along with their names
-	for (int i = 0; i < 44; ++i) {
+	for (int i = 0; i < 42; ++i) {
 		xil_printf("%s:0x%08x\n", register_names[i], register_values[i]);
 	}
 }
@@ -149,11 +146,11 @@ void print_32_bit_system_registers()
 void print_gicr_registers()
 {
 	// Allocate memory for register values
-	uint32_t register_values[20];
+	//uint32_t register_values[20];
 
     // Array of register names
     const char* register_names[] = {
-    		"GICC_CTRL",
+    		"GICC_CTLR",
     		"GICC_PMR",
     		"GICC_BPR",
     		"GICC_RPR",
@@ -163,47 +160,29 @@ void print_gicr_registers()
     		"GICC_APR0",
     		"GICC_NSAPR0",
     		"GICD_CTLR",
-    		"GICD_IGROUPR0-5",
-    		"GICD_ISENABLER0-5",
-    		"GICD_ISPENDR0-5",
-    		"GICD_ISACTIVER0-5",
-    		"GICD_IPRIORITYR0-47",
-    		"GICD_ITARGETSR0-47",
-    		"GICD_ICFGR0-11",
-    		"GICD_PPISR",
-    		"GICD_SPISR0-4",
-    		"GICD_SPENDSGIR0-3"
+    		"GICD_PPISR"
 
 
     };
 
     uint64_t addresses[] = {
-        0xf9020000,
-        0xf9020004,
-        0xf9020008,
+    	0xf9020000,
+		0xf9020004,
+		0xf9020008,
         0xf9020014,
         0xf9020018,
         0xf902001c,
         0xf9020028,
         0xf90200d0,
         0xf90200e0,
-        0xf9010000,
-        0xf9010094,
-        0xf9010114,
-        0xf9010214,
-        0xf9010314,
-        0xf90104bc,
-        0xf90108bc,
-        0xf9010c2c,
-        0xf9010d00,
-        0xf9010d14,
-        0xf9010f2c
-    };
+		0xf9010000,
+		0xf9010d00
 
+    };
     for (int i = 0; i < sizeof(addresses) / sizeof(uint64_t); ++i) {
     		volatile uint32_t* addr_ptr = (volatile uint32_t*) addresses[i];
     	    uint32_t value = *addr_ptr;
-    		xil_printf("%s: 0x%08x\n", register_names[i], value);;
+    		xil_printf("%s:0x%08x\n", register_names[i], value);;
         }
 	// Call the assembly function and pass the array's pointer
 	//get_GICRregister_values(register_values);
@@ -212,6 +191,53 @@ void print_gicr_registers()
 	//for (int i = 0; i < 20; ++i) {
 	//	xil_printf("\n\r%s: 0x%08x\n", register_names[i], register_values[i]);
 	//}
+
+    // Print out the non-singular registers
+
+    const char* register_names_multiple[] = {
+        		"GICD_IGROUP",
+        		"GICD_ISENABLE",
+        		"GICD_ISPEND",
+        		"GICD_ISACTIVE",
+        		"GICD_IPRIORITY",
+        		"GICD_ITARGETS",
+        		"GICD_ICFG",
+        		"GICD_SPIS",
+        		"GICD_SPENDSGI",
+        };
+
+    uint64_t addresses_multiple[] = {
+    		0xf9010080,
+			0xf9010100,
+			0xf9010200,
+			0xf9010300,
+			0xf9010400,
+			0xf9010800,
+			0xf9010c00,
+			0xf9010d04,
+			0xf9010f20
+        };
+
+    int range[] = {
+    		6,
+			6,
+			6,
+			6,
+			48,
+			48,
+			12,
+			5,
+			4
+    };
+
+    for (int i = 0; i < sizeof(addresses_multiple) / sizeof(uint64_t); ++i) {
+        		volatile uint32_t* base_addr_ptr = (volatile uint32_t*) addresses_multiple[i];
+        		for (int j = 0; j < range[i]; j++) {
+        			uint32_t value = *(base_addr_ptr + (j));
+        			xil_printf("%sR%d:0x%08x\n", register_names_multiple[i], j, value);;
+        		}
+
+            }
 }
 
 void print_64_bit_system_registers()
@@ -243,7 +269,6 @@ void print_64_bit_system_registers()
     		"CNTHP_CVAL_EL2",
     		"CNTPS_CVAL_EL1"
 
-
     };
 
 	// Call the assembly function and pass the array's pointer
@@ -251,7 +276,7 @@ void print_64_bit_system_registers()
 
 	// Print register values along with their names
 	for (int i = 0; i < 20; ++i) {
-		xil_printf("%s: 0x%016llx\n", register_names[i], register_values[i]);
+		xil_printf("%s:0x%016llx\n", register_names[i], register_values[i]);
 	}
 }
 
@@ -272,20 +297,20 @@ void print_v_registers()
 void print_sp_register()
 {
 	uint64_t value = get_SPregister_value();
-	xil_printf("SP: 0x%016llx\n", value);
+	xil_printf("SP:0x%016llx\n", value);
 }
 
 void exception_handler()
 {
-	xil_printf("\n|\n"); // start saving delimiter
+	xil_printf("\nSTART\n"); // send start signal
 	print_stack(baseAddress, size);
-    xil_printf("+\n"); // end stack delimiter
+    xil_printf("STACK_END\n"); // end stack delimiter
 	print_x_registers();
 	print_32_bit_system_registers();
 	print_gicr_registers();
 	print_64_bit_system_registers();
 	print_v_registers();
 	print_sp_register();
-	xil_printf("!\n"); // end saving delimiter
+	xil_printf("END\n"); // send end signal
 	//synchronous_interrupt_handler();
 }

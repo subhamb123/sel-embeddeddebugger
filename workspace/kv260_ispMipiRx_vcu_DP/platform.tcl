@@ -23,3 +23,17 @@ platform generate -quick
 platform generate
 platform generate
 platform generate
+platform generate
+platform generate -domains standalone_psu_cortexa53_0 
+platform generate
+platform generate -domains standalone_psu_cortexa53_0 
+platform active {kv260_ispMipiRx_vcu_DP}
+domain active {zynqmp_fsbl}
+bsp reload
+domain active {standalone_psu_cortexa53_0}
+bsp reload
+bsp config extra_compiler_flags "-g -Wall -Wextra -fno-tree-loop-distribute-patterns -mno_omit_leaf_frame_pointer"
+bsp reload
+platform clean
+platform generate
+platform generate

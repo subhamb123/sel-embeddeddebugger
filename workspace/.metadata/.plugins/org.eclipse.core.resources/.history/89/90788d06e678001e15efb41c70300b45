@@ -1,4 +1,0 @@
-.global get_value
-get_value:
-    LDR x0, x1      // Load the address of the next instruction into X0
-    RET             // Return from the function

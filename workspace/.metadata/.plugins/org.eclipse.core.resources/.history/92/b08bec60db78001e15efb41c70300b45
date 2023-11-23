@@ -1,7 +1,0 @@
-.global get_value
-get_value:
-	// Extract the first element of the vector v0 and store it in d0
-	FMOV d0, v0.d[0]
-	// Move the value from d0 to x0
-	FCVTZS x0, d0
-	RET

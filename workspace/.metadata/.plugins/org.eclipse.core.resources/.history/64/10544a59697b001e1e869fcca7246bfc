@@ -1,9 +1,0 @@
-.global get_SPregister_value
-
-.macro MRS_REG reg_name, dest
-    MRS \dest, \reg_name
-.endm
-
-get_SPregister_value:
-	MRS_REG VBAR_EL3, x0
-	STR x0, [x1, #8]    // Store VBAR_EL3 in the array

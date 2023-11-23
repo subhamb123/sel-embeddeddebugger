@@ -4,7 +4,7 @@
 get_GICRregister_values:
 	MOV x1, x0              // Load the address of the destination array into x1
 
-    LDR x0, =0xf9020000       // Address for GICC_CTRL register
+	LDR x0, =0xf9020000       // Address for GICC_CTLR register
 	LDR x0, [x0]              // Load value from the address
 	STR x0, [x1, #0]          // Store GICC_CTRL value at offset 0
 
@@ -44,45 +44,9 @@ get_GICRregister_values:
 	LDR x0, [x0]              // Load value from the address
 	STR x0, [x1, #36]          // Store GICC_CTRL value at offset 36
 
-	LDR x0, =0xf9010094       // Address for GICD_IGROUPR0-5 register
-	LDR x0, [x0]              // Load value from the address
-	STR x0, [x1, #40]          // Store GICC_CTRL value at offset 40
-
-	LDR x0, =0xf9010114       // Address for GICD_ISENABLER0-5 register
-	LDR x0, [x0]              // Load value from the address
-	STR x0, [x1, #44]          // Store GICC_CTRL value at offset 44
-
-	LDR x0, =0xf9010214       // Address for GICD_ISPENDR0-5 register
-	LDR x0, [x0]              // Load value from the address
-	STR x0, [x1, #48]          // Store GICC_CTRL value at offset 48
-
-	LDR x0, =0xf9010314       // Address for GICD_ISACTIVER0-5 register
-	LDR x0, [x0]              // Load value from the address
-	STR x0, [x1, #52]          // Store GICC_CTRL value at offset 52
-
-	LDR x0, =0xf90104bc       // Address for GICD_IPRIORITYR0-47 register
-	LDR x0, [x0]              // Load value from the address
-	STR x0, [x1, #56]          // Store GICC_CTRL value at offset 56
-
-	LDR x0, =0xf90108bc       // Address for GICD_ITARGETSR0-47 register
-	LDR x0, [x0]              // Load value from the address
-	STR x0, [x1, #60]          // Store GICC_CTRL value at offset 60
-
-	LDR x0, =0xf9010c2c       // Address for GICD_ICFGR0-11 register
-	LDR x0, [x0]              // Load value from the address
-	STR x0, [x1, #64]          // Store GICC_CTRL value at offset 64
-
 	LDR x0, =0xf9010d00       // Address for GICD_PPISR register
 	LDR x0, [x0]              // Load value from the address
-	STR x0, [x1, #68]          // Store GICC_CTRL value at offset 68
-
-	LDR x0, =0xf9010d14       // Address for GICD_SPISR0-4 register
-	LDR x0, [x0]              // Load value from the address
-	STR x0, [x1, #72]          // Store GICC_CTRL value at offset 72
-
-	LDR x0, =0xf9010f2c       // Address for GICD_SPENDSGIR0-3 register
-	LDR x0, [x0]              // Load value from the address
-	STR x0, [x1, #76]          // Store GICC_CTRL value at offset 76
+	STR x0, [x1, #40]          // Store GICC_CTRL value at offset 40
 
 
 

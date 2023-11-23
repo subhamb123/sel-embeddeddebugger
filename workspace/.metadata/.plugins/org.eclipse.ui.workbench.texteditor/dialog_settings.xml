@@ -6,8 +6,10 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="stackAddresses"/>
+		<item key="selection" value="_vector_table"/>
 		<list key="findhistory">
+			<item value="_vector_table"/>
+			<item value="vector_base"/>
 			<item value="stackAddresses"/>
 			<item value="main"/>
 		</list>
