@@ -1,4 +1,4 @@
-# source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/debugger/write_registers.tcl
+
 rwr r0 0x0000000000000000
 rwr r1 0x000000000000000A
 rwr r2 0x0000000000006802
@@ -59,14 +59,14 @@ rwr sys 1 scr_el3 0x00000C0E
 rwr sys 1 cptr_el3 0x00000000
 rwr sys 1 mdcr_el3 0x00000000
 rwr sys 14 cntkctl_el1 0x00000000
-rwr sys 14 cntp_tval_el0 0x3C92E36A
+rwr sys 14 cntp_tval_el0 0xCE240C91
 rwr sys 14 cntp_ctl_el0 0x00000000
-rwr sys 14 cntv_tval_el0 0x3B033B67
+rwr sys 14 cntv_tval_el0 0xCCD46C1D
 rwr sys 14 cntv_ctl_el0 0x00000000
 rwr sys 14 cnthctl_el2 0x00000003
-rwr sys 14 cnthp_tval_el2 0x33FAC25D
+rwr sys 14 cnthp_tval_el2 0xC58BF384
 rwr sys 14 cnthp_ctl_el2 0x00000002
-rwr sys 14 cntps_tval_el1 0xF3EEAB72
+rwr sys 14 cntps_tval_el1 0x857FDC99
 rwr sys 14 cntps_ctl_el1 0x00000000
 rwr acpu_gic gicc_ctlr 0x00000000
 rwr acpu_gic gicc_pmr 0x00000000
@@ -214,41 +214,41 @@ rwr sys 13 tpidr_el3 0x00000000FFFF8500
 rwr sys 12 rmr_el3 0x0000000000000001
 rwr sys 1 sder32_el3 0x0000000000000000
 rwr sys 14 cntfrq_el0 0x0000000005F5DD19
-rwr sys 14 cntp_cval_el0 0x01230CA608A43912
-rwr sys 14 cntv_cval_el0 0x3F80E000071480E8
-rwr sys 14 cntvoff_el2 0x8000002000001028
-rwr sys 14 cnthp_cval_el2 0x24004501000C1809
-rwr sys 14 cntps_cval_el1 0x8AA20002C000011F
+rwr sys 14 cntp_cval_el0 0x01230CA608A43112
+rwr sys 14 cntv_cval_el0 0x3B80C00007548078
+rwr sys 14 cntvoff_el2 0x8100002000001028
+rwr sys 14 cnthp_cval_el2 0x2C004501000C1809
+rwr sys 14 cntps_cval_el1 0xCAA20006C000011F
 rwr vfp v0  0x3030303030303030
 rwr vfp v1  0x00000000000035E8
 rwr vfp v2  0x0000000000000000
-rwr vfp v3  0x0000000000000000
-rwr vfp v4  0x0000000000000000
-rwr vfp v5  0x0000000000000000
-rwr vfp v6  0x0000000000000000
-rwr vfp v7  0x0000000000000000
-rwr vfp v8  0x0000000000000000
-rwr vfp v9  0x0000000000000000
-rwr vfp v10  0x0000000000000000
-rwr vfp v11  0x0000000000000000
-rwr vfp v12  0x0000000000000000
-rwr vfp v13  0x0000000000000000
-rwr vfp v14  0x0000000000000000
-rwr vfp v15  0x0000000000000000
+rwr vfp v3  0xA017C0A525D03D69
+rwr vfp v4  0x87284EC644804482
+rwr vfp v5  0xC140903807985990
+rwr vfp v6  0x00463424A31209E0
+rwr vfp v7  0xA784907AB9429004
+rwr vfp v8  0x1008081D13C40148
+rwr vfp v9  0x4402492012348840
+rwr vfp v10  0x8044904281031100
+rwr vfp v11  0x280041015850004B
+rwr vfp v12  0x6940063288280542
+rwr vfp v13  0x2864AB5C2000077B
+rwr vfp v14  0x11190902D6BA662B
+rwr vfp v15  0x0A5461E308001A64
 rwr vfp v16  0xFFFFFF80FFFFFFC8
-rwr vfp v17  0x0000000000000000
-rwr vfp v18  0x0000000000000000
-rwr vfp v19  0x0000000000000000
-rwr vfp v20  0x0000000000000000
-rwr vfp v21  0x0000000000000000
-rwr vfp v22  0x0000000000000000
-rwr vfp v23  0x0000000000000000
-rwr vfp v24  0x0000000000000000
-rwr vfp v25  0x0000000000000000
-rwr vfp v26  0x0000000000000000
-rwr vfp v27  0x0000000000000000
-rwr vfp v28  0x0000000000000000
-rwr vfp v29  0x0000000000000000
-rwr vfp v30  0x0000000000000000
-rwr vfp v31  0x0000000000000000
+rwr vfp v17  0x1D05430F62302754
+rwr vfp v18  0xD5640C11B80058D2
+rwr vfp v19  0x3838480A021B0980
+rwr vfp v20  0x119293F8C4488900
+rwr vfp v21  0x8191023A00010048
+rwr vfp v22  0x00001644641C0636
+rwr vfp v23  0x0C400622090AD165
+rwr vfp v24  0x01AA42E00884E090
+rwr vfp v25  0x22C1235143042178
+rwr vfp v26  0x22A18902000012A4
+rwr vfp v27  0x7014832A0B4B0429
+rwr vfp v28  0x33DA64C05200B3B1
+rwr vfp v29  0x124001B56E34C0C8
+rwr vfp v30  0x0150A30496128874
+rwr vfp v31  0x4F00502D16240560
 rwr sp 0x0000000000010080

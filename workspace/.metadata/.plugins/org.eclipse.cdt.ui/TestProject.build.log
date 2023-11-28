@@ -1,58 +1,6 @@
-16:15:52 **** Incremental Build of configuration Debug for project TestProject ****
+21:26:13 **** Incremental Build of configuration Debug for project TestProject ****
 make all 
-'Building file: ../src/snapshot.c'
-'Invoking: ARM v8 gcc compiler'
-aarch64-none-elf-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/snapshot.o" -IC:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/sw/kv260_ispMipiRx_vcu_DP/standalone_psu_cortexa53_0/bspinclude/include -MMD -MP -MF"src/snapshot.d" -MT"src/snapshot.o" -o "src/snapshot.o" "../src/snapshot.c"
-../src/snapshot.c: In function 'start_up':
-../src/snapshot.c:23:38: warning: implicit declaration of function 'get_vbar_el1_register_value' [-Wimplicit-function-declaration]
-   23 |         void* vector_table_address = get_vbar_el1_register_value(); // Obtain the address of the vector table
-      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-../src/snapshot.c:23:38: warning: initialization of 'void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-../src/snapshot.c:38:37: warning: initialization of 'uint32_t' {aka 'unsigned int'} from 'void *' makes integer from pointer without a cast [-Wint-conversion]
-   38 |         uint32_t original_address = original_handler_offset * 4 + entry_address;
-      |                                     ^~~~~~~~~~~~~~~~~~~~~~~
-../src/snapshot.c:41:41: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
-   41 |         synchronous_interrupt_handler = (void (*)(void))original_address;
-      |                                         ^
-../src/snapshot.c: In function 'print_x_registers':
-../src/snapshot.c:73:30: warning: implicit declaration of function 'get_x0register_value' [-Wimplicit-function-declaration]
-   73 |         register_values[0] = get_x0register_value();
-      |                              ^~~~~~~~~~~~~~~~~~~~
-../src/snapshot.c:74:30: warning: implicit declaration of function 'get_x1register_value' [-Wimplicit-function-declaration]
-   74 |         register_values[1] = get_x1register_value();
-      |                              ^~~~~~~~~~~~~~~~~~~~
-../src/snapshot.c:77:9: warning: implicit declaration of function 'get_Xregister_values' [-Wimplicit-function-declaration]
-   77 |         get_Xregister_values(register_values + 2);
-      |         ^~~~~~~~~~~~~~~~~~~~
-../src/snapshot.c: In function 'print_32_bit_system_registers':
-../src/snapshot.c:138:9: warning: implicit declaration of function 'get_32register_values' [-Wimplicit-function-declaration]
-  138 |         get_32register_values(register_values);
-      |         ^~~~~~~~~~~~~~~~~~~~~
-../src/snapshot.c: In function 'print_64_bit_system_registers':
-../src/snapshot.c:275:9: warning: implicit declaration of function 'get_64register_values' [-Wimplicit-function-declaration]
-  275 |         get_64register_values(register_values);
-      |         ^~~~~~~~~~~~~~~~~~~~~
-../src/snapshot.c: In function 'print_v_registers':
-../src/snapshot.c:288:9: warning: implicit declaration of function 'get_Vregister_values' [-Wimplicit-function-declaration]
-  288 |         get_Vregister_values(register_values);
-      |         ^~~~~~~~~~~~~~~~~~~~
-../src/snapshot.c: In function 'print_sp_register':
-../src/snapshot.c:299:26: warning: implicit declaration of function 'get_SPregister_value' [-Wimplicit-function-declaration]
-  299 |         uint64_t value = get_SPregister_value();
-      |                          ^~~~~~~~~~~~~~~~~~~~
-'Finished building: ../src/snapshot.c'
-' '
-'Building target: TestProject.elf'
-'Invoking: ARM v8 gcc linker'
-aarch64-none-elf-gcc -Wl,-T -Wl,../src/lscript.ld -LC:/Users/deoch/workspace/kv260_ispMipiRx_vcu_DP/export/kv260_ispMipiRx_vcu_DP/sw/kv260_ispMipiRx_vcu_DP/standalone_psu_cortexa53_0/bsplib/lib -o "TestProject.elf"  ./src/helloworld.o ./src/platform.o ./src/reg32.o ./src/reg64.o ./src/regGIRC.o ./src/regSP.o ./src/regV.o ./src/regVBAR_EL2.o ./src/regX.o ./src/regx0.o ./src/regx1.o ./src/snapshot.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-'Finished building target: TestProject.elf'
-' '
-'Invoking: ARM v8 Print Size'
-aarch64-none-elf-size TestProject.elf  |tee "TestProject.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  39101	   2192	  20715	  62008	   f238	TestProject.elf
-'Finished building: TestProject.elf.size'
-' '
+make: Nothing to be done for 'all'.
 
-16:15:52 Build Finished (took 531ms)
+21:26:13 Build Finished (took 165ms)
 

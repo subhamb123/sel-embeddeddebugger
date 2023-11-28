@@ -1,6 +1,7 @@
 import serial
 import os
 import subprocess
+import pathlib
 
 # register groups
 
@@ -37,7 +38,6 @@ def read_serial(ser):
             if data:
                 try:
                     decoded_data = data.decode().strip()
-                    #print(decoded_data)
                     if (decoded_data == "END"):
                         break
                     if (decoded_data == "START"):
@@ -45,7 +45,7 @@ def read_serial(ser):
                         record = True
                         continue
                     if (record):
-                        #print(decoded_data)
+                        print(decoded_data)
                         received_data.append(decoded_data)
                 except:
                     continue
@@ -85,7 +85,12 @@ def write_output(recieved_data):
 
 def read_data():
     # Define the serial port and baud rate
-    ser = serial.Serial('COM7', baudrate=112500, timeout=1)
+    com = 'COM7'
+    try:
+        ser = serial.Serial(com, baudrate=112500, timeout=1)
+    except:
+        print(f"Can't establish connection on {com}")
+        return
     
     # Read Data
     received_data = read_serial(ser)
@@ -104,7 +109,6 @@ def generate_register_tcl():
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
     f = open(os.path.join(__location__, "registers.txt"))
     with open ("write_registers.tcl", 'w') as g:
-        g.write("# source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/debugger/write_registers.tcl")
         for line in f:
             # Remove leading spaces and newline characters
             line = line.strip()
@@ -138,10 +142,14 @@ def write_data():
     # Start xsct.bat with pipes for stdin and stdout
     process = subprocess.Popen([r'C:\Xilinx\Vitis\2023.1\bin\xsct.bat'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
     
+    # Get Path
+    path = str(pathlib.Path().resolve())
+    path = path.replace("\\", "/")
+    
     # Example: Send multiple commands to xsct
     commands = ["connect", "target 9", "dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf",
-                "source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/debugger/write_registers.tcl",
-                "source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/debugger/write_stack.tcl"]
+                f"source {path}/write_registers.tcl"]
+                # f"source {path}/write_stack.tcl"]
     
     for command in commands:
         print(command)
