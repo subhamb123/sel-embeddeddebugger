@@ -147,9 +147,9 @@ def write_data():
     path = path.replace("\\", "/")
     
     # Example: Send multiple commands to xsct
-    commands = ["connect", "target 9", "dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf",
-                f"source {path}/write_registers.tcl"]
-                # f"source {path}/write_stack.tcl"]
+    commands = ["connect", "targets 9", "dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf",
+                f"source {path}/write_registers.tcl",
+                f"source {path}/write_stack.tcl"]
     
     for command in commands:
         print(command)
