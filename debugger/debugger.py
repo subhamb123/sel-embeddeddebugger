@@ -5,7 +5,8 @@ import pathlib
 
 # register groups
 
-registers = { "IFSR32_EL2": " sys 5 ", "ESR_EL3": " sys 5 ", "SCTLR_EL3" : " sys 1 ", "TCR_EL3" : " sys 2 ", "CONTEXTIDR_EL1" : " sys 13 ",
+registers = { "IFSR32_EL2": " sys 5 ",  "ESR_EL1": " sys 5 ",  "ESR_EL2": " sys 5 ", "ESR_EL3": " sys 5 ", "SCTLR_EL3" : " sys 1 ", 
+             "TCR_EL3" : " sys 2 ", "CONTEXTIDR_EL1" : " sys 13 ", "ELR_EL1" : " sys 4 ", "ELR_EL2" : " sys 4 ", "ELR_EL3" : " sys 4 ",
              "CPACR_EL1" : " sys 1 ", "ACTLR_EL3" : " sys 1 ", "PMCR_EL0" : " sys 9 ", "PMCNTENSET_EL0" : " sys 9 ", "PMOVSCLR_EL0" : " sys 9 ",
              "PMUSERENR_EL0" : " sys 9 ", "PMINTENSET_EL1" :" sys 9 ", "PMEVCNTR0_EL0" : " sys 14 ", "PMEVCNTR1_EL0" : " sys 14 ",
              "PMEVCNTR2_EL0" : " sys 14 ", "PMEVCNTR3_EL0" : " sys 14 ", "PMEVCNTR4_EL0" : " sys 14 ", "PMEVCNTR5_EL0" : " sys 14 ",

@@ -14,7 +14,7 @@ while {[gets $file line] != -1} {
         mwr $addressInt $valueInt
 
         # Print the values in hex
-        puts "Wrote 0x$valueHex to address 0x$addressHex"
+        # puts "Wrote 0x$valueHex to address 0x$addressHex"
     } else {
         puts "Error: Invalid line format - $line"
     }

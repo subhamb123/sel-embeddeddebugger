@@ -1,5 +1,0 @@
-Nothing to build in platform 'kv260_ispMipiRx_vcu_DP'
-
-21:26:13 **** Incremental Build of configuration Debug for project TestProject ****
-make all 
-make: Nothing to be done for 'all'.

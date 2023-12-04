@@ -115,12 +115,12 @@ def main():
     #write_GICR_c_array(address32)
     
     # write out assembly to read registers
-    #write_32_assembly(list32)
+    write_32_assembly(list32)
     #write_64_assembly(list64)
     
     # write out assembly to read GICR registers
-    write_GICR_assembly(address32)
-    write_GICD_multiple(address32_multiple)
+    #write_GICR_assembly(address32)
+    #write_GICD_multiple(address32_multiple)
     
     # write out assembly to read V registers
     #write_V_assembly()
