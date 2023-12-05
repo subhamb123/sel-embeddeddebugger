@@ -5,20 +5,19 @@ import struct
 import subprocess
 import re
 
-def decodeStack(stackData, symbolTable):
+
+def decodeStack(stackData, symbolTable, startAddress):
     decodedStack = []
-    decodedFunctions = []
-    for address, _ in stackData:
-        # Find the symbol corresponding to the address
-        functionName = None
+    for address, value in stackData:
+        # Skip addresses that are below the start address
+        if address < startAddress:
+            continue
+      # Find the symbol that corresponds to the address
         for symbolAddress, symbolName in symbolTable:
-            if symbolAddress <= address < symbolAddress + len(symbolName):
-                functionName = symbolName
-                break
-        decodedStack.append((address, functionName))
-        if functionName and functionName != 'none':
-            decodedFunctions.append((address, functionName))
-    return decodedStack, decodedFunctions
+            if address == symbolAddress:
+                decodedStack.append((address, symbolName))
+    return decodedStack
+
 
 def readStackFromFile(filePath):
     stackData = []
@@ -30,6 +29,7 @@ def readStackFromFile(filePath):
                 value = int(addressValue[1].strip(), 16)
                 stackData.append((address, value))
     return stackData
+
 
 def readSymbolsFromFile(filePath):
     symbolTable = []
@@ -43,23 +43,21 @@ def readSymbolsFromFile(filePath):
                 symbolTable.append((address, symbol))
     return symbolTable
 
+
 def main():
-    # Stand in for stack data - needs to be replaced with actual stack data.
     stackData = readStackFromFile('stack.txt')
     symbolTable = readSymbolsFromFile('symbolTable.txt')
 
-    # Decode the stack
-    decodedStack, decodedFunctions = decodeStack(stackData, symbolTable)
+    # The starting address of the program
+    # Modify if starting address changes - or create method to have it not matter.
+    startAddress = 0xc0c0
+
+    decodedStack = decodeStack(stackData, symbolTable, startAddress)
 
     # Print the stacks to files
     with open('decoded.txt', 'w') as outputFile:
         for address, functionName in decodedStack:
             outputFile.write(f"Address: 0x{address:08X}, Function: {functionName}\n")
-    
-    # File with (function:none) addresses excluded.
-    with open('decoded-functions.txt', 'w') as functionsFile:
-        for address, functionName in decodedFunctions:
-            functionsFile.write(f"Address: 0x{address:08X}, Function: {functionName}\n")
 
 
 if __name__ == "__main__":
