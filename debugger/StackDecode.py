@@ -45,7 +45,23 @@ def readSymbolsFromFile(filePath):
 
 
 def main():
-    stackData = readStackFromFile('stack.txt')
+
+    # Stand in for stack data - needs to be replaced with actual stack data.
+    f = open("option.txt", "r")
+    f2 = open("version.txt", "r")
+    if int(f.read()) == 1:
+        stackData = readStackFromFile('./Versions/stack' + f2.read() + '.txt')
+    else:
+        with open("archive.txt", "r") as f3:
+            lines = f3.readlines()
+            i = 0
+            for line in lines:
+                i += 1
+                print(str(i) + ". " + line + "\n")
+                
+            choice = input("\nYour choice: ")
+            stackData = readStackFromFile("./Versions/" + lines[int(choice)-1])
+    
     symbolTable = readSymbolsFromFile('symbolTable.txt')
 
     # The starting address of the program
@@ -58,6 +74,16 @@ def main():
     with open('decoded.txt', 'w') as outputFile:
         for address, functionName in decodedStack:
             outputFile.write(f"Address: 0x{address:08X}, Function: {functionName}\n")
+
+    
+    # File with (function:none) addresses excluded.
+    with open('decoded-functions.txt', 'w') as functionsFile:
+        for address, functionName in decodedFunctions:
+            functionsFile.write(f"Address: 0x{address:08X}, Function: {functionName}\n")
+            
+    f.close()
+    f2.close()
+
 
 
 if __name__ == "__main__":
