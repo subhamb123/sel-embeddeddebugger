@@ -5,12 +5,6 @@ import struct
 import subprocess
 import re
 
-def createCallStack(decodedStack):
-    callStack = []
-    for address, functionName in reversed(decodedStack):
-        callStack.append(functionName)
-    return callStack
-
 
 def decodeStack(stackData, symbolTable, startAddress):
     decodedStack = []
@@ -36,6 +30,7 @@ def readStackFromFile(filePath):
                 stackData.append((address, value))
     return stackData
 
+
 def readSymbolsFromFile(filePath):
     symbolTable = []
     with open(filePath, 'r') as file:
@@ -47,6 +42,7 @@ def readSymbolsFromFile(filePath):
                 symbol = match.group(2)
                 symbolTable.append((address, symbol))
     return symbolTable
+
 
 def main():
     stackData = readStackFromFile('stack.txt')
@@ -62,13 +58,6 @@ def main():
     with open('decoded.txt', 'w') as outputFile:
         for address, functionName in decodedStack:
             outputFile.write(f"Address: 0x{address:08X}, Function: {functionName}\n")
-
-    callStack = createCallStack(decodedStack)
-
-    # Print the call stack to a file
-    with open('callStack.txt', 'w') as outputFile:
-       for functionName in callStack:
-           outputFile.write(f"{functionName}\n")
 
 
 if __name__ == "__main__":
