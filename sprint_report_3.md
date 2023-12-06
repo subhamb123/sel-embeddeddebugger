@@ -1,12 +1,12 @@
 # Sprint 3 Report (11/05/2023 - 12/05/2023)
 
-Video: <insert link>
+[Video](https://youtu.be/BbdxPPWOi2Y)
 
 ## What's New (User Facing)
  * Improve script for parsing script, manually tested
  * Created script to integrate reading script dump and parser
  * Create dump history
- * Debugger writes stack and register values back to the baord
+ * Debugger writes stack and register values back to the board
 
 ## Work Summary (Developer Facing)
 We added more functionality to the debugger. It can now generate and execute TCL scripts to write back the contents
