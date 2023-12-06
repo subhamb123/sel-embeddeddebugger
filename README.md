@@ -39,20 +39,17 @@ Currently: None
 4.  Create a new application project, for the KV260 platform using the following .xsa file (https://github.com/Xilinx/kria-vitis-platforms/tree/main/kv260)
 5.  Create a 'hello, world' project, and debug this project to ensure SOM communication. This will be seen in a serial connection from step 3
 6.  Clone main branch into workspace - ensure snapshot.c is included in the build.
-7.  Run the read_serial.py python script.
-8.  Build and run your project in vitis.
-9.  Copy the stack outputted into the terminal to the text file named 'stack.txt' into the base directory.
-10. Run the extractSymbolTable.py script.
-11. Run the stackDecode.py script.
+7.  Run main.py, select desired menu option.
 
 ## Functionality
-Read stack data from the SOM.
+Read stack data, register data from the SOM.
 Decode this stack data for its program counters and function names.
+Load stack data and register data back onto board
 
 ## Known Problems
-The stack decoding is not implemented correctly yet - it does not decode correctly.
-Integration needs to be completed to make this a more streamlined process.
-Vector table needs remapped to avoid exception throwing.
+Currently, it is only able to load a single CPU core
+Automated testing needs to be implemented
+Some scripts still rely on hardcoded directories
 
 ## Contributing
 1. Fork it!
