@@ -37,8 +37,8 @@ Here are links to the issues that we completed in this sprint
 Please review the following code files, which were actively developed during this sprint, for quality:
  * [main.py](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/debugger/main.py)
  * [stackDecode.py](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/debugger/StackDecode.py)
- * [read_registers_to_save.py] <GET URL AFTER MERGE!!!>
- * [debugger.py] <GET URL AFTER MERGE!!!>
+ * [read_registers_to_save.py](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/debugger/read_registers_to_save.py)
+ * [debugger.py](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/debugger/debugger.py)
 
 ## Retrospective Summary
 Here's what went well:
