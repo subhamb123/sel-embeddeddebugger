@@ -129,17 +129,48 @@ def generate_register_tcl():
                 register = ''.join((x for x in register if not x.isdigit()))
                 
             # Write out TCL script
-            g.write("\n")
             g.write(f"rwr{registers[register]}{words[0].lower()} {words[1]}")
+            g.write("\n")
 
             
             
     f.close()
 
+def generate_stack_tcl():
+    # Get Path
+    path = str(pathlib.Path().resolve())
+    path = path.replace("\\", "/")
+    
+    # Write tcl script
+    with open ("write_stack.tcl", 'w') as f:
+        script = f'''# Open the file for reading
+set file [open "{path}/stack.txt" r]
 
+# Read each line from the file
+while {{[gets $file line] != -1}} {{
+    # Use regular expressions to extract address and value
+    if {{[regexp {{Address:0x([0-9A-Fa-f]+),Value:0x([0-9A-Fa-f]+)}} $line - addressHex valueHex]}} {{
+        # Convert hex strings to integers
+        set addressInt [scan $addressHex %x]
+        set valueInt [scan $valueHex %x]
+
+        mwr $addressInt $valueInt
+
+        # Print the values in hex
+        # puts "Wrote 0x$valueHex to address 0x$addressHex"
+    }} else {{
+        puts "Error: Invalid line format - $line"
+    }}
+}}
+
+# Close the file
+close $file
+        '''
+        f.write(script)
 
 def write_data():
     generate_register_tcl()
+    generate_stack_tcl()
     # Start xsct.bat with pipes for stdin and stdout
     process = subprocess.Popen([r'C:\Xilinx\Vitis\2023.1\bin\xsct.bat'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
     
@@ -148,7 +179,7 @@ def write_data():
     path = path.replace("\\", "/")
     
     # Example: Send multiple commands to xsct
-    commands = ["connect", "targets 9", "dow C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/workspace/TestProject/Debug/TestProject.elf",
+    commands = ["connect", "targets 9", "dow C:/Users/deoch/workspace/TestProject/Debug/TestProject.elf",
                 f"source {path}/write_registers.tcl",
                 f"source {path}/write_stack.tcl"]
     

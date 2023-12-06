@@ -20,4 +20,3 @@ while {[gets $file line] != -1} {
 
 # Close the file
 close $file
-        

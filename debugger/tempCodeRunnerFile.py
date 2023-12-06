@@ -1,136 +1,229 @@
-def read_file():
-    registers = {}
-    with open("registers_to_save.txt") as f:
+import serial
+import os
+import subprocess
+import pathlib
+
+# register groups
+
+registers = { "IFSR32_EL2": " sys 5 ",  "ESR_EL1": " sys 5 ",  "ESR_EL2": " sys 5 ", "ESR_EL3": " sys 5 ", "SCTLR_EL3" : " sys 1 ", 
+             "TCR_EL3" : " sys 2 ", "CONTEXTIDR_EL1" : " sys 13 ", "ELR_EL1" : " sys 4 ", "ELR_EL2" : " sys 4 ", "ELR_EL3" : " sys 4 ",
+             "CPACR_EL1" : " sys 1 ", "ACTLR_EL3" : " sys 1 ", "PMCR_EL0" : " sys 9 ", "PMCNTENSET_EL0" : " sys 9 ", "PMOVSCLR_EL0" : " sys 9 ",
+             "PMUSERENR_EL0" : " sys 9 ", "PMINTENSET_EL1" :" sys 9 ", "PMEVCNTR0_EL0" : " sys 14 ", "PMEVCNTR1_EL0" : " sys 14 ",
+             "PMEVCNTR2_EL0" : " sys 14 ", "PMEVCNTR3_EL0" : " sys 14 ", "PMEVCNTR4_EL0" : " sys 14 ", "PMEVCNTR5_EL0" : " sys 14 ",
+             "PMEVTYPER0_EL0" : " sys 14 ", "PMEVTYPER1_EL0" : " sys 14 ", "PMEVTYPER2_EL0" : " sys 14 ", "PMEVTYPER3_EL0" : " sys 14 ",
+             "PMEVTYPER4_EL0" : " sys 14 ", "PMEVTYPER5_EL0" : " sys 14 ", "PMCCFILTR_EL0" :" sys 14 ", "SCR_EL3" : " sys 1 ",
+             "CPTR_EL3" : " sys 1 ", "MDCR_EL3" : " sys 1 ", "CNTKCTL_EL1" : " sys 14 ", "CNTP_TVAL_EL0" :" sys 14 ",
+             "CNTP_CTL_EL0" : " sys 14 ", "CNTV_TVAL_EL0" : " sys 14 ", "CNTV_CTL_EL0" : " sys 14 ", "CNTHCTL_EL2" : " sys 14 ",
+             "CNTHP_TVAL_EL2" : " sys 14 ", "CNTHP_CTL_EL2" : " sys 14 ", "CNTPS_TVAL_EL1" : " sys 14 ", "CNTPS_CTL_EL1" : " sys 14 ",
+             "GICC_CTLR" : " acpu_gic ", "GICC_PMR" : " acpu_gic ", "GICC_BPR" : " acpu_gic ", "GICC_ABPR" : " acpu_gic ", "GICC_APR0" : " acpu_gic ",
+             "GICC_NSAPR0" : " acpu_gic ", "GICD_CTLR" : " acpu_gic ", "GICD_IGROUPR" : " acpu_gic ", "GICD_ISENABLER" : " acpu_gic ",
+             "GICD_ISPENDR" : " acpu_gic ", "GICD_ISACTIVER" : " acpu_gic ", "GICD_IPRIORITYR" : " acpu_gic ","GICD_ITARGETSR" : " acpu_gic ",
+             "GICD_ICFGR" : " acpu_gic ", "GICD_SPISR" : " acpu_gic ", "GICD_SPENDSGIR" : " acpu_gic ", "FAR_EL3" : " sys 6 ", "VBAR_EL3" : " sys 12 ",
+             "TTBR0_EL3" : " sys 2 ", "MAIR_EL3" : " sys 10 ", "AMAIR_EL3" : " sys 10 ", "PAR_EL1" : " sys 7 ", "TPIDR_EL0" : " sys 13 ", 
+             "TPIDRRO_EL0" : " sys 13 ", "TPIDR_EL1" : " sys 13 ", "TPIDR_EL3" : " sys 13 ", "RVBAR_EL3" : " sys 12 ", "RMR_EL3" : " sys 12 ",
+             "SDER32_EL3": " sys 1 ", "CNTFRQ_EL0" : " sys 14 ", "CNTP_CVAL_EL0" : " sys 14 ", "CNTV_CVAL_EL0" : " sys 14 ",
+             "CNTVOFF_EL2" : " sys 14 ", "CNTHP_CVAL_EL2" : " sys 14 ", "CNTPS_CVAL_EL1" : " sys 14 ", "v" : " vfp ", "r" : " ", "SP" : " "}
+
+read_only = {"FPCR", "FPSR", "MPIDR_EL1", "ISR_EL1", "GICC_RPR", "GICC_HPPIR", "GICC_AHPPIR", "GICD_ITARGETSR0", "GICD_ITARGETSR1", "GICD_ITARGETSR2",
+             "GICD_ITARGETSR3", "GICD_ITARGETSR4", "GICD_ITARGETSR5", "GICD_ITARGETSR6","GICD_ITARGETSR7","GICD_ICFGR0", "GICD_ICFGR1", "GICD_PPISR", 
+             "GICD_SPISR0", "GICD_SPISR1", "GICD_SPISR2", "GICD_SPISR3", "GICD_SPISR4", "RVBAR_EL3", "CNTVCT_EL0"}
+
+def read_serial(ser):
+    received_data = []
+    record = False
+    print("Waiting for data")
+    try:
+        while True:
+            # Read data from the serial port
+            data = ser.readline()
+            if data:
+                try:
+                    decoded_data = data.decode().strip()
+                    if (decoded_data == "END"):
+                        break
+                    if (decoded_data == "START"):
+                        print("Saving Data")
+                        record = True
+                        continue
+                    if (record):
+                        print(decoded_data)
+                        received_data.append(decoded_data)
+                except:
+                    continue
+                
+            # Check for termination condition (e.g., '!')
+            #if '!' in data:
+                #break
+        print("Data saved")
+        return received_data
+
+    except KeyboardInterrupt:
+        pass
+        
+
+def write_output(recieved_data):
+    i = 1
+    with open("stack.txt", 'w') as f:
+        f.write(recieved_data[0])
+        for item in recieved_data[1:]:
+            if (item == ""):
+                continue
+            if (item == "STACK_END"):
+                i += 1
+                break
+            f.write("\n")
+            f.write(item)
+            i += 1
+    
+    with open("registers.txt", 'w') as f:
+        f.write(recieved_data[i])
+        for item in recieved_data[i+1:]:
+            if (item == ""):
+                continue
+            f.write("\n")
+            f.write(item)
+            
+
+def read_data():
+    # Define the serial port and baud rate
+    com = 'COM7'
+    try:
+        ser = serial.Serial(com, baudrate=112500, timeout=1)
+    except:
+        print(f"Can't establish connection on {com}")
+        return
+    
+    # Read Data
+    received_data = read_serial(ser)
+    
+    if received_data is None:
+        return
+    
+    # Write Data
+    write_output(received_data)
+    
+    # Close connection
+    ser.close()
+
+def generate_register_tcl():
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    f = open(os.path.join(__location__, "registers.txt"))
+    with open ("write_registers.tcl", 'w') as g:
         for line in f:
             # Remove leading spaces and newline characters
             line = line.strip()
 
-            #Split the line into words
-            words = line.split()
-            if (len(words) == 2):
-                registers[words[0]] = int(words[1])
-    return registers
-
-def write_32_c_array(list32):
-    with open ("register32.txt", 'w') as f:
-        for register in list32:
-            f.write(f"\"{register}\",\n") 
+            # Split the line into words
+            words = line.split(":")
             
-def write_64_c_array(list64):
-    with open ("register64.txt", 'w') as f:
-        for register in list64:
-            f.write(f"\"{register}\",\n")
-
-def write_GICR_c_array(address32):
-    with open ("registerGICR.txt", 'w') as f:
-        for key in address32:
-            f.write(f"\"{key}\",\n")
-
-def write_32_assembly(list32):
-    with open ("assembly32.txt", 'w') as f:
-        i = 0
-        for register in list32:
-            f.write(f"MRS_REG {register}, x0\n")
-            f.write(f"STR x0, [x1, #{i}]    // Store {register} in the array\n\n")
-            i += 4
-
-def write_64_assembly(list64):
-    with open ("assembly64.txt", 'w') as f:
-        i = 0
-        for register in list64:
-            f.write(f"MRS_REG {register}, x0\n")
-            f.write(f"STR x0, [x1, #{i}]    // Store {register} in the array\n\n")
-            i += 8
-
-def write_GICR_assembly(address32):
-    with open("assemblyGICR.txt", 'w') as f:
-        i = 0
-        for key in address32:
-            f.write(f"LDR x0, ={address32[key]}       // Address for {key} register\nLDR x0, [x0]              // Load value from the address\nSTR x0, [x1, #{i}]          // Store GICC_CTRL value at offset {i}\n\n")
-            i += 4
-
-def write_GICD_multiple(address32_multiple):
-    with open("assemblyGICR_IGROUP.txt", 'w') as f:
-        for key in address32_multiple:
-            lower = int(key[-3])
-            higher = int(key[-1]) + 1
+            # Get register name
+            register = words[0]
             
-            print("Name: ", key)
-            print("Address: ", address32_multiple[key])
-            print("Lower: ", lower)
-            print("Higher: ", higher)
-
-    
-def write_V_assembly():
-    with open("assemblyV.txt", 'w') as f:
-        i = 0
-        j = 1
-        k = 0
-        for n in range(64):
-            f.write(f"MOV x0, v{i}.d[{j}]\nSTR x0, [x1, #{k}]\n\n")
-            k += 8
-            if j == 1:
-                j -= 1
-            else:
-                j += 1
-                i += 1
+            # Skip readonly
+            if register in read_only:
+                continue
+            
+            # Remove numbers except for ELx
+            if len(register) <= 3 or (len(register) > 4 and (register[:6] == "GICD_I" or register[:6] == "GICD_S")):
+                register = ''.join((x for x in register if not x.isdigit()))
                 
-def write_X_assembly():
-    with open("assemblyX.txt", 'w') as f:
-        for i in range(2,31):
-            f.write(f"STR x{i}, [x1, #{8*(i-2)}]\n")
-def main():
-    # read registers
-    registers = read_file()
-    
-    # dictionary for registers that need address
-    address32 = { "GICC_CTLR" : "0xf9020000", "GICC_PMR" : "0xf9020004", "GICC_BPR" : "0xf9020008", 
-               "GICC_RPR" : "0xf9020014", "GICC_HPPIR" : "0xf9020018", "GICC_ABPR" : "0xf902001c",
-               "GICC_AHPPIR" : "0xf9020028", "GICC_APR0" : "0xf90200d0", "GICC_NSAPR0" : "0xf90200e0",
-               "GICD_CTLR" : "0xf9010000", "GICD_PPISR" : "0xf9010d00"}
-    
-    # dictionary for registers that need address that have multiple registers
-    address32_multiple = {"GICD_IGROUPR0-5" : "0xf9010080", "GICD_ISENABLER0-5" : "0xf9010100",
-               "GICD_ISPENDR0-5" : "0xf9010200", "GICD_ISACTIVER0-5" : "0xf9010300", "GICD_IPRIORITYR0-47" : "0xf9010400",
-               "GICD_ITARGETSR0-47" : "0xf9010800", "GICD_ICFGR0-11" : "0xf9010c00",
-               "GICD_SPISR0-4" : "0xf9010d04", "GICD_SPENDSGIR0-3" : "0xf9010f20"}
-    
-    # dictionary for ignore
-    address64 = {"R0-R30" : 0, "SP" : 0, "PC" : 0, "V0-V31" : 0, "CPUACTLR_EL1" : 0, "CPUECTLR_EL1" : 0, "CPUMERRSR_EL1" : 0, "L2MERRSR_EL1" : 0}
-    
-    # store registers in appropriate list
-    list32 = []
-    list64 = []    
-    for register in registers:
-        if register in address32 or register in address64:
-            continue
-        if registers[register] == 32:
-            list32.append(register)
-        if registers[register] == 64:
-            list64.append(register)
-    
-    # write out register names to hold in c char array
-    #write_32_c_array(list32)
-    #write_64_c_array(list64)
-    #write_GICR_c_array(address32)
-    
-    # write out assembly to read registers
-    write_32_assembly(list32)
-    #write_64_assembly(list64)
-    
-    # write out assembly to read GICR registers
-    #write_GICR_assembly(address32)
-    #write_GICD_multiple(address32_multiple)
-    
-    # write out assembly to read V registers
-    #write_V_assembly()
-    
-    # write out assembly to read X registers
-    #write_X_assembly()
-    
-    
-    
+            # Write out TCL script
+            g.write(f"rwr{registers[register]}{words[0].lower()} {words[1]}")
+            g.write("\n")
+
             
+            
+    f.close()
+
+def generate_stack_tcl():
+    # Get Path
+    path = str(pathlib.Path().resolve())
+    path = path.replace("\\", "/")
+    
+    # Write tcl script
+    with open ("write_stack.tcl", 'w') as f:
+        script = f'''# Open the file for reading
+set file [open "{path}/stack.txt" r]
+
+# Read each line from the file
+while {{[gets $file line] != -1}} {{
+    # Use regular expressions to extract address and value
+    if {{[regexp {{Address:0x([0-9A-Fa-f]+),Value:0x([0-9A-Fa-f]+)}} $line - addressHex valueHex]}} {{
+        # Convert hex strings to integers
+        set addressInt [scan $addressHex %x]
+        set valueInt [scan $valueHex %x]
+
+        mwr $addressInt $valueInt
+
+        # Print the values in hex
+        # puts "Wrote 0x$valueHex to address 0x$addressHex"
+    }} else {{
+        puts "Error: Invalid line format - $line"
+    }}
+}}
+
+# Close the file
+close $file
+        '''
+        f.write(script)
+
+def write_data():
+    generate_register_tcl()
+    generate_stack_tcl()
+    # Start xsct.bat with pipes for stdin and stdout
+    process = subprocess.Popen([r'C:\Xilinx\Vitis\2023.1\bin\xsct.bat'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+    
+    # Get Path
+    path = str(pathlib.Path().resolve())
+    path = path.replace("\\", "/")
+    
+    # Example: Send multiple commands to xsct
+    commands = ["connect", "targets 9", "dow C:/Users/deoch/workspace/TestProject/Debug/TestProject.elf",
+                f"source {path}/write_registers.tcl",
+                f"source {path}/write_stack.tcl"]
+    
+    for command in commands:
+        print(command)
+        process.stdin.write(command + "\n")
+        process.stdin.flush()  # Ensure data is written to stdin
+    
+    # Close stdin to signal that no more input will be provided
+    process.stdin.close()
+
+    # Read output from the subprocess
+    output, error = process.communicate()
+
+    # Print the output and error
+    print("Output:", output)
+    print("Error:", error)
+
+    
+    
+def display_menu():
+    print("1. Read data from serial")
+    print("2. Write data back to board")
+    print("3. Exit")
+
+def process_menu(option):
+    match option:
+        case "1":
+            read_data()
+        case "2":
+            write_data()
+        case "3":
+            return False
+        case _:
+            return True
+    return True
+
+def main():
+    # Start Main Menu
+    run = True
+    while(run):
+        display_menu()
+        option = input()
+        run = process_menu(option)
     
 if __name__ == "__main__":
     main()

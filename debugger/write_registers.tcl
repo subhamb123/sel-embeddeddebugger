@@ -1,11 +1,10 @@
-
 rwr r0 0x0000000000000000
 rwr r1 0x000000000000000A
 rwr r2 0x0000000000006802
 rwr r3 0x00000000FF01002C
-rwr r4 0x0000000000000030
-rwr r5 0x0000000000000000
-rwr r6 0x2F2F2F2F2F2F2F2F
+rwr r4 0x0000000000000000
+rwr r5 0x0000000000000080
+rwr r6 0x2F2F2F2F2F2F2EFF
 rwr r7 0x7F7F7F7F7F7F7F7F
 rwr r8 0x00000000FFFFFF80
 rwr r9 0x00000000FFFFFFC8
@@ -32,7 +31,7 @@ rwr r29 0x000000000000FF90
 rwr r30 0x0000000000001420
 rwr sys 5 ifsr32_el2 0x00000000
 rwr sys 5 esr_el1 0x00000000
-rwr sys 5 esr_el2 0x00000000
+rwr sys 5 esr_el2 0x02EC7626
 rwr sys 5 esr_el3 0x96000045
 rwr sys 1 sctlr_el3 0x00C0181D
 rwr sys 2 tcr_el3 0x80823518
@@ -61,29 +60,29 @@ rwr sys 1 scr_el3 0x00000C0E
 rwr sys 1 cptr_el3 0x00000000
 rwr sys 1 mdcr_el3 0x00000000
 rwr sys 14 cntkctl_el1 0x00000000
-rwr sys 14 cntp_tval_el0 0x5D79D5E1
+rwr sys 14 cntp_tval_el0 0x31A12D4B
 rwr sys 14 cntp_ctl_el0 0x00000000
-rwr sys 14 cntv_tval_el0 0x5C0A35DD
-rwr sys 14 cntv_ctl_el0 0x00000002
+rwr sys 14 cntv_tval_el0 0x2F118D57
+rwr sys 14 cntv_ctl_el0 0x00000000
 rwr sys 14 cnthctl_el2 0x00000003
-rwr sys 14 cnthp_tval_el2 0x5501BCD4
-rwr sys 14 cnthp_ctl_el2 0x00000000
-rwr sys 14 cntps_tval_el1 0x54F5B1F2
+rwr sys 14 cnthp_tval_el2 0x2909143E
+rwr sys 14 cnthp_ctl_el2 0x00000002
+rwr sys 14 cntps_tval_el1 0xE8FCFD52
 rwr sys 14 cntps_ctl_el1 0x00000000
-rwr acpu_gic gicc_ctlr 0x000001EB
-rwr acpu_gic gicc_pmr 0x000000C0
+rwr acpu_gic gicc_ctlr 0x00000000
+rwr acpu_gic gicc_pmr 0x00000000
 rwr acpu_gic gicc_bpr 0x00000002
 rwr acpu_gic gicc_abpr 0x00000003
 rwr acpu_gic gicc_apr0 0x00000000
 rwr acpu_gic gicc_nsapr0 0x00000000
-rwr acpu_gic gicd_ctlr 0x00000003
-rwr acpu_gic gicd_igroupr0 0xDE0000FF
-rwr acpu_gic gicd_igroupr1 0xFFFFFFFF
-rwr acpu_gic gicd_igroupr2 0xFFFFFFFF
-rwr acpu_gic gicd_igroupr3 0xFFFFFFFF
-rwr acpu_gic gicd_igroupr4 0xFFFFFFFF
-rwr acpu_gic gicd_igroupr5 0xFFFFFFFF
-rwr acpu_gic gicd_isenabler0 0x2000FFFF
+rwr acpu_gic gicd_ctlr 0x00000000
+rwr acpu_gic gicd_igroupr0 0x00000000
+rwr acpu_gic gicd_igroupr1 0x00000000
+rwr acpu_gic gicd_igroupr2 0x00000000
+rwr acpu_gic gicd_igroupr3 0x00000000
+rwr acpu_gic gicd_igroupr4 0x00000000
+rwr acpu_gic gicd_igroupr5 0x00000000
+rwr acpu_gic gicd_isenabler0 0x0000FFFF
 rwr acpu_gic gicd_isenabler1 0x00000000
 rwr acpu_gic gicd_isenabler2 0x00000000
 rwr acpu_gic gicd_isenabler3 0x00000000
@@ -101,54 +100,54 @@ rwr acpu_gic gicd_isactiver2 0x00000000
 rwr acpu_gic gicd_isactiver3 0x00000000
 rwr acpu_gic gicd_isactiver4 0x00000000
 rwr acpu_gic gicd_isactiver5 0x00000000
-rwr acpu_gic gicd_ipriorityr0 0x80808080
-rwr acpu_gic gicd_ipriorityr1 0x80808080
+rwr acpu_gic gicd_ipriorityr0 0x00000000
+rwr acpu_gic gicd_ipriorityr1 0x00000000
 rwr acpu_gic gicd_ipriorityr2 0x00000000
 rwr acpu_gic gicd_ipriorityr3 0x00000000
 rwr acpu_gic gicd_ipriorityr4 0x00000000
 rwr acpu_gic gicd_ipriorityr5 0x00000000
-rwr acpu_gic gicd_ipriorityr6 0x80808000
-rwr acpu_gic gicd_ipriorityr7 0x80800080
-rwr acpu_gic gicd_ipriorityr8 0x80808080
-rwr acpu_gic gicd_ipriorityr9 0x80808080
-rwr acpu_gic gicd_ipriorityr10 0x80808080
-rwr acpu_gic gicd_ipriorityr11 0x80808080
-rwr acpu_gic gicd_ipriorityr12 0x80808080
-rwr acpu_gic gicd_ipriorityr13 0x80808080
-rwr acpu_gic gicd_ipriorityr14 0x80808080
-rwr acpu_gic gicd_ipriorityr15 0x80808080
-rwr acpu_gic gicd_ipriorityr16 0x80808080
-rwr acpu_gic gicd_ipriorityr17 0x80808080
-rwr acpu_gic gicd_ipriorityr18 0x80808080
-rwr acpu_gic gicd_ipriorityr19 0x80808080
-rwr acpu_gic gicd_ipriorityr20 0x80808080
-rwr acpu_gic gicd_ipriorityr21 0x80808080
-rwr acpu_gic gicd_ipriorityr22 0x80808080
-rwr acpu_gic gicd_ipriorityr23 0x80808080
-rwr acpu_gic gicd_ipriorityr24 0x80808080
-rwr acpu_gic gicd_ipriorityr25 0x80808080
-rwr acpu_gic gicd_ipriorityr26 0x80808080
-rwr acpu_gic gicd_ipriorityr27 0x80808080
-rwr acpu_gic gicd_ipriorityr28 0x80808080
-rwr acpu_gic gicd_ipriorityr29 0x80808080
-rwr acpu_gic gicd_ipriorityr30 0x80808080
-rwr acpu_gic gicd_ipriorityr31 0x80808080
-rwr acpu_gic gicd_ipriorityr32 0x80808080
-rwr acpu_gic gicd_ipriorityr33 0x80808080
-rwr acpu_gic gicd_ipriorityr34 0x80808080
-rwr acpu_gic gicd_ipriorityr35 0x80808080
-rwr acpu_gic gicd_ipriorityr36 0x80808080
-rwr acpu_gic gicd_ipriorityr37 0x80808080
-rwr acpu_gic gicd_ipriorityr38 0x80808080
-rwr acpu_gic gicd_ipriorityr39 0x80808080
-rwr acpu_gic gicd_ipriorityr40 0x80808080
-rwr acpu_gic gicd_ipriorityr41 0x80808080
-rwr acpu_gic gicd_ipriorityr42 0x80808080
-rwr acpu_gic gicd_ipriorityr43 0x80808080
-rwr acpu_gic gicd_ipriorityr44 0x80808080
-rwr acpu_gic gicd_ipriorityr45 0x80808080
-rwr acpu_gic gicd_ipriorityr46 0x80808080
-rwr acpu_gic gicd_ipriorityr47 0x80808080
+rwr acpu_gic gicd_ipriorityr6 0x00000000
+rwr acpu_gic gicd_ipriorityr7 0x00000000
+rwr acpu_gic gicd_ipriorityr8 0x00000000
+rwr acpu_gic gicd_ipriorityr9 0x00000000
+rwr acpu_gic gicd_ipriorityr10 0x00000000
+rwr acpu_gic gicd_ipriorityr11 0x00000000
+rwr acpu_gic gicd_ipriorityr12 0x00000000
+rwr acpu_gic gicd_ipriorityr13 0x00000000
+rwr acpu_gic gicd_ipriorityr14 0x00000000
+rwr acpu_gic gicd_ipriorityr15 0x00000000
+rwr acpu_gic gicd_ipriorityr16 0x00000000
+rwr acpu_gic gicd_ipriorityr17 0x00000000
+rwr acpu_gic gicd_ipriorityr18 0x00000000
+rwr acpu_gic gicd_ipriorityr19 0x00000000
+rwr acpu_gic gicd_ipriorityr20 0x00000000
+rwr acpu_gic gicd_ipriorityr21 0x00000000
+rwr acpu_gic gicd_ipriorityr22 0x00000000
+rwr acpu_gic gicd_ipriorityr23 0x00000000
+rwr acpu_gic gicd_ipriorityr24 0x00000000
+rwr acpu_gic gicd_ipriorityr25 0x00000000
+rwr acpu_gic gicd_ipriorityr26 0x00000000
+rwr acpu_gic gicd_ipriorityr27 0x00000000
+rwr acpu_gic gicd_ipriorityr28 0x00000000
+rwr acpu_gic gicd_ipriorityr29 0x00000000
+rwr acpu_gic gicd_ipriorityr30 0x00000000
+rwr acpu_gic gicd_ipriorityr31 0x00000000
+rwr acpu_gic gicd_ipriorityr32 0x00000000
+rwr acpu_gic gicd_ipriorityr33 0x00000000
+rwr acpu_gic gicd_ipriorityr34 0x00000000
+rwr acpu_gic gicd_ipriorityr35 0x00000000
+rwr acpu_gic gicd_ipriorityr36 0x00000000
+rwr acpu_gic gicd_ipriorityr37 0x00000000
+rwr acpu_gic gicd_ipriorityr38 0x00000000
+rwr acpu_gic gicd_ipriorityr39 0x00000000
+rwr acpu_gic gicd_ipriorityr40 0x00000000
+rwr acpu_gic gicd_ipriorityr41 0x00000000
+rwr acpu_gic gicd_ipriorityr42 0x00000000
+rwr acpu_gic gicd_ipriorityr43 0x00000000
+rwr acpu_gic gicd_ipriorityr44 0x00000000
+rwr acpu_gic gicd_ipriorityr45 0x00000000
+rwr acpu_gic gicd_ipriorityr46 0x00000000
+rwr acpu_gic gicd_ipriorityr47 0x00000000
 rwr acpu_gic gicd_itargetsr8 0x00000000
 rwr acpu_gic gicd_itargetsr9 0x00000000
 rwr acpu_gic gicd_itargetsr10 0x00000000
@@ -216,44 +215,44 @@ rwr sys 13 tpidr_el3 0x00000000FFFF8500
 rwr sys 12 rmr_el3 0x0000000000000001
 rwr sys 1 sder32_el3 0x0000000000000000
 rwr sys 14 cntfrq_el0 0x0000000005F5DD19
-rwr sys 14 cntp_cval_el0 0x012308A608843112
-rwr sys 14 cntv_cval_el0 0x3F80E000071480E8
-rwr sys 14 cntvoff_el2 0x8100002000001028
+rwr sys 14 cntp_cval_el0 0x01230AA608A43112
+rwr sys 14 cntv_cval_el0 0x3F80E000061480F8
+rwr sys 14 cntvoff_el2 0x8000002000001028
 rwr sys 14 cnthp_cval_el2 0x24004501000C1809
-rwr sys 14 cntps_cval_el1 0x0000000000000D28
+rwr sys 14 cntps_cval_el1 0x82A20006C000011F
 rwr sys 4 elr_el1 0x0000001400000000
-rwr sys 4 elr_el2 0x0880390406088126
+rwr sys 4 elr_el2 0x09C0391406088126
 rwr sys 4 elr_el3 0x0000000000000D28
 rwr vfp v0  0x3030303030303030
-rwr vfp v1  0x0000000000003508
+rwr vfp v1  0x0000000000003510
 rwr vfp v2  0x0000000000000000
-rwr vfp v3  0xA01740A505C01D68
-rwr vfp v4  0x85284EC044804482
-rwr vfp v5  0xD140903806885190
-rwr vfp v6  0x00461426B31209E4
-rwr vfp v7  0xA58F907A99429824
-rwr vfp v8  0x10000C1D13440948
-rwr vfp v9  0x4406492012348C40
-rwr vfp v10  0x88449022810111C2
-rwr vfp v11  0x2A1041014051004A
-rwr vfp v12  0x6540043288200502
-rwr vfp v13  0x2864BB5C24008F69
-rwr vfp v14  0x11190B00D6BA670B
-rwr vfp v15  0x835661E100001A44
+rwr vfp v3  0xA097C0A525903D68
+rwr vfp v4  0x85484EC044844482
+rwr vfp v5  0xD1409038069851B0
+rwr vfp v6  0x00460424B31209E0
+rwr vfp v7  0xA784907AB94A9824
+rwr vfp v8  0x10000C1D13442548
+rwr vfp v9  0x4402402012368840
+rwr vfp v10  0x884490E281011180
+rwr vfp v11  0x2A1041015050004A
+rwr vfp v12  0x65400632A8280502
+rwr vfp v13  0x2864AA5820008F79
+rwr vfp v14  0x11190902D6BA670B
+rwr vfp v15  0x824C61E008001A44
 rwr vfp v16  0xFFFFFF80FFFFFFC8
-rwr vfp v17  0x1D97430F62002744
-rwr vfp v18  0xD5640E15B80058DA
-rwr vfp v19  0x083C480A021A0980
-rwr vfp v20  0x119693F9C4488880
-rwr vfp v21  0x89911A3A00010048
-rwr vfp v22  0x000016C4640C0732
-rwr vfp v23  0x0945062A09089065
-rwr vfp v24  0x818A42C80886E090
-rwr vfp v25  0xC2C1225143242078
-rwr vfp v26  0x22A18142410012A4
-rwr vfp v27  0x721483280A4B04A9
-rwr vfp v28  0x33DAE0C04208B3B1
-rwr vfp v29  0x10400194642440C8
-rwr vfp v30  0x0150A30CA6128876
-rwr vfp v31  0x4E09502916240160
+rwr vfp v17  0x1595070F622007D5
+rwr vfp v18  0xD5640E11B820585A
+rwr vfp v19  0x0838480A021A0980
+rwr vfp v20  0x119283B8C5488880
+rwr vfp v21  0x9191129A08018148
+rwr vfp v22  0x000016C4640C0636
+rwr vfp v23  0x084507220100F165
+rwr vfp v24  0x812A42C80886E090
+rwr vfp v25  0x22C1235143042078
+rwr vfp v26  0x32A98942000012A4
+rwr vfp v27  0x323483280A4B0429
+rwr vfp v28  0x32DA64C04208B3B1
+rwr vfp v29  0x024101A4663440C8
+rwr vfp v30  0x0150E30C86128474
+rwr vfp v31  0x4E09103906240560
 rwr sp 0x0000000000010080
