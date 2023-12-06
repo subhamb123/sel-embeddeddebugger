@@ -42,14 +42,14 @@ Currently: None
 7.  Run main.py, select desired menu option.
 
 ## Functionality
-Read stack data, register data from the SOM.
-Decode this stack data for its program counters and function names.
-Load stack data and register data back onto board
+- Read stack data, register data from the SOM.
+- Decode this stack data for its program counters and function names.
+- Load stack data and register data back onto board
 
 ## Known Problems
-Currently, it is only able to load a single CPU core
-Automated testing needs to be implemented
-Some scripts still rely on hardcoded directories
+- Currently, it is only able to load a single CPU core
+- Automated testing needs to be implemented
+- Some scripts still rely on hardcoded directories
 
 ## Contributing
 1. Fork it!
