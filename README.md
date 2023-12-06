@@ -59,6 +59,7 @@ Currently: None
 5. Submit a pull request :D
 
 ## Additional Documentation
-- Project Description - https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/documents/SEL-EmbeddedDebugger-Project-Description.pdf
-- Project Requirements - https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/documents/SEL-EmbeddedDebugger-Project-Requirements.pdf
-- Project Solution Approach - https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/documents/SEL-EmbeddedDebugger-Project-Solution-Approach.pdf
+- [Project Description](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/documents/SEL-EmbeddedDebugger-Project-Description.pdf)
+- [Project Requirements](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/documents/SEL-EmbeddedDebugger-Project-Requirements.pdf)
+- [Project Solution Approach](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/documents/SEL-EmbeddedDebugger-Project-Solution-Approach.pdf)
+- [Project Testing and Acceptance Criteria](https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/blob/main/documents/SELEmbeddedDebugger-TestingandAcceptance.pdf)
