@@ -3,6 +3,8 @@
 set STACK_BASE_ADDRESS 0x0000c0c0
 set STACK_SIZE 0xC00
 
+# set STACK_SIZE 0xC00
+
 # Read stack memory from the board
 proc readStackMemory {baseAddress size} {
     # Use the mrd command to read memory in XSCT

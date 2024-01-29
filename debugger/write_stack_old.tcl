@@ -1,5 +1,5 @@
 # Open the file for reading
-set file [open "C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/debugger/stack.txt" r]
+set file [open "C:/Users/deoch/Documents/sel-embeddeddebugger/debugger/stack.txt" r]
 
 # Read each line from the file
 while {[gets $file line] != -1} {
@@ -20,3 +20,4 @@ while {[gets $file line] != -1} {
 
 # Close the file
 close $file
+        

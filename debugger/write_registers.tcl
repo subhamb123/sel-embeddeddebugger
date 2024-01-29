@@ -60,14 +60,14 @@ rwr sys 1 scr_el3 0x00000C0E
 rwr sys 1 cptr_el3 0x00000000
 rwr sys 1 mdcr_el3 0x00000000
 rwr sys 14 cntkctl_el1 0x00000000
-rwr sys 14 cntp_tval_el0 0xDB2B804D
+rwr sys 14 cntp_tval_el0 0x2C1146DA
 rwr sys 14 cntp_ctl_el0 0x00000000
-rwr sys 14 cntv_tval_el0 0xD89BE05A
+rwr sys 14 cntv_tval_el0 0x2981A6E6
 rwr sys 14 cntv_ctl_el0 0x00000000
 rwr sys 14 cnthctl_el2 0x00000003
-rwr sys 14 cnthp_tval_el2 0xD2936740
+rwr sys 14 cnthp_tval_el2 0x23792DCD
 rwr sys 14 cnthp_ctl_el2 0x00000002
-rwr sys 14 cntps_tval_el1 0x92875055
+rwr sys 14 cntps_tval_el1 0xE36D16E1
 rwr sys 14 cntps_ctl_el1 0x00000000
 rwr acpu_gic gicc_ctlr 0x000001EB
 rwr acpu_gic gicc_pmr 0x000000C0

@@ -136,13 +136,13 @@ def generate_register_tcl():
             
     f.close()
 
-def generate_stack_tcl():
+def generate_stack_tcl_old():
     # Get Path
     path = str(pathlib.Path().resolve())
     path = path.replace("\\", "/")
     
     # Write tcl script
-    with open ("write_stack.tcl", 'w') as f:
+    with open ("write_stack_old.tcl", 'w') as f:
         script = f'''# Open the file for reading
 set file [open "{path}/stack.txt" r]
 
@@ -168,6 +168,31 @@ close $file
         '''
         f.write(script)
 
+
+def generate_stack_tcl():
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    f = open(os.path.join(__location__, "stack.txt"))
+    values = "{"
+    with open ("write_stack.tcl", 'w') as g:
+        for line in f:
+            # Remove leading spaces and newline characters
+            line = line.strip()
+
+            # Split the line into words
+            words = line.split(":")
+            
+            # Get register name
+            value = words[-1]
+
+            values += " " + value
+    
+        values += "}"
+        g.write("mwr 0x0000c0c0 ")
+        g.write(values)
+
+    f.close()
+
 def write_data():
     generate_register_tcl()
     generate_stack_tcl()
@@ -179,7 +204,7 @@ def write_data():
     path = path.replace("\\", "/")
     
     # Example: Send multiple commands to xsct
-    commands = ["connect", "targets 9", "dow C:/Users/deoch/workspace/TestProject/Debug/TestProject.elf",
+    commands = ["connect", "targets 9", "dow C:/Users/deoch/workspace/Project/Debug/Project.elf",
                 f"source {path}/write_registers.tcl",
                 f"source {path}/write_stack.tcl"]
     
