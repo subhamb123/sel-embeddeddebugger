@@ -136,45 +136,43 @@ def generate_register_tcl():
             
     f.close()
 
-def generate_stack_tcl_old():
+def generate_stack_tcl():
     # Get Path
     path = str(pathlib.Path().resolve())
     path = path.replace("\\", "/")
     
     # Write tcl script
-    with open ("write_stack_old.tcl", 'w') as f:
+    with open ("write_stack.tcl", 'w') as f:
         script = f'''# Open the file for reading
-set file [open "{path}/stack.txt" r]
+set file [open "C:/Users/deoch/Documents/sel-embeddeddebugger/debugger/stack.txt" r]
 
+# Create List
+
+set values {{}}
 # Read each line from the file
 while {{[gets $file line] != -1}} {{
     # Use regular expressions to extract address and value
-    if {{[regexp {{Address:0x([0-9A-Fa-f]+),Value:0x([0-9A-Fa-f]+)}} $line - addressHex valueHex]}} {{
+    if {{[regexp {{Address:0x[0-9A-Fa-f]+,Value:0x([0-9A-Fa-f]+)}} $line match valueHex]}} {{
         # Convert hex strings to integers
-        set addressInt [scan $addressHex %x]
         set valueInt [scan $valueHex %x]
+        lappend values $valueInt
 
-        mwr $addressInt $valueInt
-
-        # Print the values in hex
-        # puts "Wrote 0x$valueHex to address 0x$addressHex"
     }} else {{
         puts "Error: Invalid line format - $line"
     }}
 }}
 
-# Close the file
-close $file
+mwr 0x0000c0c0 $values
         '''
         f.write(script)
 
 
-def generate_stack_tcl():
+def generate_stack_tcl_one_command():
     __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
     f = open(os.path.join(__location__, "stack.txt"))
     values = "{"
-    with open ("write_stack.tcl", 'w') as g:
+    with open ("write_stack_one_command.tcl", 'w') as g:
         for line in f:
             # Remove leading spaces and newline characters
             line = line.strip()
@@ -196,6 +194,7 @@ def generate_stack_tcl():
 def write_data():
     generate_register_tcl()
     generate_stack_tcl()
+    generate_stack_tcl_one_command()
     # Start xsct.bat with pipes for stdin and stdout
     process = subprocess.Popen([r'C:\Xilinx\Vitis\2023.1\bin\xsct.bat'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
     
