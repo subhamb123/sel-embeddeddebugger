@@ -140,11 +140,12 @@ def generate_stack_tcl():
     # Get Path
     path = str(pathlib.Path().resolve())
     path = path.replace("\\", "/")
+    path += "/stack.txt"
     
     # Write tcl script
     with open ("write_stack.tcl", 'w') as f:
         script = f'''# Open the file for reading
-set file [open "C:/Users/deoch/Documents/sel-embeddeddebugger/debugger/stack.txt" r]
+set file [open "{path}" r]
 
 # Create List
 
@@ -194,7 +195,7 @@ def generate_stack_tcl_one_command():
 def write_data():
     generate_register_tcl()
     generate_stack_tcl()
-    generate_stack_tcl_one_command()
+    #generate_stack_tcl_one_command()
     # Start xsct.bat with pipes for stdin and stdout
     process = subprocess.Popen([r'C:\Xilinx\Vitis\2023.1\bin\xsct.bat'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
     
