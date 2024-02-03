@@ -49,6 +49,18 @@ def write_GICR_assembly(address32):
             f.write(f"LDR x0, ={address32[key]}       // Address for {key} register\nLDR x0, [x0]              // Load value from the address\nSTR x0, [x1, #{i}]          // Store GICC_CTRL value at offset {i}\n\n")
             i += 4
 
+def write_GICD_multiple(address32_multiple):
+    with open("assemblyGICR_IGROUP.txt", 'w') as f:
+        for key in address32_multiple:
+            lower = int(key[-3])
+            higher = int(key[-1]) + 1
+            
+            print("Name: ", key)
+            print("Address: ", address32_multiple[key])
+            print("Lower: ", lower)
+            print("Higher: ", higher)
+
+    
 def write_V_assembly():
     with open("assemblyV.txt", 'w') as f:
         i = 0
@@ -72,13 +84,16 @@ def main():
     registers = read_file()
     
     # dictionary for registers that need address
-    address32 = { "GICC_CTRL" : "0xf9020000", "GICC_PMR" : "0xf9020004", "GICC_BPR" : "0xf9020008", 
+    address32 = { "GICC_CTLR" : "0xf9020000", "GICC_PMR" : "0xf9020004", "GICC_BPR" : "0xf9020008", 
                "GICC_RPR" : "0xf9020014", "GICC_HPPIR" : "0xf9020018", "GICC_ABPR" : "0xf902001c",
                "GICC_AHPPIR" : "0xf9020028", "GICC_APR0" : "0xf90200d0", "GICC_NSAPR0" : "0xf90200e0",
-               "GICD_CTLR" : "0xf9010000", "GICD_IGROUPR0-5" : "0xf9010094", "GICD_ISENABLER0-5" : "0xf9010114",
-               "GICD_ISPENDR0-5" : "0xf9010214", "GICD_ISACTIVER0-5" : "0xf9010314", "GICD_IPRIORITYR0-47" : "0xf90104bc",
-               "GICD_ITARGETSR0-47" : "0xf90108bc", "GICD_ICFGR0-11" : "0xf9010c2c", "GICD_PPISR" : "0xf9010d00",
-               "GICD_SPISR0-4" : "0xf9010d14", "GICD_SPENDSGIR0-3" : "0xf9010f2c"}
+               "GICD_CTLR" : "0xf9010000", "GICD_PPISR" : "0xf9010d00"}
+    
+    # dictionary for registers that need address that have multiple registers
+    address32_multiple = {"GICD_IGROUPR0-5" : "0xf9010080", "GICD_ISENABLER0-5" : "0xf9010100",
+               "GICD_ISPENDR0-5" : "0xf9010200", "GICD_ISACTIVER0-5" : "0xf9010300", "GICD_IPRIORITYR0-47" : "0xf9010400",
+               "GICD_ITARGETSR0-47" : "0xf9010800", "GICD_ICFGR0-11" : "0xf9010c00",
+               "GICD_SPISR0-4" : "0xf9010d04", "GICD_SPENDSGIR0-3" : "0xf9010f20"}
     
     # dictionary for ignore
     address64 = {"R0-R30" : 0, "SP" : 0, "PC" : 0, "V0-V31" : 0, "CPUACTLR_EL1" : 0, "CPUECTLR_EL1" : 0, "CPUMERRSR_EL1" : 0, "L2MERRSR_EL1" : 0}
@@ -95,22 +110,23 @@ def main():
             list64.append(register)
     
     # write out register names to hold in c char array
-    write_32_c_array(list32)
-    write_64_c_array(list64)
-    write_GICR_c_array(address32)
+    #write_32_c_array(list32)
+    #write_64_c_array(list64)
+    #write_GICR_c_array(address32)
     
     # write out assembly to read registers
     write_32_assembly(list32)
-    write_64_assembly(list64)
+    #write_64_assembly(list64)
     
     # write out assembly to read GICR registers
-    write_GICR_assembly(address32)
+    #write_GICR_assembly(address32)
+    #write_GICD_multiple(address32_multiple)
     
     # write out assembly to read V registers
-    write_V_assembly()
+    #write_V_assembly()
     
     # write out assembly to read X registers
-    write_X_assembly()
+    #write_X_assembly()
     
     
     

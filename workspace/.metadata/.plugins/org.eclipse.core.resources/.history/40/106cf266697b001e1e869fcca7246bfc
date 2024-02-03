@@ -1,9 +1,0 @@
-.global get_SPregister_value
-
-.macro MRS_REG reg_name, dest
-    MRS \dest, \reg_name
-.endm
-
-get_vbar_el3_register_value:
-	MRS_REG VBAR_EL3, x0
-	RET

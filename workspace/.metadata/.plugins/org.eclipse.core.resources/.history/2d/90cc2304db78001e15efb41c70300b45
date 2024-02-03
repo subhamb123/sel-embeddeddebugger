@@ -1,4 +1,0 @@
-.global get_value
-get_value:
-    MOV X0, v0          // Set X0 to 0
-    RET                  // Return from the function

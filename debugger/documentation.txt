@@ -1,0 +1,21 @@
+read_serial.py
+This Python script reads in the from the serial port and write out the stack and register contents to their respective txt file.
+
+read_serial()
+This function reads in the data from the serial port.
+It determines when to save the data.
+Data is saved as a string in a list.
+It returns the saved data.
+
+write_output()
+This function writes out the data to txt files.
+It takes in a list of strings.
+It writes out the stack contents first to "stack.txt".
+Then it writes out the register contents to "registers.txt"
+
+main()
+It opens a connection to the serial port.
+The data is saved using read_serial.
+The data is written out using write_output()
+It closes the connection to the serial port.
+

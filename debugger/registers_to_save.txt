@@ -21,6 +21,8 @@ Register			Size (bits)
 
 MPIDR_EL1 			32
 IFSR32_EL2 			32
+ESR_EL1 			32
+ESR_EL2 			32
 ESR_EL3 			32
 FAR_EL3 			64
 VBAR_EL3 			64

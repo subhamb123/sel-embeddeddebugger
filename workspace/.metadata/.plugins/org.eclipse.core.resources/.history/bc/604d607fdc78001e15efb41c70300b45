@@ -1,4 +1,0 @@
-.global get_value
-get_value:
-	LDR X0, v0
-	RET

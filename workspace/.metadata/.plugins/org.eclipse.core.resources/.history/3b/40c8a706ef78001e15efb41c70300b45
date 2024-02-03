@@ -1,4 +1,0 @@
-.global get_value
-get_value:
-    MOV x0, p0.d[1]
-    RET

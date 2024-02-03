@@ -1,5 +1,0 @@
-.global get_value
-get_value:
-    MOV X0, #0          // Set X0 to 0
-    ADD X0, X0, SP       // Add the value of SP to X0
-    RET                  // Return from the function

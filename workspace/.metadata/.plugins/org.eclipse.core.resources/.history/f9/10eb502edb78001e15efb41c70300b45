@@ -1,4 +1,0 @@
-.global get_value
-get_value:
-    VMOV x0, v0
-	RET
