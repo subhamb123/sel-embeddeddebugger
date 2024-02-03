@@ -1,6 +1,6 @@
 def read_file():
     registers = {}
-    with open("registers_to_save.txt") as f:
+    with open("../registers_to_save.txt") as f:
         for line in f:
             # Remove leading spaces and newline characters
             line = line.strip()
