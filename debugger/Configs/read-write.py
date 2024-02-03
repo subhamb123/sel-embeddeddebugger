@@ -4,23 +4,7 @@ import subprocess
 
 # register groups
 
-registers = { "IFSR32_EL2": " sys 5 ", "ESR_EL3": " sys 5 ", "SCTLR_EL3" : " sys 1 ", "TCR_EL3" : " sys 2 ", "CONTEXTIDR_EL1" : " sys 13 ",
-             "CPACR_EL1" : " sys 1 ", "ACTLR_EL3" : " sys 1 ", "PMCR_EL0" : " sys 9 ", "PMCNTENSET_EL0" : " sys 9 ", "PMOVSCLR_EL0" : " sys 9 ",
-             "PMUSERENR_EL0" : " sys 9 ", "PMINTENSET_EL1" :" sys 9 ", "PMEVCNTR0_EL0" : " sys 14 ", "PMEVCNTR1_EL0" : " sys 14 ",
-             "PMEVCNTR2_EL0" : " sys 14 ", "PMEVCNTR3_EL0" : " sys 14 ", "PMEVCNTR4_EL0" : " sys 14 ", "PMEVCNTR5_EL0" : " sys 14 ",
-             "PMEVTYPER0_EL0" : " sys 14 ", "PMEVTYPER1_EL0" : " sys 14 ", "PMEVTYPER2_EL0" : " sys 14 ", "PMEVTYPER3_EL0" : " sys 14 ",
-             "PMEVTYPER4_EL0" : " sys 14 ", "PMEVTYPER5_EL0" : " sys 14 ", "PMCCFILTR_EL0" :" sys 14 ", "SCR_EL3" : " sys 1 ",
-             "CPTR_EL3" : " sys 1 ", "MDCR_EL3" : " sys 1 ", "CNTKCTL_EL1" : " sys 14 ", "CNTP_TVAL_EL0" :" sys 14 ",
-             "CNTP_CTL_EL0" : " sys 14 ", "CNTV_TVAL_EL0" : " sys 14 ", "CNTV_CTL_EL0" : " sys 14 ", "CNTHCTL_EL2" : " sys 14 ",
-             "CNTHP_TVAL_EL2" : " sys 14 ", "CNTHP_CTL_EL2" : " sys 14 ", "CNTPS_TVAL_EL1" : " sys 14 ", "CNTPS_CTL_EL1" : " sys 14 ",
-             "GICC_CTLR" : " acpu_gic ", "GICC_PMR" : " acpu_gic ", "GICC_BPR" : " acpu_gic ", "GICC_ABPR" : " acpu_gic ", "GICC_APR0" : " acpu_gic ",
-             "GICC_NSAPR0" : " acpu_gic ", "GICD_CTLR" : " acpu_gic ", "GICD_IGROUPR" : " acpu_gic ", "GICD_ISENABLER" : " acpu_gic ",
-             "GICD_ISPENDR" : " acpu_gic ", "GICD_ISACTIVER" : " acpu_gic ", "GICD_IPRIORITYR" : " acpu_gic ","GICD_ITARGETSR" : " acpu_gic ",
-             "GICD_ICFGR" : " acpu_gic ", "GICD_SPISR" : " acpu_gic ", "GICD_SPENDSGIR" : " acpu_gic ", "FAR_EL3" : " sys 6 ", "VBAR_EL3" : " sys 12 ",
-             "TTBR0_EL3" : " sys 2 ", "MAIR_EL3" : " sys 10 ", "AMAIR_EL3" : " sys 10 ", "PAR_EL1" : " sys 7 ", "TPIDR_EL0" : " sys 13 ", 
-             "TPIDRRO_EL0" : " sys 13 ", "TPIDR_EL1" : " sys 13 ", "TPIDR_EL3" : " sys 13 ", "RVBAR_EL3" : " sys 12 ", "RMR_EL3" : " sys 12 ",
-             "SDER32_EL3": " sys 1 ", "CNTFRQ_EL0" : " sys 14 ", "CNTP_CVAL_EL0" : " sys 14 ", "CNTV_CVAL_EL0" : " sys 14 ",
-             "CNTVOFF_EL2" : " sys 14 ", "CNTHP_CVAL_EL2" : " sys 14 ", "CNTPS_CVAL_EL1" : " sys 14 ", "v" : " vfp ", "r" : " ", "SP" : " "}
+registers = {}
 
 read_only = {"FPCR", "FPSR", "MPIDR_EL1", "ISR_EL1", "GICC_RPR", "GICC_HPPIR", "GICC_AHPPIR", "GICD_ITARGETSR0", "GICD_ITARGETSR1", "GICD_ITARGETSR2",
              "GICD_ITARGETSR3", "GICD_ITARGETSR4", "GICD_ITARGETSR5", "GICD_ITARGETSR6","GICD_ITARGETSR7","GICD_ICFGR0", "GICD_ICFGR1", "GICD_PPISR", 
@@ -63,10 +47,10 @@ def read_serial(ser):
 def write_output(recieved_data):
     i = 1
     
-    f1 = open("version.txt", "r")
+    f1 = open("../version.txt", "r")
     val = f1.read()
-    f2 = open("archive.txt", "a")
-    filename = "./Versions/stack" + val + ".txt"
+    f2 = open("../archive.txt", "a")
+    filename = "../Versions/stack" + val + ".txt"
     f2.write("stack" + val + ".txt")
     
     with open(filename, 'w') as f:
@@ -81,7 +65,7 @@ def write_output(recieved_data):
             f.write(item)
             i += 1
     
-    with open("registers.txt", 'w') as f:
+    with open("../registers.txt", 'w') as f:
         f.write(recieved_data[i])
         for item in recieved_data[i+1:]:
             if (item == ""):
@@ -111,9 +95,9 @@ def read_data():
 def generate_register_tcl():
     __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    f = open(os.path.join(__location__, "registers.txt"))
-    with open ("write_registers.tcl", 'w') as g:
-        g.write("# source C:/Users/deoch/Documents/WSU/CPTS_421/sel-embeddeddebugger/debugger/write_registers.tcl")
+    f = open(os.path.join(__location__, "../registers.txt"))
+    with open ("../write_registers.tcl", 'w') as g:
+        g.write("# source ../write_registers.tcl")
         for line in f:
             # Remove leading spaces and newline characters
             line = line.strip()
@@ -148,8 +132,8 @@ def write_data():
     process = subprocess.Popen([r'C:\Xilinx\Vitis\2023.1\bin\xsct.bat'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
     
     # Example: Send multiple commands to xsct
-    commands = ["connect", "target 9", "dow C:/Subham/Capstone/Capstone/Debug/Capstone.elf",
-                "source C:/Subham/Test/write_registers.tcl"]
+    commands = ["connect", "target 9", "dow C:/Subham/Capstone/Capstone/Debug/Capstone.elf", #Not sure relative path
+                "source ../write_registers.tcl"]
                 #"source C:/Subham/Test/write_stack.tcl"]
     
     for command in commands:
@@ -185,9 +169,18 @@ def process_menu(option):
         case _:
             return True
     return True
+    
+def write_registers():
+    file1 = open('../debugger_registers.txt', 'r')
+    lines = file1.readlines()
+    
+    for line in lines:
+        tokens = line.split(":")
+        registers[tokens[0]] = tokens[1]
 
 def main():
     # Start Main Menu
+    write_registers()
     run = True
     while(run):
         display_menu()
