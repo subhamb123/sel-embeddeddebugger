@@ -75,8 +75,20 @@ def write_output(recieved_data):
             f.write("\n")
             f.write(item)
             i += 1
-    
+
     with open("registers.txt", 'w') as f:
+        f.write(recieved_data[i])
+        for item in recieved_data[i+1:]:
+            if (item == ""):
+                continue
+            if (item == "REGISTER_END"):
+                i += 2
+                break
+            f.write("\n")
+            f.write(item)
+            i += 1
+
+    with open("data.txt", 'w') as f:
         f.write(recieved_data[i])
         for item in recieved_data[i+1:]:
             if (item == ""):
