@@ -1,4 +1,3 @@
-<<<<<<< HEAD:debugger/tempCodeRunnerFile.py
 import serial
 import os
 import subprocess
@@ -123,11 +122,6 @@ def generate_register_tcl():
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
     f = open(os.path.join(__location__, "registers.txt"))
     with open ("write_registers.tcl", 'w') as g:
-=======
-def read_file():
-    registers = {}
-    with open("../registers_to_save.txt") as f:
->>>>>>> main:debugger/Configs/tempCodeRunnerFile.py
         for line in f:
             # Remove leading spaces and newline characters
             line = line.strip()
