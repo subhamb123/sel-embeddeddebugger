@@ -4,7 +4,6 @@ void (*synchronous_interrupt_handler)(void); // Define the function pointer vari
 uintptr_t baseAddress = 0x000c0c0;  // Definition of baseAddress
 size_t size = 12288;                // Definition of size
 
-
 void set_exception_vector_table_entry(void* table_entry_address, uint32_t branch_instruction) {
     // Store the branch instruction in the table entry
     // Use inline assembly to do this
@@ -52,19 +51,27 @@ void start_up()
 
 }
 
-void print_stack(uintptr_t baseAddress, size_t size)
+void print_stack(uintptr_t baseAddress, size_t size, uintptr_t addresses[], int addressesSize)
 {
     // Declare a pointer to an unsigned integer (assuming 4 bytes per word)
     unsigned int *ptr = (unsigned int *)baseAddress;
+
+    // Get iterator for addresses
+    int j = get_index(addresses, addressesSize);
 
     // Iterate through the stack memory and print each value
     for (size_t i = 0; i < size / sizeof(unsigned int); ++i) {
         // Print the value at the current memory location
         xil_printf("Address:0x%08lx,Value:0x%08x\n", (unsigned long)(ptr + i), *(ptr + i));
+        if (j < addressesSize && *(ptr + i) > LOW && *(ptr + i) < HIGH )
+        {
+        	addresses[j] = *(ptr + i);
+        	j++;
+        }
     }
 }
 
-void print_x_registers()
+void print_x_registers(uintptr_t addresses[], int addressesSize)
 {
 	// Allocate memory for register values
 	uint64_t register_values[31];
@@ -76,16 +83,28 @@ void print_x_registers()
 	// Get X2-x30 values
 	get_Xregister_values(register_values + 2);
 
+	// Get iterator for addresses
+	int j = get_index(addresses, addressesSize);
+
 	// Print register values along with their names
 	for (int i = 0; i < 31; ++i) {
 		xil_printf("r%d:0x%016llx\n", i, register_values[i]);
+
+		if (j < addressesSize && register_values[i] > LOW && register_values[i] < HIGH )
+		{
+			addresses[j] = register_values[i];
+			j++;
+		}
 	}
 }
 
-void print_32_bit_system_registers()
+void print_32_bit_system_registers(uintptr_t addresses[], int addressesSize)
 {
 	// Allocate memory for register values
 	uint32_t register_values[64];
+
+	// Get iterator for addresses
+	int j = get_index(addresses, addressesSize);
 
     // Array of register names
     const char* register_names[] = {
@@ -142,6 +161,11 @@ void print_32_bit_system_registers()
 	// Print register values along with their names
 	for (int i = 0; i < 44; ++i) {
 		xil_printf("%s:0x%08x\n", register_names[i], register_values[i]);
+		if (j < addressesSize && register_values[i] > LOW && register_values[i] < HIGH )
+		{
+			addresses[j] = register_values[i];
+			j++;
+		}
 	}
 }
 
@@ -242,10 +266,13 @@ void print_gicr_registers()
             }
 }
 
-void print_64_bit_system_registers()
+void print_64_bit_system_registers(uintptr_t addresses[], int addressesSize)
 {
 	// Allocate memory for register values
 	uint64_t register_values[20];
+
+	// Get iterator for addresses
+	int j = get_index(addresses, addressesSize);
 
     // Array of register names
     const char* register_names[] = {
@@ -282,6 +309,11 @@ void print_64_bit_system_registers()
 	// Print register values along with their names
 	for (int i = 0; i < 23; ++i) {
 		xil_printf("%s:0x%016llx\n", register_names[i], register_values[i]);
+		if (j < addressesSize && register_values[i] > LOW && register_values[i] < HIGH )
+		{
+			addresses[j] = register_values[i];
+			j++;
+		}
 	}
 }
 
@@ -305,17 +337,51 @@ void print_sp_register()
 	xil_printf("SP:0x%016llx\n", value);
 }
 
+void printAddress(uintptr_t address)
+{
+	for (int i = -RANGE; i <= RANGE; i++)
+	{
+		if (address + i > LOW && address+ i < HIGH)
+			xil_printf("Address:0x%08lx,Value:0x%08lx\n", (unsigned long)(address + i), *((uintptr_t*)(address + i)));
+	}
+}
+
+void print_data(uintptr_t addresses[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (addresses[i] == 0)
+			break;
+		xil_printf("Address:0x%08lx\n", addresses[i]);
+		printAddress(addresses[i]);
+	}
+}
+
+int get_index(uintptr_t addresses[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (addresses[i] == 0)
+			return i;
+	}
+
+	return size;
+}
+
 void exception_handler()
 {
+	uintptr_t addresses[SIZE] = {0};
 	xil_printf("\nSTART\n"); // send start signal
-	print_stack(baseAddress, size);
+	print_stack(baseAddress, size, addresses, SIZE);
     xil_printf("STACK_END\n"); // end stack delimiter
-	print_x_registers();
-	print_32_bit_system_registers();
+	print_x_registers(addresses, SIZE);
+	print_32_bit_system_registers(addresses, SIZE);
 	print_gicr_registers();
-	print_64_bit_system_registers();
+	print_64_bit_system_registers(addresses, SIZE);
 	print_v_registers();
 	print_sp_register();
+	xil_printf("REGISTER_END\n"); // end stack delimiter
+	print_data(addresses, SIZE);
 	xil_printf("END\n"); // send end signal
 	//synchronous_interrupt_handler();
 }

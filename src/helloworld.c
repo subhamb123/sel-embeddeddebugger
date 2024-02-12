@@ -49,13 +49,14 @@
 #include "platform.h"
 #include "xil_printf.h"
 
+
 int main()
 {
-    init_platform();
-    xil_printf("Hello World"); // xil_printf throws exception on first use
-    start_up();
-    //*((int*) 0xFFFFFFFF) = 42; // throw exception
-    xil_printf("done");
-    cleanup_platform();
-    return 0;
+	init_platform();
+	xil_printf("Hello World"); // xil_printf throws exception on first use
+	start_up();
+	*((int*) 0xFFFFFFFF) = 42; // throw exception
+	xil_printf("done");
+	cleanup_platform();
+	return 0;
 }
