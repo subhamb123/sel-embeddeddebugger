@@ -63,24 +63,24 @@ def read_serial(ser):
 
 def write_output(recieved_data):
     i = 1
-    with open("stack.txt", 'w') as f:
+    with open("registers.txt", 'w') as f:
         f.write(recieved_data[0])
         for item in recieved_data[1:]:
             if (item == ""):
                 continue
-            if (item == "STACK_END"):
+            if (item == "REGISTER_END"):
                 i += 1
                 break
             f.write("\n")
             f.write(item)
             i += 1
 
-    with open("registers.txt", 'w') as f:
+    with open("stack.txt", 'w') as f:
         f.write(recieved_data[i])
         for item in recieved_data[i+1:]:
             if (item == ""):
                 continue
-            if (item == "REGISTER_END"):
+            if (item == "STACK_END"):
                 i += 2
                 break
             f.write("\n")
