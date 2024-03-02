@@ -50,13 +50,28 @@
 #include "xil_printf.h"
 
 
+void foo(int a, int b) {
+    volatile int local_array[5] = {1, 2, 3, 4, 5};
+    printf("foo: %d %d\n", a, b);
+}
+
+void bar() {
+    char buffer[10] = "abcdefghi";
+    printf("bar: %s\n", buffer);
+    *((int*) 0xFFFFFFFF) = 42; // throw exception
+}
+
+
 int main()
 {
+
 	init_platform();
-	xil_printf("Hello World"); // xil_printf throws exception on first use
-	start_up();
-	*((int*) 0xFFFFFFFF) = 42; // throw exception
-	xil_printf("done");
-	cleanup_platform();
-	return 0;
+    volatile int x = 10;
+    volatile int y = 20;
+	foo(x, y);
+	bar();
+	volatile int dynamic_array[3] = {100, 200, 300};
+    //*((int*) 0xFFFFFFFF) = 42; // throw exception
+    cleanup_platform();
+    return 0;
 }

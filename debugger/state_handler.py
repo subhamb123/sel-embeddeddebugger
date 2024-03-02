@@ -46,7 +46,7 @@ def read_serial(ser):
                         record = True
                         continue
                     if (record):
-                        print(decoded_data)
+                        #print(decoded_data)
                         received_data.append(decoded_data)
                 except:
                     continue

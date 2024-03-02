@@ -1,103 +1,126 @@
 #include "snapshot.h"
-void (*synchronous_interrupt_handler)(void); // Define the function pointer variable
 
-uintptr_t baseAddress = 0x000c0c0;  // Definition of baseAddress
-size_t size = 12288;                // Definition of size
+uint64_t registers[31] = {0};      		// Definition of registers
 
-void set_exception_vector_table_entry(void* table_entry_address, uint32_t branch_instruction) {
-    // Store the branch instruction in the table entry
-    // Use inline assembly to do this
-    asm volatile (
-        "str %0, [%1]\n"  // Store the branch instruction into the table entry
-        :
-        : "r" (branch_instruction), "r" (table_entry_address)
-    );
-}
+// Linker file symbol values definitions
 
-void start_up()
+const uint64_t data_start = (uintptr_t)& __data_start;
+const uint64_t data_end = (uintptr_t)& __data_end;
+const uint64_t sdata_start = (uintptr_t)& __sdata_start;
+const uint64_t sdata_end = (uintptr_t)& __sdata_end;
+const uint64_t sbss_start = (uintptr_t)& __sbss_start;
+const uint64_t sbss_end = (uintptr_t)& __sbss_end;
+const uint64_t tdata_start = (uintptr_t)& __tdata_start;
+const uint64_t tdata_end = (uintptr_t)& __tdata_start;
+const uint64_t tbss_start = (uintptr_t)& __tbss_start;
+const uint64_t tbss_end = (uintptr_t)& __tbss_end;
+const uint64_t bss_start = (uintptr_t)& __bss_start__;
+const uint64_t bss_end = (uintptr_t)& __bss_end__;
+const uint64_t heap_start = (uintptr_t)& _heap_start;
+const uint64_t heap_end = (uintptr_t)& _heap_end;
+const uint64_t stack_start = (uintptr_t)&_el3_stack_end;
+const uint64_t el3_stack_size = (uintptr_t)&_STACK_SIZE;
+const uint64_t el2_stack_size = (uintptr_t)&_EL2_STACK_SIZE;
+const uint64_t el1_stack_size = (uintptr_t)&_EL1_STACK_SIZE;
+const uint64_t el0_stack_size = (uintptr_t)&_EL0_STACK_SIZE;
+
+
+int valid_address(uintptr_t address, int j, int addressesSize)
 {
-	void* handler_address = (void*)(&exception_handler);
-
-	// Get the address of the Exception Vector Table
-	void* vector_table_address = get_vbar_el1_register_value(); // Obtain the address of the vector table
-
-	// Set the offset to +0x200
-	uintptr_t table_offset = 0x200;
-
-	// Calculate the address of the specific exception entry in the table
-	void* entry_address = vector_table_address + table_offset;
-
-	// Get original branch instruction
-	uint32_t original_branch = *((uint32_t*)entry_address);
-
-	// Extract offset
-	uint32_t original_handler_offset = original_branch & 0x03FFFFFF;
-
-	// Get Address of Original Handler
-	uint32_t original_address = original_handler_offset * 4 + entry_address;
-
-	// Set functionPointer to Original Handler
-	synchronous_interrupt_handler = (void (*)(void))original_address;
+	// Get stack size
+	uint64_t stack_size = el3_stack_size + el2_stack_size + el1_stack_size + el0_stack_size;
 
 
-	// Calculate the offset for the branch instruction
-	uintptr_t branch_offset = ((uintptr_t)handler_address - (uintptr_t)entry_address)/4;
+	if (j >= addressesSize) // no more room
+		{
+			return 0;
+		}
 
-	// Create the branch instruction (B opcode is 0x14) with the offset
-	uint32_t branch_instruction = 0x14000000 | (branch_offset & 0x03FFFFFF);
+	if (address >=data_start  && address < data_end) // in data
+	{
+		return 1;
+	}
 
-	// Set the branch instruction in the exception vector table entry
-	set_exception_vector_table_entry(entry_address, branch_instruction);
+	if (address >=sdata_start  && address < sdata_end) // in sdata
+	{
+		return 1;
+	}
 
+	if (address >=sbss_start  && address < sbss_end) // in sbss
+	{
+		return 1;
+	}
+
+	if (address >=tdata_start  && address < tdata_end) // in tdata
+	{
+		return 1;
+	}
+
+	if (address >=tbss_start  && address < tbss_end) // in tbss
+	{
+		return 1;
+	}
+
+	if (address >=bss_start  && address < bss_end) // in bss
+	{
+		return 1;
+	}
+
+	if (address >=heap_start  && address < heap_end) // in heap
+	{
+		return 1;
+	}
+
+	if (address >=stack_start  && address < (stack_start + stack_size)) // in stack
+	{
+		return 1;
+	}
+
+	return 0; // not valid
 }
 
-int validAddress(uintptr_t address)
-{
-	return address > LOW && address < HIGH;
-}
-
-void print_stack(uintptr_t baseAddress, size_t size, uintptr_t addresses[], int addressesSize)
+void print_stack(uintptr_t addresses[], int addressesSize)
 {
     // Declare a pointer to an unsigned integer (assuming 4 bytes per word)
-    unsigned int *ptr = (unsigned int *)baseAddress;
+    unsigned int *ptr = (unsigned int *)stack_start;
+
+    // Get stack size
+    uint64_t stack_size = el3_stack_size + el2_stack_size + el1_stack_size + el0_stack_size;
+
+    // Get stack end pointer
+    uintptr_t stack_end = stack_start + stack_size;
 
     // Get iterator for addresses
     int j = get_index(addresses, addressesSize);
 
     // Iterate through the stack memory and print each value
-    for (size_t i = 0; i < size / sizeof(unsigned int); ++i) {
+    while ((uintptr_t)ptr < stack_end) {
         // Print the value at the current memory location
-        xil_printf("Address:0x%08lx,Value:0x%08x\n", (unsigned long)(ptr + i), *(ptr + i));
-        if (j < addressesSize && validAddress(*(ptr + i)))
+        xil_printf("Address:0x%08lx,Value:0x%08x\n", (unsigned long)ptr, *ptr);
+        if (valid_address(*ptr, j, addressesSize))
         {
-        	addresses[j] = *(ptr + i);
+        	addresses[j] = *ptr;
         	j++;
         }
+
+        ptr++;
     }
 }
 
+
 void print_x_registers(uintptr_t addresses[], int addressesSize)
 {
-	// Allocate memory for register values
-	uint64_t register_values[31];
-
-	// Get X0 and X1 respectively
-	register_values[0] = get_x0register_value();
-	register_values[1] = get_x1register_value();
-
-	// Get X2-x30 values
-	get_Xregister_values(register_values + 2);
 
 	// Get iterator for addresses
 	int j = get_index(addresses, addressesSize);
 
 	// Print register values along with their names
 	for (int i = 0; i < 31; ++i) {
-		xil_printf("r%d:0x%016llx\n", i, register_values[i]);
+		xil_printf("r%d:0x%016llx\n", i, registers[i]);
 
-		if (j < addressesSize && validAddress(register_values[i]))
+		if (valid_address(registers[i], j, addressesSize))
 		{
-			addresses[j] = register_values[i];
+			addresses[j] = registers[i];
 			j++;
 		}
 	}
@@ -328,7 +351,7 @@ void print_sp_register(uintptr_t addresses[], int addressesSize)
 	// Get iterator for addresses
 	int j = get_index(addresses, addressesSize);
 
-	if (j < addressesSize && validAddress(value))
+	if (valid_address(value, j, addressesSize))
 	{
 		addresses[j] = value;
 	}
@@ -339,14 +362,14 @@ void printAddress(uintptr_t address)
 {
 	for (int i = -RANGE; i <= RANGE; i++)
 	{
-		if (address + i > LOW && address+ i < HIGH)
-			xil_printf("Address:0x%08lx,Value:0x%08lx\n", (unsigned long)(address + i), *((uintptr_t*)(address + i)));
+		xil_printf("Address:0x%08lx,Value:0x%016llx\n", (unsigned long)(address + i), *((uint64_t*)(address + i)));
 	}
 }
 
 void print_data(uintptr_t addresses[], int size)
 {
-	for (int i = 0; i < size; i++)
+	int j = get_index(addresses, size);
+	for (int i = 0; i < j; i++)
 	{
 		if (addresses[i] == 0)
 			break;
@@ -368,6 +391,7 @@ int get_index(uintptr_t addresses[], int size)
 
 void exception_handler()
 {
+
 	uintptr_t addresses[SIZE] = {0};
 	xil_printf("\nSTART\n"); // send start signal
 	print_x_registers(addresses, SIZE);
@@ -377,9 +401,11 @@ void exception_handler()
 	print_v_registers();
 	print_sp_register(addresses, SIZE);
 	xil_printf("REGISTER_END\n"); // end stack delimiter
-	print_stack(baseAddress, size, addresses, SIZE);
+	print_stack(addresses, SIZE);
     xil_printf("STACK_END\n"); // end stack delimiter
 	print_data(addresses, SIZE);
 	xil_printf("END\n"); // send end signal
-	//synchronous_interrupt_handler();
+	for(;;){
+
+	}
 }
