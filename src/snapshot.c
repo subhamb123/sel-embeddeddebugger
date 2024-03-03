@@ -1,4 +1,141 @@
 #include "snapshot.h"
+<<<<<<< HEAD
+
+uint64_t registers[32] = {0};      		// Definition of registers
+
+// Linker file symbol values definitions
+
+const uint64_t data_start = (uintptr_t)& __data_start;
+const uint64_t data_end = (uintptr_t)& __data_end;
+const uint64_t sdata_start = (uintptr_t)& __sdata_start;
+const uint64_t sdata_end = (uintptr_t)& __sdata_end;
+const uint64_t sbss_start = (uintptr_t)& __sbss_start;
+const uint64_t sbss_end = (uintptr_t)& __sbss_end;
+const uint64_t tdata_start = (uintptr_t)& __tdata_start;
+const uint64_t tdata_end = (uintptr_t)& __tdata_start;
+const uint64_t tbss_start = (uintptr_t)& __tbss_start;
+const uint64_t tbss_end = (uintptr_t)& __tbss_end;
+const uint64_t bss_start = (uintptr_t)& __bss_start__;
+const uint64_t bss_end = (uintptr_t)& __bss_end__;
+const uint64_t heap_start = (uintptr_t)& _heap_start;
+const uint64_t heap_end = (uintptr_t)& _heap_end;
+const uint64_t stack_start = (uintptr_t)&_el3_stack_end;
+const uint64_t el3_stack_size = (uintptr_t)&_STACK_SIZE;
+const uint64_t el2_stack_size = (uintptr_t)&_EL2_STACK_SIZE;
+const uint64_t el1_stack_size = (uintptr_t)&_EL1_STACK_SIZE;
+const uint64_t el0_stack_size = (uintptr_t)&_EL0_STACK_SIZE;
+
+
+int valid_address(uintptr_t address, int j, int addressesSize)
+{
+	// Get stack size
+	uint64_t stack_size = el3_stack_size + el2_stack_size + el1_stack_size + el0_stack_size;
+
+
+	if (j >= addressesSize) // no more room
+		{
+			return 0;
+		}
+
+	if (address >=data_start  && address < data_end) // in data
+	{
+		return 1;
+	}
+
+	if (address >=sdata_start  && address < sdata_end) // in sdata
+	{
+		return 1;
+	}
+
+	if (address >=sbss_start  && address < sbss_end) // in sbss
+	{
+		return 1;
+	}
+
+	if (address >=tdata_start  && address < tdata_end) // in tdata
+	{
+		return 1;
+	}
+
+	if (address >=tbss_start  && address < tbss_end) // in tbss
+	{
+		return 1;
+	}
+
+	if (address >=bss_start  && address < bss_end) // in bss
+	{
+		return 1;
+	}
+
+	if (address >=heap_start  && address < heap_end) // in heap
+	{
+		return 1;
+	}
+
+	if (address >=stack_start  && address < (stack_start + stack_size)) // in stack
+	{
+		return 1;
+	}
+
+	return 0; // not valid
+}
+
+void print_stack(uintptr_t addresses[], int addressesSize)
+{
+    // Declare a pointer to an unsigned integer (assuming 4 bytes per word)
+    unsigned int *ptr = (unsigned int *)stack_start;
+
+    // Get stack size
+    uint64_t stack_size = el3_stack_size + el2_stack_size + el1_stack_size + el0_stack_size;
+
+    // Get stack end pointer
+    uintptr_t stack_end = stack_start + stack_size;
+
+    // Get iterator for addresses
+    int j = get_index(addresses, addressesSize);
+
+    // Iterate through the stack memory and print each value
+    while ((uintptr_t)ptr < stack_end) {
+        // Print the value at the current memory location
+        xil_printf("Address:0x%08lx,Value:0x%08x\n", (unsigned long)ptr, *ptr);
+        if (valid_address(*ptr, j, addressesSize))
+        {
+        	addresses[j] = *ptr;
+        	j++;
+        }
+
+        ptr++;
+    }
+}
+
+
+void print_x_sp_pc_registers(uintptr_t addresses[], int addressesSize)
+{
+
+	// Get iterator for addresses
+	int j = get_index(addresses, addressesSize);
+
+	// Print register values along with their names
+	for (int i = 0; i < 32; ++i) {
+
+		if (i == 31){
+			xil_printf("PC:0x%016llx\n", registers[i]);
+		}
+
+		else{
+			xil_printf("r%d:0x%016llx\n", i, registers[i]);
+		}
+
+		if (valid_address(registers[i], j, addressesSize))
+		{
+			addresses[j] = registers[i];
+			j++;
+		}
+	}
+
+	// Print SP register from x29
+	xil_printf("SP:0x%016llx\n", registers[29]);
+=======
 void (*synchronous_interrupt_handler)(void); // Define the function pointer variable
 
 uintptr_t baseAddress = 0x000c0c0;  // Definition of baseAddress
@@ -80,6 +217,7 @@ void print_x_registers()
 	for (int i = 0; i < 31; ++i) {
 		xil_printf("r%d:0x%016llx\n", i, register_values[i]);
 	}
+>>>>>>> main
 }
 
 void print_32_bit_system_registers()
@@ -299,23 +437,73 @@ void print_v_registers()
 	}
 }
 
+<<<<<<< HEAD
+void printAddress(uintptr_t address)
+{
+	for (int i = -RANGE; i <= RANGE; i++)
+	{
+		xil_printf("Address:0x%08lx,Value:0x%016llx\n", (unsigned long)(address + i), *((uint64_t*)(address + i)));
+	}
+}
+
+void print_data(uintptr_t addresses[], int size)
+{
+	int j = get_index(addresses, size);
+	for (int i = 0; i < j; i++)
+	{
+		if (addresses[i] == 0)
+			break;
+		xil_printf("Address:0x%08lx\n", addresses[i]);
+		printAddress(addresses[i]);
+	}
+}
+
+int get_index(uintptr_t addresses[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (addresses[i] == 0)
+			return i;
+	}
+
+	return size;
+=======
 void print_sp_register()
 {
 	uint64_t value = get_SPregister_value();
 	xil_printf("SP:0x%016llx\n", value);
+>>>>>>> main
 }
 
 void exception_handler()
 {
+<<<<<<< HEAD
+
+	uintptr_t addresses[SIZE] = {0};
+	xil_printf("\nSTART\n"); // send start signal
+	print_x_sp_pc_registers(addresses, SIZE);
+=======
 	xil_printf("\nSTART\n"); // send start signal
 	print_stack(baseAddress, size);
     xil_printf("STACK_END\n"); // end stack delimiter
 	print_x_registers();
+>>>>>>> main
 	print_32_bit_system_registers();
 	print_gicr_registers();
 	print_64_bit_system_registers();
 	print_v_registers();
+<<<<<<< HEAD
+	xil_printf("REGISTER_END\n"); // end stack delimiter
+	print_stack(addresses, SIZE);
+    xil_printf("STACK_END\n"); // end stack delimiter
+	print_data(addresses, SIZE);
+	xil_printf("END\n"); // send end signal
+	for(;;){
+
+	}
+=======
 	print_sp_register();
 	xil_printf("END\n"); // send end signal
 	//synchronous_interrupt_handler();
+>>>>>>> main
 }

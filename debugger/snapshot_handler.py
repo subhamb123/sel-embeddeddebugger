@@ -22,7 +22,7 @@ registers = { "IFSR32_EL2": " sys 5 ",  "ESR_EL1": " sys 5 ",  "ESR_EL2": " sys 
              "TTBR0_EL3" : " sys 2 ", "MAIR_EL3" : " sys 10 ", "AMAIR_EL3" : " sys 10 ", "PAR_EL1" : " sys 7 ", "TPIDR_EL0" : " sys 13 ", 
              "TPIDRRO_EL0" : " sys 13 ", "TPIDR_EL1" : " sys 13 ", "TPIDR_EL3" : " sys 13 ", "RVBAR_EL3" : " sys 12 ", "RMR_EL3" : " sys 12 ",
              "SDER32_EL3": " sys 1 ", "CNTFRQ_EL0" : " sys 14 ", "CNTP_CVAL_EL0" : " sys 14 ", "CNTV_CVAL_EL0" : " sys 14 ",
-             "CNTVOFF_EL2" : " sys 14 ", "CNTHP_CVAL_EL2" : " sys 14 ", "CNTPS_CVAL_EL1" : " sys 14 ", "v" : " vfp ", "r" : " ", "SP" : " "}
+             "CNTVOFF_EL2" : " sys 14 ", "CNTHP_CVAL_EL2" : " sys 14 ", "CNTPS_CVAL_EL1" : " sys 14 ", "v" : " vfp ", "r" : " ", "SP" : " ", "PC" : " "}
 
 read_only = {"FPCR", "FPSR", "MPIDR_EL1", "ISR_EL1", "GICC_RPR", "GICC_HPPIR", "GICC_AHPPIR", "GICD_ITARGETSR0", "GICD_ITARGETSR1", "GICD_ITARGETSR2",
              "GICD_ITARGETSR3", "GICD_ITARGETSR4", "GICD_ITARGETSR5", "GICD_ITARGETSR6","GICD_ITARGETSR7","GICD_ICFGR0", "GICD_ICFGR1", "GICD_PPISR", 
@@ -46,7 +46,7 @@ def read_serial(ser):
                         record = True
                         continue
                     if (record):
-                        print(decoded_data)
+                        #print(decoded_data)
                         received_data.append(decoded_data)
                 except:
                     continue
@@ -63,19 +63,31 @@ def read_serial(ser):
 
 def write_output(recieved_data):
     i = 1
-    with open("stack.txt", 'w') as f:
+    with open("registers.txt", 'w') as f:
         f.write(recieved_data[0])
         for item in recieved_data[1:]:
             if (item == ""):
                 continue
-            if (item == "STACK_END"):
+            if (item == "REGISTER_END"):
                 i += 1
                 break
             f.write("\n")
             f.write(item)
             i += 1
-    
-    with open("registers.txt", 'w') as f:
+
+    with open("stack.txt", 'w') as f:
+        f.write(recieved_data[i])
+        for item in recieved_data[i+1:]:
+            if (item == ""):
+                continue
+            if (item == "STACK_END"):
+                i += 2
+                break
+            f.write("\n")
+            f.write(item)
+            i += 1
+
+    with open("data.txt", 'w') as f:
         f.write(recieved_data[i])
         for item in recieved_data[i+1:]:
             if (item == ""):
