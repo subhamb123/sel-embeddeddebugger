@@ -138,9 +138,5 @@ get_32register_values:
 	MRS_REG CNTPS_TVAL_EL1, x0
 	STR x0, [x1, #168]    // Store CNTPS_TVAL_EL1 in the array
 
-	MRS_REG CNTPS_CTL_EL1, x0
-	STR x0, [x1, #172]    // Store CNTPS_CTL_EL1 in the array
+	RET
 
-
-
-    RET

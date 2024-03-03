@@ -69,14 +69,17 @@ get_64register_values:
 	MRS_REG CNTPS_CVAL_EL1, x0
 	STR x0, [x1, #152]    // Store CNTPS_CVAL_EL1 in the array
 
+	MRS_REG CNTPS_CTL_EL1, x0
+	STR x0, [x1, #160]    // Store CNTPS_CTL_EL1 in the array
+
 	MRS_REG ELR_EL1, x0
-	STR x0, [x1, #160]    // Store ELR_EL1 in the array
+	STR x0, [x1, #168]    // Store ELR_EL1 in the array
 
 	MRS_REG ELR_EL2, x0
-	STR x0, [x1, #168]    // Store ELR_EL2 in the array
+	STR x0, [x1, #176]    // Store ELR_EL2 in the array
 
 	MRS_REG ELR_EL3, x0
-	STR x0, [x1, #176]    // Store ELR_EL3 in the array
+	STR x0, [x1, #184]    // Store ELR_EL3 in the array
 
 
 

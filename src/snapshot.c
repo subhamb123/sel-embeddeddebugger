@@ -1,5 +1,4 @@
 #include "snapshot.h"
-<<<<<<< HEAD
 
 uint64_t registers[32] = {0};      		// Definition of registers
 
@@ -25,6 +24,24 @@ const uint64_t el2_stack_size = (uintptr_t)&_EL2_STACK_SIZE;
 const uint64_t el1_stack_size = (uintptr_t)&_EL1_STACK_SIZE;
 const uint64_t el0_stack_size = (uintptr_t)&_EL0_STACK_SIZE;
 
+void split_uint64(uint64_t input, uint32_t *high, uint32_t *low)
+{
+    // Mask for extracting the lower 32 bits
+    uint64_t lower_mask = 0xFFFFFFFFULL;
+    // Extract the lower 32 bits
+    *low = (uint32_t)(input & lower_mask);
+    // Shift the input to the right by 32 bits to get the higher 32 bits
+    *high = (uint32_t)(input >> 32);
+}
+
+void split_int128(__int128_t input, uint32_t *part1, uint32_t *part2, uint32_t *part3, uint32_t *part4)
+{
+    // Extract each 32-bit segment
+    *part1 = (uint32_t)(input & 0xFFFFFFFF);
+    *part2 = (uint32_t)((input >> 32) & 0xFFFFFFFF);
+    *part3 = (uint32_t)((input >> 64) & 0xFFFFFFFF);
+    *part4 = (uint32_t)((input >> 96) & 0xFFFFFFFF);
+}
 
 int valid_address(uintptr_t address, int j, int addressesSize)
 {
@@ -97,7 +114,14 @@ void print_stack(uintptr_t addresses[], int addressesSize)
     // Iterate through the stack memory and print each value
     while ((uintptr_t)ptr < stack_end) {
         // Print the value at the current memory location
-        xil_printf("Address:0x%08lx,Value:0x%08x\n", (unsigned long)ptr, *ptr);
+    	xil_printf("Address:0x%08x,Value:0x%08x\n",(uint32_t) ptr, *ptr);
+		//xil_printf("Address:0x");
+		//xil_printf("%08x",(uint32_t) ptr);
+		//xil_printf(",Value:0x");
+		//xil_printf("%08x\n", *ptr);
+
+
+
         if (valid_address(*ptr, j, addressesSize))
         {
         	addresses[j] = *ptr;
@@ -119,11 +143,29 @@ void print_x_sp_pc_registers(uintptr_t addresses[], int addressesSize)
 	for (int i = 0; i < 32; ++i) {
 
 		if (i == 31){
-			xil_printf("PC:0x%016llx\n", registers[i]);
+			uint64_t input = registers[i];
+			uint32_t high, low;
+
+			// Split the input value into high and low parts
+			split_uint64(input, &high, &low);
+
+			xil_printf("PC:0x%08x%08x\n", high, low);
+			//xil_printf("PC:0x");
+			//xil_printf("%08x", high);
+			//xil_printf("%08x\n", low);
 		}
 
 		else{
-			xil_printf("r%d:0x%016llx\n", i, registers[i]);
+			uint64_t input = registers[i];
+			uint32_t high, low;
+
+			// Split the input value into high and low parts
+			split_uint64(input, &high, &low);
+
+			xil_printf("r%d:0x%08x%08x\n", i, high, low);
+			//xil_printf("r%d:0x", i);
+			//xil_printf("%08x", high);
+			//xil_printf("%08x\n", low);
 		}
 
 		if (valid_address(registers[i], j, addressesSize))
@@ -134,96 +176,22 @@ void print_x_sp_pc_registers(uintptr_t addresses[], int addressesSize)
 	}
 
 	// Print SP register from x29
-	xil_printf("SP:0x%016llx\n", registers[29]);
-=======
-void (*synchronous_interrupt_handler)(void); // Define the function pointer variable
+	uint64_t input = registers[29];
+	uint32_t high, low;
 
-uintptr_t baseAddress = 0x000c0c0;  // Definition of baseAddress
-size_t size = 12288;                // Definition of size
+	// Split the input value into high and low parts
+	split_uint64(input, &high, &low);
+	xil_printf("SP:0x%08x%08x\n", high, low);
+	//xil_printf("SP:0x");
+	//xil_printf("%08x", high);
+	//xil_printf("%08x\n", low);
 
-
-void set_exception_vector_table_entry(void* table_entry_address, uint32_t branch_instruction) {
-    // Store the branch instruction in the table entry
-    // Use inline assembly to do this
-    asm volatile (
-        "str %0, [%1]\n"  // Store the branch instruction into the table entry
-        :
-        : "r" (branch_instruction), "r" (table_entry_address)
-    );
-}
-
-void start_up()
-{
-	void* handler_address = (void*)(&exception_handler);
-
-	// Get the address of the Exception Vector Table
-	void* vector_table_address = get_vbar_el1_register_value(); // Obtain the address of the vector table
-
-	// Set the offset to +0x200
-	uintptr_t table_offset = 0x200;
-
-	// Calculate the address of the specific exception entry in the table
-	void* entry_address = vector_table_address + table_offset;
-
-	// Get original branch instruction
-	uint32_t original_branch = *((uint32_t*)entry_address);
-
-	// Extract offset
-	uint32_t original_handler_offset = original_branch & 0x03FFFFFF;
-
-	// Get Address of Original Handler
-	uint32_t original_address = original_handler_offset * 4 + entry_address;
-
-	// Set functionPointer to Original Handler
-	synchronous_interrupt_handler = (void (*)(void))original_address;
-
-
-	// Calculate the offset for the branch instruction
-	uintptr_t branch_offset = ((uintptr_t)handler_address - (uintptr_t)entry_address)/4;
-
-	// Create the branch instruction (B opcode is 0x14) with the offset
-	uint32_t branch_instruction = 0x14000000 | (branch_offset & 0x03FFFFFF);
-
-	// Set the branch instruction in the exception vector table entry
-	set_exception_vector_table_entry(entry_address, branch_instruction);
-
-}
-
-void print_stack(uintptr_t baseAddress, size_t size)
-{
-    // Declare a pointer to an unsigned integer (assuming 4 bytes per word)
-    unsigned int *ptr = (unsigned int *)baseAddress;
-
-    // Iterate through the stack memory and print each value
-    for (size_t i = 0; i < size / sizeof(unsigned int); ++i) {
-        // Print the value at the current memory location
-        xil_printf("Address:0x%08lx,Value:0x%08x\n", (unsigned long)(ptr + i), *(ptr + i));
-    }
-}
-
-void print_x_registers()
-{
-	// Allocate memory for register values
-	uint64_t register_values[31];
-
-	// Get X0 and X1 respectively
-	register_values[0] = get_x0register_value();
-	register_values[1] = get_x1register_value();
-
-	// Get X2-x30 values
-	get_Xregister_values(register_values + 2);
-
-	// Print register values along with their names
-	for (int i = 0; i < 31; ++i) {
-		xil_printf("r%d:0x%016llx\n", i, register_values[i]);
-	}
->>>>>>> main
 }
 
 void print_32_bit_system_registers()
 {
 	// Allocate memory for register values
-	uint32_t register_values[64];
+	uint32_t register_values[43];
 
     // Array of register names
     const char* register_names[] = {
@@ -269,8 +237,7 @@ void print_32_bit_system_registers()
     		"CNTHCTL_EL2",
     		"CNTHP_TVAL_EL2",
     		"CNTHP_CTL_EL2",
-    		"CNTPS_TVAL_EL1",
-    		"CNTPS_CTL_EL1"
+    		"CNTPS_TVAL_EL1"
 
     };
 
@@ -278,8 +245,10 @@ void print_32_bit_system_registers()
 	get_32register_values(register_values);
 
 	// Print register values along with their names
-	for (int i = 0; i < 44; ++i) {
-		xil_printf("%s:0x%08x\n", register_names[i], register_values[i]);
+	for (int i = 0; i < 43; i++) {
+		xil_printf("%s:0x%08x\n", register_names[i],register_values[i]);
+		//xil_printf("%s:0x", register_names[i]);
+		//xil_printf("%08x\n", register_values[i]);
 	}
 }
 
@@ -305,24 +274,26 @@ void print_gicr_registers()
 
     };
 
-    uint64_t addresses[] = {
-    	0x00f9020000,
-		0x00f9020004,
-		0x00f9020008,
-        0x00f9020014,
-        0x00f9020018,
-        0x00f902001c,
-        0x00f9020028,
-        0x00f90200d0,
-        0x00f90200e0,
-		0x00f9010000,
-		0x00f9010d00
+    uint32_t addresses[] = {
+    	0xf9020000,
+		0xf9020004,
+		0xf9020008,
+        0xf9020014,
+        0xf9020018,
+        0xf902001c,
+        0xf9020028,
+        0xf90200d0,
+        0xf90200e0,
+		0xf9010000,
+		0xf9010d00
 
     };
-    for (int i = 0; i < sizeof(addresses) / sizeof(uint64_t); ++i) {
+    for (int i = 0; i < 11; i++) {
     		volatile uint32_t* addr_ptr = (volatile uint32_t*) addresses[i];
     	    uint32_t value = *addr_ptr;
-    		xil_printf("%s:0x%08x\n", register_names[i], value);;
+    	    xil_printf("%s:0x%08x\n", register_names[i], value);
+    		//xil_printf("%s:0x", register_names[i]);
+    		//xil_printf("%08x\n", value);
         }
 	// Call the assembly function and pass the array's pointer
 	//get_GICRregister_values(register_values);
@@ -346,16 +317,16 @@ void print_gicr_registers()
         		"GICD_SPENDSGI",
         };
 
-    uint64_t addresses_multiple[] = {
-    		0x00f9010080,
-			0x00f9010100,
-			0x00f9010200,
-			0x00f9010300,
-			0x00f9010400,
-			0x00f9010800,
-			0x00f9010c00,
-			0x00f9010d04,
-			0x00f9010f20
+    uint32_t addresses_multiple[] = {
+    		0xf9010080,
+			0xf9010100,
+			0xf9010200,
+			0xf9010300,
+			0xf9010400,
+			0xf9010800,
+			0xf9010c00,
+			0xf9010d04,
+			0xf9010f20
         };
 
     int range[] = {
@@ -370,11 +341,13 @@ void print_gicr_registers()
 			4
     };
 
-    for (int i = 0; i < sizeof(addresses_multiple) / sizeof(uint64_t); ++i) {
+    for (int i = 0; i < 9; ++i) {
         		volatile uint32_t* base_addr_ptr = (volatile uint32_t*) addresses_multiple[i];
         		for (int j = 0; j < range[i]; j++) {
         			uint32_t value = *(base_addr_ptr + (j));
-        			xil_printf("%sR%d:0x%08x\n", register_names_multiple[i], j, value);;
+        			xil_printf("%sR%d:0x%08x\n", register_names_multiple[i], j, value);
+        			//xil_printf("%sR%d:0x", register_names_multiple[i], j);
+        			//xil_printf("%08x\n", value);
         		}
 
             }
@@ -383,7 +356,7 @@ void print_gicr_registers()
 void print_64_bit_system_registers()
 {
 	// Allocate memory for register values
-	uint64_t register_values[20];
+	uint64_t register_values[24];
 
     // Array of register names
     const char* register_names[] = {
@@ -408,6 +381,7 @@ void print_64_bit_system_registers()
     		"CNTVOFF_EL2",
     		"CNTHP_CVAL_EL2",
     		"CNTPS_CVAL_EL1",
+			"CNTPS_CTL_EL1",
 			"ELR_EL1",
 			"ELR_EL2",
 			"ELR_EL3"
@@ -418,8 +392,17 @@ void print_64_bit_system_registers()
 	get_64register_values(register_values);
 
 	// Print register values along with their names
-	for (int i = 0; i < 23; ++i) {
-		xil_printf("%s:0x%016llx\n", register_names[i], register_values[i]);
+	for (int i = 0; i < 24; i++) {
+		uint64_t input = register_values[i];
+		uint32_t high, low;
+
+		// Split the input value into high and low parts
+		split_uint64(input, &high, &low);
+
+		xil_printf("%s:0x%08x%08x\n", register_names[i], high, low);
+		//xil_printf("%s:0x", register_names[i]);
+		//xil_printf("%08x", high);
+		//xil_printf("%08x\n", low);
 	}
 }
 
@@ -431,18 +414,37 @@ void print_v_registers()
 	get_Vregister_values(register_values);
 
 	for (int i = 0; i < 32; i++){
-		xil_printf("v%d: 0x%016llx\n", i, register_values[i]);
-		//xil_printf("\n\rv%d.d[0]: 0x%016llx", i, register_values[i][0]);
-		//xil_printf("\n\rv%d.d[1]: 0x%016llx", i, register_values[i][1]);
+		__int128_t input = register_values[i];
+		uint32_t part1, part2, part3, part4;
+
+		// Split the input value into four 32-bit parts
+		split_int128(input, &part1, &part2, &part3, &part4);
+
+		xil_printf("v%d:0x%08x%08x%08x%08x\n", i, part1, part2, part3, part4);
+		//xil_printf("v%d:0x", i);
+		//xil_printf("%08x", part1);
+		//xil_printf("%08x", part2);
+		//xil_printf("%08x", part3);
+		//xil_printf("%08x\n", part4);
 	}
 }
 
-<<<<<<< HEAD
 void printAddress(uintptr_t address)
 {
 	for (int i = -RANGE; i <= RANGE; i++)
 	{
-		xil_printf("Address:0x%08lx,Value:0x%016llx\n", (unsigned long)(address + i), *((uint64_t*)(address + i)));
+		uint64_t input = *((uint64_t*)(address + i));
+		uint32_t high, low;
+
+		// Split the input value into high and low parts
+		split_uint64(input, &high, &low);
+
+		xil_printf("Address:0x%08x,Value:0x%08x%08x\n",(uint32_t) (address + i), high, low);
+		//xil_printf("Address:0x");
+		//xil_printf("%08x",(uint32_t) (address + i));
+		//xil_printf(",Value:0x");
+		//xil_printf("%08x", high);
+		//xil_printf("%08x\n", low);
 	}
 }
 
@@ -453,8 +455,10 @@ void print_data(uintptr_t addresses[], int size)
 	{
 		if (addresses[i] == 0)
 			break;
-		xil_printf("Address:0x%08lx\n", addresses[i]);
-		printAddress(addresses[i]);
+		xil_printf("Address:0x%08x\n", addresses[i]);
+		//xil_printf("Address:0x");
+		//xil_printf("%08x\n", addresses[i]);
+		//printAddress(addresses[i]);
 	}
 }
 
@@ -467,32 +471,18 @@ int get_index(uintptr_t addresses[], int size)
 	}
 
 	return size;
-=======
-void print_sp_register()
-{
-	uint64_t value = get_SPregister_value();
-	xil_printf("SP:0x%016llx\n", value);
->>>>>>> main
 }
 
 void exception_handler()
 {
-<<<<<<< HEAD
 
 	uintptr_t addresses[SIZE] = {0};
 	xil_printf("\nSTART\n"); // send start signal
 	print_x_sp_pc_registers(addresses, SIZE);
-=======
-	xil_printf("\nSTART\n"); // send start signal
-	print_stack(baseAddress, size);
-    xil_printf("STACK_END\n"); // end stack delimiter
-	print_x_registers();
->>>>>>> main
 	print_32_bit_system_registers();
 	print_gicr_registers();
 	print_64_bit_system_registers();
 	print_v_registers();
-<<<<<<< HEAD
 	xil_printf("REGISTER_END\n"); // end stack delimiter
 	print_stack(addresses, SIZE);
     xil_printf("STACK_END\n"); // end stack delimiter
@@ -501,9 +491,4 @@ void exception_handler()
 	for(;;){
 
 	}
-=======
-	print_sp_register();
-	xil_printf("END\n"); // send end signal
-	//synchronous_interrupt_handler();
->>>>>>> main
 }
