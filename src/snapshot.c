@@ -37,10 +37,10 @@ void split_uint64(uint64_t input, uint32_t *high, uint32_t *low)
 void split_int128(__int128_t input, uint32_t *part1, uint32_t *part2, uint32_t *part3, uint32_t *part4)
 {
     // Extract each 32-bit segment
-    *part1 = (uint32_t)(input & 0xFFFFFFFF);
-    *part2 = (uint32_t)((input >> 32) & 0xFFFFFFFF);
-    *part3 = (uint32_t)((input >> 64) & 0xFFFFFFFF);
-    *part4 = (uint32_t)((input >> 96) & 0xFFFFFFFF);
+    *part4 = (uint32_t)(input & 0xFFFFFFFF);
+    *part3 = (uint32_t)((input >> 32) & 0xFFFFFFFF);
+    *part2 = (uint32_t)((input >> 64) & 0xFFFFFFFF);
+    *part1 = (uint32_t)((input >> 96) & 0xFFFFFFFF);
 }
 
 int valid_address(uintptr_t address, int j, int addressesSize)
