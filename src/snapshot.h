@@ -3,6 +3,7 @@
 
 #include "xil_printf.h"
 
+<<<<<<< HEAD
 extern uint64_t registers[32]; // Declaration of registers array
 
 // Linker Symbols
@@ -35,13 +36,27 @@ extern void exception_startup(void);
 void printStack(uintptr_t baseAddress, size_t size, uintptr_t addresses[], int addressesSize);
 int valid_address(uintptr_t address, int j, int addressesSize);
 void print_x_sp_pc_registers(uintptr_t addresses[], int addressesSize);
+=======
+extern uintptr_t baseAddress;  // Declaration of baseAddress
+extern size_t size;            // Declaration of size
+extern void (*synchronous_interrupt_handler)(void);
+
+void set_exception_vector_table_entry(void* table_entry_address, uint32_t branch_instruction);
+void start_up();
+void printStack(uintptr_t baseAddress, size_t size);
+void printXRegisters();
+>>>>>>> main
 void print32BitSystemRegisters();
 void printGICRRegisters();
 void print64BitSystemRegisters();
 void printVRegisters();
+<<<<<<< HEAD
 void printAddress(uintptr_t address);
 void print_data(uintptr_t addresses[], int size);
 int get_index(uintptr_t addresses[], int size);
+=======
+void printSPRegister();
+>>>>>>> main
 void exception_handler();
 
 #endif

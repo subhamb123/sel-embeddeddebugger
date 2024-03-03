@@ -1,4 +1,5 @@
 #include "snapshot.h"
+<<<<<<< HEAD
 
 uint64_t registers[32] = {0};      		// Definition of registers
 
@@ -134,6 +135,89 @@ void print_x_sp_pc_registers(uintptr_t addresses[], int addressesSize)
 
 	// Print SP register from x29
 	xil_printf("SP:0x%016llx\n", registers[29]);
+=======
+void (*synchronous_interrupt_handler)(void); // Define the function pointer variable
+
+uintptr_t baseAddress = 0x000c0c0;  // Definition of baseAddress
+size_t size = 12288;                // Definition of size
+
+
+void set_exception_vector_table_entry(void* table_entry_address, uint32_t branch_instruction) {
+    // Store the branch instruction in the table entry
+    // Use inline assembly to do this
+    asm volatile (
+        "str %0, [%1]\n"  // Store the branch instruction into the table entry
+        :
+        : "r" (branch_instruction), "r" (table_entry_address)
+    );
+}
+
+void start_up()
+{
+	void* handler_address = (void*)(&exception_handler);
+
+	// Get the address of the Exception Vector Table
+	void* vector_table_address = get_vbar_el1_register_value(); // Obtain the address of the vector table
+
+	// Set the offset to +0x200
+	uintptr_t table_offset = 0x200;
+
+	// Calculate the address of the specific exception entry in the table
+	void* entry_address = vector_table_address + table_offset;
+
+	// Get original branch instruction
+	uint32_t original_branch = *((uint32_t*)entry_address);
+
+	// Extract offset
+	uint32_t original_handler_offset = original_branch & 0x03FFFFFF;
+
+	// Get Address of Original Handler
+	uint32_t original_address = original_handler_offset * 4 + entry_address;
+
+	// Set functionPointer to Original Handler
+	synchronous_interrupt_handler = (void (*)(void))original_address;
+
+
+	// Calculate the offset for the branch instruction
+	uintptr_t branch_offset = ((uintptr_t)handler_address - (uintptr_t)entry_address)/4;
+
+	// Create the branch instruction (B opcode is 0x14) with the offset
+	uint32_t branch_instruction = 0x14000000 | (branch_offset & 0x03FFFFFF);
+
+	// Set the branch instruction in the exception vector table entry
+	set_exception_vector_table_entry(entry_address, branch_instruction);
+
+}
+
+void print_stack(uintptr_t baseAddress, size_t size)
+{
+    // Declare a pointer to an unsigned integer (assuming 4 bytes per word)
+    unsigned int *ptr = (unsigned int *)baseAddress;
+
+    // Iterate through the stack memory and print each value
+    for (size_t i = 0; i < size / sizeof(unsigned int); ++i) {
+        // Print the value at the current memory location
+        xil_printf("Address:0x%08lx,Value:0x%08x\n", (unsigned long)(ptr + i), *(ptr + i));
+    }
+}
+
+void print_x_registers()
+{
+	// Allocate memory for register values
+	uint64_t register_values[31];
+
+	// Get X0 and X1 respectively
+	register_values[0] = get_x0register_value();
+	register_values[1] = get_x1register_value();
+
+	// Get X2-x30 values
+	get_Xregister_values(register_values + 2);
+
+	// Print register values along with their names
+	for (int i = 0; i < 31; ++i) {
+		xil_printf("r%d:0x%016llx\n", i, register_values[i]);
+	}
+>>>>>>> main
 }
 
 void print_32_bit_system_registers()
@@ -353,6 +437,7 @@ void print_v_registers()
 	}
 }
 
+<<<<<<< HEAD
 void printAddress(uintptr_t address)
 {
 	for (int i = -RANGE; i <= RANGE; i++)
@@ -382,18 +467,32 @@ int get_index(uintptr_t addresses[], int size)
 	}
 
 	return size;
+=======
+void print_sp_register()
+{
+	uint64_t value = get_SPregister_value();
+	xil_printf("SP:0x%016llx\n", value);
+>>>>>>> main
 }
 
 void exception_handler()
 {
+<<<<<<< HEAD
 
 	uintptr_t addresses[SIZE] = {0};
 	xil_printf("\nSTART\n"); // send start signal
 	print_x_sp_pc_registers(addresses, SIZE);
+=======
+	xil_printf("\nSTART\n"); // send start signal
+	print_stack(baseAddress, size);
+    xil_printf("STACK_END\n"); // end stack delimiter
+	print_x_registers();
+>>>>>>> main
 	print_32_bit_system_registers();
 	print_gicr_registers();
 	print_64_bit_system_registers();
 	print_v_registers();
+<<<<<<< HEAD
 	xil_printf("REGISTER_END\n"); // end stack delimiter
 	print_stack(addresses, SIZE);
     xil_printf("STACK_END\n"); // end stack delimiter
@@ -402,4 +501,9 @@ void exception_handler()
 	for(;;){
 
 	}
+=======
+	print_sp_register();
+	xil_printf("END\n"); // send end signal
+	//synchronous_interrupt_handler();
+>>>>>>> main
 }
