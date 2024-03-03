@@ -2,6 +2,10 @@
 .global exception_startup
 .extern registers
 
+.macro MRS_REG reg_name, dest
+    MRS \dest, \reg_name
+.endm
+
 exception_startup:
     // Load registers x29 and x30 from the stack
     ldp     x29, x30, [sp], #16
@@ -46,6 +50,10 @@ exception_startup:
 
     // Store x0 and x1 to registers[0] and registers[1] using stp
     stp     x0, x1, [x2]             // Write x0 and x1 to registers[0] and registers[1]
+
+    // Store pc
+    MRS_REG ELR_EL3, x0   // Get PC from elr_el3
+    str x0, [x2, #31*8]
 
     // Branch to the exception_handler() function
     adr     x0, exception_handler    // Load the address of exception_handler() into x0

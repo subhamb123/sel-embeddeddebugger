@@ -1,6 +1,6 @@
 #include "snapshot.h"
 
-uint64_t registers[31] = {0};      		// Definition of registers
+uint64_t registers[32] = {0};      		// Definition of registers
 
 // Linker file symbol values definitions
 
@@ -108,15 +108,22 @@ void print_stack(uintptr_t addresses[], int addressesSize)
 }
 
 
-void print_x_registers(uintptr_t addresses[], int addressesSize)
+void print_x_sp_pc_registers(uintptr_t addresses[], int addressesSize)
 {
 
 	// Get iterator for addresses
 	int j = get_index(addresses, addressesSize);
 
 	// Print register values along with their names
-	for (int i = 0; i < 31; ++i) {
-		xil_printf("r%d:0x%016llx\n", i, registers[i]);
+	for (int i = 0; i < 32; ++i) {
+
+		if (i == 31){
+			xil_printf("PC:0x%016llx\n", registers[i]);
+		}
+
+		else{
+			xil_printf("r%d:0x%016llx\n", i, registers[i]);
+		}
 
 		if (valid_address(registers[i], j, addressesSize))
 		{
@@ -124,6 +131,9 @@ void print_x_registers(uintptr_t addresses[], int addressesSize)
 			j++;
 		}
 	}
+
+	// Print SP register from x29
+	xil_printf("SP:0x%016llx\n", registers[29]);
 }
 
 void print_32_bit_system_registers()
@@ -343,21 +353,6 @@ void print_v_registers()
 	}
 }
 
-void print_sp_register(uintptr_t addresses[], int addressesSize)
-{
-	uint64_t value = get_SPregister_value();
-	xil_printf("SP:0x%016llx\n", value);
-
-	// Get iterator for addresses
-	int j = get_index(addresses, addressesSize);
-
-	if (valid_address(value, j, addressesSize))
-	{
-		addresses[j] = value;
-	}
-
-}
-
 void printAddress(uintptr_t address)
 {
 	for (int i = -RANGE; i <= RANGE; i++)
@@ -394,12 +389,11 @@ void exception_handler()
 
 	uintptr_t addresses[SIZE] = {0};
 	xil_printf("\nSTART\n"); // send start signal
-	print_x_registers(addresses, SIZE);
+	print_x_sp_pc_registers(addresses, SIZE);
 	print_32_bit_system_registers();
 	print_gicr_registers();
 	print_64_bit_system_registers();
 	print_v_registers();
-	print_sp_register(addresses, SIZE);
 	xil_printf("REGISTER_END\n"); // end stack delimiter
 	print_stack(addresses, SIZE);
     xil_printf("STACK_END\n"); // end stack delimiter

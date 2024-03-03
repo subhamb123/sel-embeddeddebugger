@@ -3,7 +3,7 @@
 
 #include "xil_printf.h"
 
-extern uint64_t registers[31]; // Declaration of registers array
+extern uint64_t registers[32]; // Declaration of registers array
 
 // Linker Symbols
 extern const int __data_start;
@@ -34,12 +34,11 @@ extern void exception_startup(void);
 
 void printStack(uintptr_t baseAddress, size_t size, uintptr_t addresses[], int addressesSize);
 int valid_address(uintptr_t address, int j, int addressesSize);
-void printXRegisters(uintptr_t addresses[], int addressesSize);
+void print_x_sp_pc_registers(uintptr_t addresses[], int addressesSize);
 void print32BitSystemRegisters();
 void printGICRRegisters();
 void print64BitSystemRegisters();
 void printVRegisters();
-void printSPRegister(uintptr_t addresses[], int addressesSize);
 void printAddress(uintptr_t address);
 void print_data(uintptr_t addresses[], int size);
 int get_index(uintptr_t addresses[], int size);
