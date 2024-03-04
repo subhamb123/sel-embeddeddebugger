@@ -157,7 +157,17 @@ def generate_stack_tcl():
     # Write tcl script
     with open ("write_stack.tcl", 'w') as f:
         script = f'''# Open the file for reading
-set file [open "{path}" r]
+
+# Open the file for reading
+set filename "{path}"
+set file [open $filename r]
+if {{[catch {{open $filename r}} file]}} {{
+    puts "Error: Unable to open file $filename"
+    exit 1
+}}
+
+# Initialize base address
+set base_address ""
 
 # Create List
 
@@ -165,17 +175,33 @@ set values {{}}
 # Read each line from the file
 while {{[gets $file line] != -1}} {{
     # Use regular expressions to extract address and value
-    if {{[regexp {{Address:0x[0-9A-Fa-f]+,Value:0x([0-9A-Fa-f]+)}} $line match valueHex]}} {{
+    if {{[regexp {{Address:0x([0-9A-Fa-f]+),Value:0x([0-9A-Fa-f]+)}} $line - addressHex valueHex]}} {{
         # Convert hex strings to integers
         set valueInt [scan $valueHex %x]
         lappend values $valueInt
+
+        # If base address is not set, set it to the first address encountered
+        if {{$base_address eq ""}} {{
+            set addressInt [scan $addressHex %x]
+            set base_address $addressInt
+
+        }}
 
     }} else {{
         puts "Error: Invalid line format - $line"
     }}
 }}
 
-mwr 0x0000c0c0 $values
+# Close the file
+close $file
+
+# Execute the mwr command with the values
+if {{$base_address ne ""}} {{
+    mwr $base_address $values
+}} else {{
+    puts "Error: No valid addresses found in the file."
+}}
+
         '''
         f.write(script)
 
