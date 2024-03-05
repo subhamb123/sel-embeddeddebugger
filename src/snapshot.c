@@ -489,6 +489,5 @@ void exception_handler()
 	print_data(addresses, SIZE);
 	xil_printf("END\n"); // send end signal
 	for(;;){
-
 	}
 }

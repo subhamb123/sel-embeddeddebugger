@@ -10,24 +10,29 @@ if {[catch {open $filename r} file]} {
 
 # Initialize base address
 set base_address ""
+set values {}
 
 # Create List
 
-set values {}
+# Read the first line from the file separately
+if {[gets $file first_line] != -1} {
+    # Use regular expression to extract address and value
+    if {[regexp {Address:(0x[0-9A-Fa-f]+),Value:(0x[0-9A-Fa-f]+)} $first_line - addressHex valueHex]} {
+        lappend values $valueHex
+        set base_address $addressHex
+    } else {
+        puts "Error: Invalid line format - $first_line"
+    }
+} else {
+    puts "Error: Unable to read the first line from the file."
+    exit 1
+}
+
 # Read each line from the file
 while {[gets $file line] != -1} {
     # Use regular expressions to extract address and value
-    if {[regexp {Address:0x([0-9A-Fa-f]+),Value:0x([0-9A-Fa-f]+)} $line - addressHex valueHex]} {
-        # Convert hex strings to integers
-        set valueInt [scan $valueHex %x]
-        lappend values $valueInt
-
-        # If base address is not set, set it to the first address encountered
-        if {$base_address eq ""} {
-            set addressInt [scan $addressHex %x]
-            set base_address $addressInt
-
-        }
+    if {[regexp {Address:(0x[0-9A-Fa-f]+),Value:(0x[0-9A-Fa-f]+)} $line - addressHex valueHex]} {
+        lappend values $valueHex
 
     } else {
         puts "Error: Invalid line format - $line"
