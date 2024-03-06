@@ -46,59 +46,60 @@ def traceStack(registers, dataStack, symbolTable):
     
     exceptionRegDecimal = int(exceptionRegEL3, 16)
 
-    # Update this so that it checks within the range of each symbol's size instead of fixed value
-    matching_symbols = [(address, symbol) for address, symbol in symbolTable if exceptionRegDecimal - 68 <= address <= exceptionRegDecimal]
-    traceStack.extend(matching_symbols)
+    for entry in symbolTable:
+        address = entry['Address']
+        size = entry['Size']
+        #entry_address_decimal = address#int(address, 16)
+
+        if exceptionRegDecimal >= address and exceptionRegDecimal < address + size:
+            traceStack.append({'FunctionName': entry['Name'], 'Address': address})
 
     # 2. Record the value in x30 as the current function’s return program counter.
-    # X30 register is ELR_EL2 (check), or r30 (check)
-    retPC = None
     for register, value in registers:
         if register == 'r30':
             retPC = value
             break
-    
+
     # 3. Record the program counter associated with the previous stack frame using: program_counter = *(x29 + 8 bytes)
-    prevProgramCounter = None
+    reg29 = None
     for register, value in registers:
         if register == 'r29':
-            prevProgramCounter = value
+            reg29 = value
             break
+    
+    prevProgramCounter = int(reg29, 16) + 0x8
 
-    # 4. Evaluate x29 = *(x29) to make x29 point to the previous frame pointer
-    x29Value = None
-    if prevProgramCounter is not None:# and isinstance(prevProgramCounter, str):
-        # regX29Offset = prevProgramCounter + 0x8
-        regX29Offset = int(prevProgramCounter, 16) + 0x8
-        regX29Offset = hex(regX29Offset)
-        x29Value = None
-        for address, value in dataStack:
-            if address == regX29Offset:
-                x29Value = value
-                break
-        # if x29Value is not None:
-        #     traceStack.append(hex(x29Value))
+    functionReference = None
 
-    # 5. Record the program counter associated with the previous stack frame using: program_counter = *(x29 + 8 bytes)
-    # 6. Loop back to step 5 until all stack frames are processed
-    while x29Value is not None and isinstance(x29Value, str):
-        # regX29Offset = x29Value + 0x8
-        regX29Offset = int(x29Value, 16) + 0x8
-        x29Value = None
-        for address, value in dataStack:        # Addresses in dataStack are in decimal
-            if address == regX29Offset:
-                x29Value = value
-                break
-        
-        if x29Value is not None:
-            traceStack.append(hex(x29Value))
+    for entry in symbolTable:
+        address = entry['Address']
+        size = entry['Size']
+        #entry_address_decimal = address#int(address, 16)
 
+        if prevProgramCounter >= address and prevProgramCounter < address + size:
+            traceStack.append({'FunctionName': entry['Name'], 'Address': address})
+
+    
     return traceStack
 
 
+def functionLookup(symbolTable, exceptionAddress):
+    for entry in symbolTable:
+        address = entry['Address']
+        size = entry['Size']
+        #entry_address_decimal = address#int(address, 16)
+
+        if exceptionAddress >= address and exceptionAddress < address + size:
+            funtionReference = {'FunctionName': entry['Name'], 'Address': address}
+            # traceStack.append({'FunctionName': entry['Name'], 'Address': address})
+
+    return funtionReference
+
+
+
 def printTraceStack(traceStack):
-    for address, value in traceStack:
-        print(f"Address: {hex(int(address))}, Value: {value}")
+    for address, function in traceStack:
+        print(f"Address: {hex(int(address))},Function: {function}")
 
 
 def readRegistersFromFile(filepath):
@@ -126,18 +127,40 @@ def readStackFromFile(filePath):
     return stackData
 
 
-# Read address ranges, not just direct address
 def readSymbolsFromFile(filePath):
-    symbolTable = []
-    with open(filePath, 'r') as file:
-        lines = file.readlines()
-        for line in lines:
-            match = re.match(r'^\s*([0-9a-fA-F]+)\s+[glld]\s+.+\s+(\w+)$', line)
-            if match:
-                address = int(match.group(1), 16)
-                symbol = match.group(2)
-                symbolTable.append((address, symbol))
-    return symbolTable
+    # Initialize empty list for symbolTable
+    SymbolTable = []
+
+    try:
+        with open(filePath, 'r') as file:
+            for line in file:
+                # Split the line into columns using whitespace
+                columns = line.strip().split()
+
+                # Check if line has 6 entries (valid entry)
+                if len(columns) == 6:
+                    # Convert hexadecimal strings to decimal integers for easier comparison
+                    address_decimal = int(columns[0], 16)
+                    size_decimal = int(columns[4], 16)
+                    # Create a dictionary for each line and append it to the SymbolTable
+                    symbol_entry = {
+                        'Address': address_decimal,
+                        'Type': columns[1],         # Can probably be removed
+                        'Binding': columns[2],      # Can probably be removed
+                        'Section': columns[3],      # Can probably be removed
+                        'Size': size_decimal,
+                        'Name': columns[5]
+                    }
+                    SymbolTable.append(symbol_entry)
+                else:
+                    print(f"Skipping invalid line: {line}") # Print the invalid line for debugging
+
+    except FileNotFoundError:
+        print(f"Error: File not found - {filePath}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+    return SymbolTable
 
 
 def main():
@@ -146,8 +169,7 @@ def main():
     registerData = readRegistersFromFile('registers.txt')
 
     tracedStack = traceStack(registerData, stackData, symbolTable)
-    printTraceStack(tracedStack
-                    )
+    printTraceStack(tracedStack)
     # The starting address of the program
     # Modify if starting address changes - or create method to have it not matter.
     # startAddress = 0xc0c0
