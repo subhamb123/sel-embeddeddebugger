@@ -1,6 +1,14 @@
 #include "snapshot.h"
 
-uint64_t registers[32] = {0};      		// Definition of registers
+uint64_t registersx[32] = {0};      // Definition of registersx
+
+uint32_t registers32[43] = {0};		// Definition of registers32
+
+uint64_t registers64[24] = {0}; 	// Definition of registers64
+
+__int128_t registersv[32] = {0};	// Definition of registersv
+
+uint32_t registersg[141] = {0}; 	//Definition of registersg
 
 // Linker file symbol values definitions
 
@@ -143,55 +151,44 @@ void print_x_sp_pc_registers(uintptr_t addresses[], int addressesSize)
 	for (int i = 0; i < 32; ++i) {
 
 		if (i == 31){
-			uint64_t input = registers[i];
+			uint64_t input = registersx[i];
 			uint32_t high, low;
 
 			// Split the input value into high and low parts
 			split_uint64(input, &high, &low);
 
 			xil_printf("PC:0x%08x%08x\n", high, low);
-			//xil_printf("PC:0x");
-			//xil_printf("%08x", high);
-			//xil_printf("%08x\n", low);
 		}
 
 		else{
-			uint64_t input = registers[i];
+			uint64_t input = registersx[i];
 			uint32_t high, low;
 
 			// Split the input value into high and low parts
 			split_uint64(input, &high, &low);
 
 			xil_printf("r%d:0x%08x%08x\n", i, high, low);
-			//xil_printf("r%d:0x", i);
-			//xil_printf("%08x", high);
-			//xil_printf("%08x\n", low);
+
 		}
 
-		if (valid_address(registers[i], j, addressesSize))
+		if (valid_address(registersx[i], j, addressesSize))
 		{
-			addresses[j] = registers[i];
+			addresses[j] = registersx[i];
 			j++;
 		}
 	}
 
 	// Print SP register from x29
-	uint64_t input = registers[29];
+	uint64_t input = registersx[29];
 	uint32_t high, low;
 
 	// Split the input value into high and low parts
 	split_uint64(input, &high, &low);
 	xil_printf("SP:0x%08x%08x\n", high, low);
-	//xil_printf("SP:0x");
-	//xil_printf("%08x", high);
-	//xil_printf("%08x\n", low);
-
 }
 
 void print_32_bit_system_registers()
 {
-	// Allocate memory for register values
-	uint32_t register_values[43];
 
     // Array of register names
     const char* register_names[] = {
@@ -241,22 +238,14 @@ void print_32_bit_system_registers()
 
     };
 
-	// Call the assembly function and pass the array's pointer
-	get_32register_values(register_values);
-
 	// Print register values along with their names
 	for (int i = 0; i < 43; i++) {
-		xil_printf("%s:0x%08x\n", register_names[i],register_values[i]);
-		//xil_printf("%s:0x", register_names[i]);
-		//xil_printf("%08x\n", register_values[i]);
+		xil_printf("%s:0x%08x\n", register_names[i],registers32[i]);
 	}
 }
 
 void print_gicr_registers()
 {
-	// Allocate memory for register values
-	//uint32_t register_values[20];
-
     // Array of register names
     const char* register_names[] = {
     		"GICC_CTLR",
@@ -289,19 +278,11 @@ void print_gicr_registers()
 
     };
     for (int i = 0; i < 11; i++) {
-    		volatile uint32_t* addr_ptr = (volatile uint32_t*) addresses[i];
-    	    uint32_t value = *addr_ptr;
-    	    xil_printf("%s:0x%08x\n", register_names[i], value);
-    		//xil_printf("%s:0x", register_names[i]);
-    		//xil_printf("%08x\n", value);
+    				volatile uint32_t* addr_ptr = (volatile uint32_t*) addresses[i];
+    	    	    uint32_t value = *addr_ptr;
+    	    	    xil_printf("%s:0x%08x\n", register_names[i], value);
+    	    //xil_printf("%s:0x%08x\n", register_names[i], registersg[i]);
         }
-	// Call the assembly function and pass the array's pointer
-	//get_GICRregister_values(register_values);
-
-	// Print register values along with their names
-	//for (int i = 0; i < 20; ++i) {
-	//	xil_printf("\n\r%s: 0x%08x\n", register_names[i], register_values[i]);
-	//}
 
     // Print out the non-singular registers
 
@@ -346,8 +327,6 @@ void print_gicr_registers()
         		for (int j = 0; j < range[i]; j++) {
         			uint32_t value = *(base_addr_ptr + (j));
         			xil_printf("%sR%d:0x%08x\n", register_names_multiple[i], j, value);
-        			//xil_printf("%sR%d:0x", register_names_multiple[i], j);
-        			//xil_printf("%08x\n", value);
         		}
 
             }
@@ -355,9 +334,6 @@ void print_gicr_registers()
 
 void print_64_bit_system_registers()
 {
-	// Allocate memory for register values
-	uint64_t register_values[24];
-
     // Array of register names
     const char* register_names[] = {
 
@@ -388,44 +364,30 @@ void print_64_bit_system_registers()
 
     };
 
-	// Call the assembly function and pass the array's pointer
-	get_64register_values(register_values);
-
 	// Print register values along with their names
 	for (int i = 0; i < 24; i++) {
-		uint64_t input = register_values[i];
+		uint64_t input = registers64[i];
 		uint32_t high, low;
 
 		// Split the input value into high and low parts
 		split_uint64(input, &high, &low);
 
 		xil_printf("%s:0x%08x%08x\n", register_names[i], high, low);
-		//xil_printf("%s:0x", register_names[i]);
-		//xil_printf("%08x", high);
-		//xil_printf("%08x\n", low);
 	}
 }
 
 void print_v_registers()
 {
-	// Allocate memory for register values
-	//uint64_t register_values[32][2];
-	__int128_t register_values[32];
-	get_Vregister_values(register_values);
 
 	for (int i = 0; i < 32; i++){
-		__int128_t input = register_values[i];
+		__int128_t input = registersv[i];
 		uint32_t part1, part2, part3, part4;
 
 		// Split the input value into four 32-bit parts
 		split_int128(input, &part1, &part2, &part3, &part4);
 
 		xil_printf("v%d:0x%08x%08x%08x%08x\n", i, part1, part2, part3, part4);
-		//xil_printf("v%d:0x", i);
-		//xil_printf("%08x", part1);
-		//xil_printf("%08x", part2);
-		//xil_printf("%08x", part3);
-		//xil_printf("%08x\n", part4);
+
 	}
 }
 
@@ -440,11 +402,6 @@ void printAddress(uintptr_t address)
 		split_uint64(input, &high, &low);
 
 		xil_printf("Address:0x%08x,Value:0x%08x%08x\n",(uint32_t) (address + i), high, low);
-		//xil_printf("Address:0x");
-		//xil_printf("%08x",(uint32_t) (address + i));
-		//xil_printf(",Value:0x");
-		//xil_printf("%08x", high);
-		//xil_printf("%08x\n", low);
 	}
 }
 
@@ -456,9 +413,6 @@ void print_data(uintptr_t addresses[], int size)
 		if (addresses[i] == 0)
 			break;
 		xil_printf("Address:0x%08x\n", addresses[i]);
-		//xil_printf("Address:0x");
-		//xil_printf("%08x\n", addresses[i]);
-		//printAddress(addresses[i]);
 	}
 }
 

@@ -3,7 +3,15 @@
 
 #include "xil_printf.h"
 
-extern uint64_t registers[32]; // Declaration of registers array
+extern uint64_t registers[32]; 		// Declaration of registers array
+
+extern uint32_t registers32[43];	// Declaration of registers32
+
+extern uint64_t registers64[24]; 	// Declaration of registers64
+
+extern __int128_t registersv[32];	// Declaration of registersv
+
+extern uint32_t registersg[141]; 	// Declaration of registersg
 
 // Linker Symbols
 extern const int __data_start;
