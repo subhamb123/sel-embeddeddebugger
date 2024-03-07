@@ -35,7 +35,7 @@ def functionLookup(symbolTable, exceptionAddress):
         #entry_address_decimal = address#int(address, 16)
 
         if exceptionAddress >= address and exceptionAddress < address + size:
-            funtionReference = {'FunctionName': entry['Name'], 'Address': address}
+            funtionReference = {'functionName': entry['Name'], 'Address': address}
             # traceStack.append({'FunctionName': entry['Name'], 'Address': address})
 
     return funtionReference
@@ -91,10 +91,12 @@ def traceStack(registers, dataStack, symbolTable):
 
 
 def printTraceStack(traceStack):
-    for address, function in traceStack:
-       pass
-       #print(f"Address: {hex(int(address))},Function: {function}")
-
+    print("Trace Stack:")
+    for stackEntry in traceStack:
+        functionName = stackEntry.get('functionName', 'Unknown')
+        address = stackEntry.get('Address', 'Unknown')
+        print(f"{functionName}: (0x{address:08X})")
+        
 
 def readRegistersFromFile(filepath):
     registerList = []
