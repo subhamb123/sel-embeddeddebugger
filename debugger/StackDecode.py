@@ -5,6 +5,7 @@ import struct
 import subprocess
 import re
 
+
 '''
 Here is a checklist of requirements need to implement the stack decoder:
 
@@ -26,62 +27,6 @@ The steps below can be used to implement the parser. For every program counter w
     6. Loop back to step 5 until all stack frames are processed
 '''
 
-def traceStack(registers, dataStack, symbolTable):
-
-    traceStack = []
-
-    # 1. Record the value in the exception link register as the faulted program counter.
-    # Exception link register is ELR_EL3 (check)
-    exceptionRegEL3 = None
-    exceptionRegEL2 = None
-    exceptionRegEL1 = None
-    for register, value in registers:
-        if register == 'ELR_EL3':
-            exceptionRegEL3 = value
-            # break
-        if register == 'ELR_EL2':
-            exceptionRegEL2 = value
-        if register == 'ELR_EL1':
-            exceptionRegEL1 = value
-    
-    exceptionRegDecimal = int(exceptionRegEL3, 16)
-
-    for entry in symbolTable:
-        address = entry['Address']
-        size = entry['Size']
-        #entry_address_decimal = address#int(address, 16)
-
-        if exceptionRegDecimal >= address and exceptionRegDecimal < address + size:
-            traceStack.append({'FunctionName': entry['Name'], 'Address': address})
-
-    # 2. Record the value in x30 as the current function’s return program counter.
-    for register, value in registers:
-        if register == 'r30':
-            retPC = value
-            break
-
-    # 3. Record the program counter associated with the previous stack frame using: program_counter = *(x29 + 8 bytes)
-    reg29 = None
-    for register, value in registers:
-        if register == 'r29':
-            reg29 = value
-            break
-    
-    prevProgramCounter = int(reg29, 16) + 0x8
-
-    functionReference = None
-
-    for entry in symbolTable:
-        address = entry['Address']
-        size = entry['Size']
-        #entry_address_decimal = address#int(address, 16)
-
-        if prevProgramCounter >= address and prevProgramCounter < address + size:
-            traceStack.append({'FunctionName': entry['Name'], 'Address': address})
-
-    
-    return traceStack
-
 
 def functionLookup(symbolTable, exceptionAddress):
     for entry in symbolTable:
@@ -96,10 +41,59 @@ def functionLookup(symbolTable, exceptionAddress):
     return funtionReference
 
 
+def stackLookup(stackData, addressRef):
+    for address, value in stackData:
+        if address == addressRef:
+            return value
+    return None
+
+
+def registerLookup(registerData, registerName):
+    for register, value in registerData:
+        if register == registerName:
+            return value
+    return None
+
+
+def traceStack(registers, dataStack, symbolTable):
+
+    traceStack = []
+
+    # 1. Record the value in the exception link register as the faulted program counter.
+    # Exception link register is ELR_EL3 (check)
+    exceptionRegEL3 = registerLookup(registers, 'ELR_EL3')  # Finds address 0xE28
+    #exceptionRegEL2 = registerLookup(registers, 'ELR_EL2')
+    #exceptionRegEL1 = registerLookup(registers, 'ELR_EL1')
+
+    exceptionRegDecimal = int(exceptionRegEL3, 16)  # ELR_EL3 is E28, which is within bar, which calls foo
+    funtionReference = functionLookup(symbolTable, exceptionRegDecimal)
+    traceStack.append(funtionReference)
+
+    # 2. Record the value in x30 as the current function’s return program counter.
+    retPC = registerLookup(registers, 'r30')
+
+    # 3. Record the program counter associated with the previous stack frame using: program_counter = *(x29 + 8 bytes)
+    reg29 = registerLookup(registers, 'r29')    # finds 0x1E1B0
+    reg29 = int(reg29, 16)
+    prevProgramCounter = reg29 + 0x8   # increments to 0x1E1B8
+
+    functRef = stackLookup(dataStack, prevProgramCounter)
+
+    # Continue tracing stack until a stack value '0' is hit
+    while stackLookup(dataStack, reg29) != 0:
+        functRef = functionLookup(symbolTable, functRef)
+        traceStack.append(functRef)
+        reg29 = stackLookup(dataStack, reg29)  # 0x1E1D0 / 123344
+        prevProgramCounter = reg29 + 8                  # 0x1E1D8 / 123352
+        functRef = stackLookup(dataStack, prevProgramCounter)
+
+    return traceStack
+
 
 def printTraceStack(traceStack):
     for address, function in traceStack:
-        print(f"Address: {hex(int(address))},Function: {function}")
+       pass
+       #print(f"Address: {hex(int(address))},Function: {function}")
 
 
 def readRegistersFromFile(filepath):
@@ -153,7 +147,8 @@ def readSymbolsFromFile(filePath):
                     }
                     SymbolTable.append(symbol_entry)
                 else:
-                    print(f"Skipping invalid line: {line}") # Print the invalid line for debugging
+                    pass
+                    #print(f"Skipping invalid line: {line}") # Print the invalid line for debugging
 
     except FileNotFoundError:
         print(f"Error: File not found - {filePath}")
@@ -170,16 +165,6 @@ def main():
 
     tracedStack = traceStack(registerData, stackData, symbolTable)
     printTraceStack(tracedStack)
-    # The starting address of the program
-    # Modify if starting address changes - or create method to have it not matter.
-    # startAddress = 0xc0c0
-
-    # decodedStack = decodeStack(stackData, symbolTable, startAddress)
-
-    # # Print the stacks to files
-    # with open('decoded.txt', 'w') as outputFile:
-    #     for address, functionName in decodedStack:
-    #         outputFile.write(f"Address: 0x{address:08X}, Function: {functionName}\n")
 
 
 if __name__ == "__main__":
