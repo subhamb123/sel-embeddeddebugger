@@ -1,7 +1,7 @@
 # source C:/Users/deoch/Documents/sel-embeddeddebugger/debugger/read_stack.tcl
 # Set the base address and size of the stack memory region
 set STACK_BASE_ADDRESS 0x01C240
-set STACK_SIZE 0x900
+set STACK_SIZE 0x3000
 
 # Read stack memory from the board
 proc readStackMemory {baseAddress size} {
