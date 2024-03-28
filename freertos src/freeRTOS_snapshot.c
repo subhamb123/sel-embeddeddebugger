@@ -228,10 +228,12 @@ void print_x_sp_pc_registers(uintptr_t addresses[], enum section type[], int add
 			xil_printf("r%d:0x%08x%08x\n", i, high, low);
 
 		}
+		enum section current_type = valid_address(registersx[i], j, addressesSize);
 
-		if (valid_address(registersx[i], j, addressesSize))
+		if (current_type != INVALID)
 		{
 			addresses[j] = registersx[i];
+			type[j] = current_type;
 			j++;
 		}
 	}
