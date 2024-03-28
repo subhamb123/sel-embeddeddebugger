@@ -178,7 +178,7 @@ void print_stack(uintptr_t addresses[], enum section type[], int addressesSize)
 }
 
 
-void print_x_sp_pc_registers(uintptr_t addresses[], int addressesSize)
+void print_x_sp_pc_registers(uintptr_t addresses[], enum section type[], int addressesSize)
 {
 
 	// Get iterator for addresses
@@ -526,18 +526,19 @@ void freertos_exception_handler()
 {
 
 	uintptr_t addresses[SIZE] = {0};
+	enum section type[SIZE];
 	xil_printf("\nSTART\n"); // send start signal
-	printTasks();
+	//printTasks();
   	xil_printf("TASKS_END");
-	print_x_sp_pc_registers(addresses, SIZE);
+  	print_x_sp_pc_registers(addresses, type, SIZE);
 	print_32_bit_system_registers();
 	print_gicr_registers();
 	print_64_bit_system_registers();
 	print_v_registers();
 	xil_printf("REGISTER_END\n"); // end stack delimiter
-	print_stack(addresses, SIZE);
+	print_stack(addresses, type, SIZE);
     xil_printf("STACK_END\n"); // end stack delimiter
-	print_data(addresses, SIZE);
+    print_data(addresses, type, SIZE);
 	xil_printf("END\n"); // send end signal
 	for(;;){
 	}
