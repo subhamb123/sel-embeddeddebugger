@@ -53,6 +53,7 @@
 void foo(int a, int b) {
     volatile int local_array[5] = {1, 2, 3, 4, 5};
     printf("foo: %d %d\n", a, b);
+	bar();
 }
 
 void bar() {
@@ -69,7 +70,6 @@ int main()
     volatile int x = 10;
     volatile int y = 20;
 	foo(x, y);
-	bar();
 	volatile int dynamic_array[3] = {100, 200, 300};
     //*((int*) 0xFFFFFFFF) = 42; // throw exception
     cleanup_platform();

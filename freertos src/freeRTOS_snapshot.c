@@ -84,7 +84,7 @@ void split_int128(__int128_t input, uint32_t *part1, uint32_t *part2, uint32_t *
     *part1 = (uint32_t)((input >> 96) & 0xFFFFFFFF);
 }
 
-int valid_address(uintptr_t address, int j, int addressesSize)
+enum section valid_address(uintptr_t address, int j, int addressesSize)
 {
 	// Get stack size
 	uint64_t stack_size = el3_stack_size + el2_stack_size + el1_stack_size + el0_stack_size;
@@ -92,56 +92,56 @@ int valid_address(uintptr_t address, int j, int addressesSize)
 
 	if (j >= addressesSize) // no more room
 		{
-			return 0;
+			return INVALID;
 		}
 
 	if (address >=data_start  && address < data_end) // in data
 	{
-		return 1;
+		return DATA;
 	}
 
 	if (address >=sdata_start  && address < sdata_end) // in sdata
 	{
-		return 1;
+		return SDATA;
 	}
 
 	if (address >=sbss_start  && address < sbss_end) // in sbss
 	{
-		return 1;
+		return SBSS;
 	}
 
 	if (address >=tdata_start  && address < tdata_end) // in tdata
 	{
-		return 1;
+		return TDATA;
 	}
 
 	if (address >=tbss_start  && address < tbss_end) // in tbss
 	{
-		return 1;
+		return TBSS;
 	}
 
 	if (address >=bss_start  && address < bss_end) // in bss
 	{
-		return 1;
+		return BSS;
 	}
 
 	if (address >=heap_start  && address < heap_end) // in heap
 	{
-		return 1;
+		return HEAP;
 	}
 
 	if (address >=stack_start  && address < (stack_start + stack_size)) // in stack
 	{
-		return 1;
+		return STACK;
 	}
 
-	return 0; // not valid
+	return INVALID; // not valid
 }
 
-void print_stack(uintptr_t addresses[], int addressesSize)
+void print_stack(uintptr_t addresses[], enum section type[], int addressesSize)
 {
     // Declare a pointer to an unsigned integer (assuming 4 bytes per word)
-    unsigned int *ptr = (unsigned int *)stack_start;
+	uint64_t *ptr = (uint64_t *)stack_start;
 
     // Get stack size
     uint64_t stack_size = el3_stack_size + el2_stack_size + el1_stack_size + el0_stack_size;
@@ -155,19 +155,23 @@ void print_stack(uintptr_t addresses[], int addressesSize)
     // Iterate through the stack memory and print each value
     while ((uintptr_t)ptr < stack_end) {
         // Print the value at the current memory location
-    	xil_printf("Address:0x%08x,Value:0x%08x\n",(uint32_t) ptr, *ptr);
-		//xil_printf("Address:0x");
-		//xil_printf("%08x",(uint32_t) ptr);
-		//xil_printf(",Value:0x");
-		//xil_printf("%08x\n", *ptr);
 
+    	uint64_t input = *ptr;
+		uint32_t high, low;
 
+		// Split the input value into high and low parts
+		split_uint64(input, &high, &low);
 
-        if (valid_address(*ptr, j, addressesSize))
-        {
-        	addresses[j] = *ptr;
-        	j++;
-        }
+		xil_printf("Address:0x%08x,Value:0x%08x%08x\n",(uint32_t) ptr, high, low);
+
+    	enum section current_type = valid_address(*ptr, j, addressesSize);
+
+		if (current_type != INVALID)
+		{
+			addresses[j] = *ptr;
+			type[j] = current_type;
+			j++;
+		}
 
         ptr++;
     }
@@ -424,9 +428,15 @@ void print_v_registers()
 	}
 }
 
-void printAddress(uintptr_t address)
+void printAddress(uintptr_t address, int i, enum section sec)
 {
-	for (int i = -RANGE; i <= RANGE; i++)
+	int low;
+	int high;
+
+	get_range((uint32_t) address, sec, &low, &high);
+
+
+	for (int i = low; i <= high - 8; i+= 8)
 	{
 		uint64_t input = *((uint64_t*)(address + i));
 		uint32_t high, low;
@@ -438,14 +448,15 @@ void printAddress(uintptr_t address)
 	}
 }
 
-void print_data(uintptr_t addresses[], int size)
+void print_data(uintptr_t addresses[], enum section type[], int addressesSize)
 {
-	int j = get_index(addresses, size);
+	int j = get_index(addresses, addressesSize);
 	for (int i = 0; i < j; i++)
 	{
 		if (addresses[i] == 0)
 			break;
 		xil_printf("Address:0x%08x\n", addresses[i]);
+		printAddress(addresses[i], i, type[i]);
 	}
 }
 
@@ -458,6 +469,57 @@ int get_index(uintptr_t addresses[], int size)
 	}
 
 	return size;
+}
+
+void get_range(uint32_t address,enum section sec, int *low, int *high)
+{
+	int low_range = address - RANGE;
+	int high_range = address + RANGE;
+	switch (sec) {
+	        case DATA:
+	        	* low = (low_range >= __data_start) ? -RANGE : __data_start - address;
+	            * high = (high_range <= __data_end) ? RANGE : __data_end - address;
+	            break;
+	        case SDATA:
+	        	* low = (low_range >= __sdata_start) ? -RANGE : __sdata_start - address;
+	        	* high = (high_range <= __sdata_end) ? RANGE : __sdata_end - address;
+	            break;
+	        case SBSS:
+	        	* low = (low_range >= __sbss_start) ? -RANGE : __sbss_start - address;
+				* high = (high_range <= __sbss_end) ? RANGE : __sbss_end - address;
+	            break;
+	        case TDATA:
+	        	* low = (low_range >= __tdata_start) ? -RANGE : __tdata_start - address;
+				* high = (high_range <= __tdata_end) ? RANGE : __tdata_end - address;
+	            break;
+	        case TBSS:
+	        	* low = (low_range >= __tbss_start) ? -RANGE : __tbss_start - address;
+				* high = (high_range <= __tbss_end) ? RANGE : __tbss_end - address;
+	            break;
+	        case BSS:
+	        	* low = (low_range >= __bss_start__) ? -RANGE : __bss_start__ - address;
+				* high = (high_range <= __bss_end__) ? RANGE : __bss_end__ - address;
+	            break;
+	        case HEAP:
+	        	* low = (low_range >= _heap_start) ? -RANGE : _heap_start - address;
+				* high = (high_range <= _heap_end) ? RANGE : _heap_end - address;
+	            break;
+	        case STACK:
+	        	// Get stack size
+				uint64_t stack_size = el3_stack_size + el2_stack_size + el1_stack_size + el0_stack_size;
+
+				// Get stack end pointer
+				uintptr_t stack_end = stack_start + stack_size;
+
+				* low = (low_range >= stack_start) ? -RANGE : stack_start - address;
+				* high = (high_range <= stack_end) ? RANGE : stack_end - address;
+	            break;
+	        case INVALID:
+	        default:
+	        	*low = 0;
+	        	*high = 0;
+	            break;
+	    }
 }
 
 void freertos_exception_handler()

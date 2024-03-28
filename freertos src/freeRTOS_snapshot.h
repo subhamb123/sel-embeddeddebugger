@@ -41,6 +41,21 @@ extern const int _EL2_STACK_SIZE;
 extern const int _EL1_STACK_SIZE;
 extern const int _EL0_STACK_SIZE;
 
+// section type for data dump
+
+// Define an enumerated type with 8 types
+enum section {
+    DATA,
+    SDATA,
+    SBSS,
+    TDATA,
+    TBSS,
+    BSS,
+    HEAP,
+    STACK,
+	INVALID
+};
+
 
 extern void freertos_exception_startup(void);
 
@@ -60,6 +75,7 @@ void printVRegisters();
 void printAddress(uintptr_t address);
 void print_data(uintptr_t addresses[], int size);
 int get_index(uintptr_t addresses[], int size);
+void get_range(uint32_t address, enum section sec, int *low, int *high);
 void exception_handler();
 
 #endif
