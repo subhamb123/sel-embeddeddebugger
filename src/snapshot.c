@@ -61,6 +61,10 @@ enum section valid_address(uintptr_t address, int j, int addressesSize)
 		{
 			return INVALID;
 		}
+	if ((address % 0x8) != 0) // not aligned
+	{
+		return INVALID;
+	}
 
 	if (address >=data_start  && address < data_end) // in data
 	{

@@ -92,6 +92,18 @@ def write_output(recieved_data):
         for item in recieved_data[i+1:]:
             if (item == ""):
                 continue
+            if (item == "DATA_END"):
+                i += 2
+                break
+            f.write("\n")
+            f.write(item)
+            i += 1
+            
+    with open("tasks.txt", 'w') as f:
+        f.write(recieved_data[i])
+        for item in recieved_data[i+1:]:
+            if (item == ""):
+                continue
             f.write("\n")
             f.write(item)
             
@@ -249,8 +261,7 @@ def write_data():
     # Example: Send multiple commands to xsct
     commands = ["connect", "targets 9", "dow C:/Users/deoch/workspace/Project/Debug/Project.elf",
                 f"source {path}/write_registers.tcl",
-                f"source {path}/write_stack.tcl",
-                "backtrace"]
+                f"source {path}/write_stack.tcl"]
     
     for command in commands:
         print(command)

@@ -57,12 +57,28 @@ void printTasks()
 	            xil_printf("Base Priority: %u\n", taskStatusArray[x].uxBasePriority);
 	            xil_printf("Run Time Counter: %lu\n", taskStatusArray[x].ulRunTimeCounter);
 	            xil_printf("Stack Base Address: 0x%x\n", taskStatusArray[x].pxStackBase);
-	            xil_printf("Stack High Water Mark: %u\n\n", taskStatusArray[x].usStackHighWaterMark);
+	            xil_printf("Stack High Water Mark: %u\n", taskStatusArray[x].usStackHighWaterMark);
+
 	        }
 
 	        // Free the allocated memory
 	        vPortFree(taskStatusArray);
 	    }
+}
+
+void print_task_stack(uintptr_t base, uintptr_t end)
+{
+	while (end <= base)
+	{
+		uint64_t input = *((uint64_t*)(base));
+		uint32_t high, low;
+
+		// Split the input value into high and low parts
+		split_uint64(input, &high, &low);
+
+		xil_printf("Address:0x%08x,Value:0x%08x%08x\n",(uint32_t) (end), high, low);
+		end += 8;
+	}
 }
 
 void split_uint64(uint64_t input, uint32_t *high, uint32_t *low)
@@ -94,6 +110,11 @@ enum section valid_address(uintptr_t address, int j, int addressesSize)
 		{
 			return INVALID;
 		}
+
+	if ((address % 0x8) != 0) // not aligned
+	{
+		return INVALID;
+	}
 
 	if (address >=data_start  && address < data_end) // in data
 	{
@@ -528,8 +549,6 @@ void freertos_exception_handler()
 	uintptr_t addresses[SIZE] = {0};
 	enum section type[SIZE];
 	xil_printf("\nSTART\n"); // send start signal
-	//printTasks();
-  	xil_printf("TASKS_END");
   	print_x_sp_pc_registers(addresses, type, SIZE);
 	print_32_bit_system_registers();
 	print_gicr_registers();
@@ -539,6 +558,8 @@ void freertos_exception_handler()
 	print_stack(addresses, type, SIZE);
     xil_printf("STACK_END\n"); // end stack delimiter
     print_data(addresses, type, SIZE);
+    xil_printf("DATA_END\n");
+	printTasks();
 	xil_printf("END\n"); // send end signal
 	for(;;){
 	}

@@ -1,0 +1,32 @@
+Task Name: GB
+Task Number: 2
+Task State: 0
+Current Priority: 1
+Base Priority: 1
+Run Time Counter: 0
+Stack Base Address: 0x292C0
+Stack High Water Mark: 82
+Task Name: Tx
+Task Number: 1
+Task State: 1
+Current Priority: 0
+Base Priority: 0
+Run Time Counter: 0
+Stack Base Address: 0x28BA0
+Stack High Water Mark: 80
+Task Name: IDLE
+Task Number: 3
+Task State: 1
+Current Priority: 0
+Base Priority: 0
+Run Time Counter: 0
+Stack Base Address: 0x29D20
+Stack High Water Mark: 94
+Task Name: Tmr Svc
+Task Number: 4
+Task State: 2
+Current Priority: 7
+Base Priority: 7
+Run Time Counter: 0
+Stack Base Address: 0x2A440
+Stack High Water Mark: 286

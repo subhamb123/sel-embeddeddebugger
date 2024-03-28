@@ -63,6 +63,7 @@ extern void freertos_exception_startup(void);
 #define RANGE 30                      // Range of addresses
 
 void print_tasks();
+void print_task_stack(uintptr_t base, uintptr_t end);
 void split_uint64(uint64_t input, uint32_t *high, uint32_t *low);
 void split_int128(__int128_t input, uint32_t *part1, uint32_t *part2, uint32_t *part3, uint32_t *part4);
 void printStack(uintptr_t addresses[], enum section type[], int addressesSize);
