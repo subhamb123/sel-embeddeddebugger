@@ -58,6 +58,11 @@ void printTasks()
 	            xil_printf("Run Time Counter: %lu\n", taskStatusArray[x].ulRunTimeCounter);
 	            xil_printf("Stack Base Address: 0x%x\n", taskStatusArray[x].pxStackBase);
 	            xil_printf("Stack High Water Mark: %u\n", taskStatusArray[x].usStackHighWaterMark);
+	            xil_printf("Stack Size: %u\n", configMINIMAL_STACK_SIZE);
+	            xil_printf("Stack:\n");
+	            print_task_stack(taskStatusArray[x].pxStackBase);
+	            xil_printf("\n");
+
 
 	        }
 
@@ -66,18 +71,17 @@ void printTasks()
 	    }
 }
 
-void print_task_stack(uintptr_t base, uintptr_t end)
+void print_task_stack(long unsigned int base)
 {
-	while (end <= base)
+	for (int i = configMINIMAL_STACK_SIZE; i > 0; i -= 8)
 	{
-		uint64_t input = *((uint64_t*)(base));
+		uint64_t input = *((uint64_t*)(base - i));
 		uint32_t high, low;
 
 		// Split the input value into high and low parts
 		split_uint64(input, &high, &low);
 
-		xil_printf("Address:0x%08x,Value:0x%08x%08x\n",(uint32_t) (end), high, low);
-		end += 8;
+		xil_printf("Address:0x%08x,Value:0x%08x%08x\n",(uint32_t) (base - i), high, low);
 	}
 }
 
