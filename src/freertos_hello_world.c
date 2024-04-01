@@ -19,6 +19,7 @@
 /* Xilinx includes. */
 #include "xil_printf.h"
 #include "xparameters.h"
+#include "semphr.h"
 
 #define TIMER_ID	1
 #define DELAY_10_SECONDS	10000UL
@@ -29,6 +30,8 @@
 /* The Tx and Rx tasks as described at the top of this file. */
 static void prvTxTask( void *pvParameters );
 static void prvRxTask( void *pvParameters );
+static void test1(void *pvParameters);
+static void test2(void *pvParameters);
 static void vTimerCallback( TimerHandle_t pxTimer );
 /*-----------------------------------------------------------*/
 
@@ -36,10 +39,15 @@ static void vTimerCallback( TimerHandle_t pxTimer );
 file. */
 static TaskHandle_t xTxTask;
 static TaskHandle_t xRxTask;
+static TaskHandle_t test1handle;
+static TaskHandle_t test2handle;
 static QueueHandle_t xQueue = NULL;
 static TimerHandle_t xTimer = NULL;
 char HWstring[15] = "Hello World";
 long RxtaskCntr = 0;
+
+xSemaphoreHandle xSemaphore1 = NULL;
+xSemaphoreHandle xSemaphore2 = NULL;
 
 #if (configSUPPORT_STATIC_ALLOCATION == 1)
 #define QUEUE_BUFFER_SIZE		100
@@ -69,12 +77,33 @@ int main( void )
 					tskIDLE_PRIORITY,			/* The task runs at the idle priority. */
 					&xTxTask );
 
-	xTaskCreate( prvRxTask,
-				 ( const char * ) "GB",
-				 configMINIMAL_STACK_SIZE,
-				 NULL,
-				 tskIDLE_PRIORITY + 1,
-				 &xRxTask );
+	xTaskCreate( test1,
+					 ( const char * ) "test1",
+					 configMINIMAL_STACK_SIZE,
+					 NULL,
+					 tskIDLE_PRIORITY,
+					 &test1handle );
+
+	xTaskCreate( test2,
+					 ( const char * ) "test2",
+					 configMINIMAL_STACK_SIZE,
+					 NULL,
+					 tskIDLE_PRIORITY,
+					 &test2handle );
+
+//	xTaskCreate( prvRxTask,
+//					 ( const char * ) "GB",
+//					 configMINIMAL_STACK_SIZE,
+//					 NULL,
+//					 tskIDLE_PRIORITY + 3,
+//					 &xRxTask );
+
+//	xTaskCreate( prvRxTask,
+//					 ( const char * ) "test",
+//					 configMINIMAL_STACK_SIZE,
+//					 NULL,
+//					 tskIDLE_PRIORITY + 2,
+//					 &xRxTask );
 
 	/* Create the queue used by the tasks.  The Rx task has a higher priority
 	than the Tx task, so will preempt the Tx task and remove values from the
@@ -154,22 +183,40 @@ int main( void )
 /*-----------------------------------------------------------*/
 static void prvTxTask( void *pvParameters )
 {
-const TickType_t x1second = pdMS_TO_TICKS( DELAY_1_SECOND );
+//const TickType_t x1second = pdMS_TO_TICKS( DELAY_1_SECOND );
 
-	for( ;; )
-	{
-		/* Delay for 1 second. */
-		vTaskDelay( x1second );
 
-		/* Send the next value on the queue.  The queue should always be
-		empty at this point so a block time of 0 is used. */
-		xQueueSend( xQueue,			/* The queue being written to. */
-					HWstring, /* The address of the data being sent. */
-					0UL );			/* The block time. */
-	}
+//		/* Delay for 1 second. */
+	while(xSemaphore1 == NULL && xSemaphore2 == NULL)
+		taskYIELD();
+//
+//		/* Send the next value on the queue.  The queue should always be
+//		empty at this point so a block time of 0 is used. */
+//		xQueueSend( xQueue,			/* The queue being written to. */
+//					HWstring, /* The address of the data being sent. */
+//					0UL );			/* The block time. */
+
+	xil_printf("%s\r\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore1)));
+	xil_printf("%s\r\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore2)));
 }
 
 /*-----------------------------------------------------------*/
+static void test1(void *pvParameters){
+	xSemaphore1 = xSemaphoreCreateMutex();
+	xSemaphoreTake( xSemaphore1, ( TickType_t ) 10 );
+	while(xSemaphore2 == NULL)
+		taskYIELD();
+	xSemaphoreTake( xSemaphore2, ( TickType_t ) portMAX_DELAY );
+}
+
+static void test2(void *pvParameters){
+	xSemaphore2 = xSemaphoreCreateMutex();
+	xSemaphoreTake( xSemaphore2, ( TickType_t ) 10 );
+	while(xSemaphore1 == NULL)
+			taskYIELD();
+	xSemaphoreTake( xSemaphore1, ( TickType_t ) portMAX_DELAY );
+}
+
 static void prvRxTask( void *pvParameters )
 {
 char Recdstring[15] = "";
@@ -270,6 +317,8 @@ char Recdstring[15] = "";
 //		xil_printf( "Base Priority: %d\n", xTaskDetails.uxBasePriority);
 //		xil_printf( "Runtime Counter: %d\n", xTaskDetails.ulRunTimeCounter);
 //		xil_printf( "Stack Space Remaining: %d\n\n", xTaskDetails.usStackHighWaterMark);
+
+		xil_printf("%s\n", xQueueGetMutexHolder(xQueue));
 
 		RxtaskCntr=10;
 		break;
