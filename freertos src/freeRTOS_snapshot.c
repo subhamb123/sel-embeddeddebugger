@@ -73,15 +73,15 @@ void printTasks()
 
 void print_task_stack(long unsigned int base)
 {
-	for (int i = configMINIMAL_STACK_SIZE; i > 0; i -= 8)
+	for (int i = 0; i < configMINIMAL_STACK_SIZE; i += 8)
 	{
-		uint64_t input = *((uint64_t*)(base - i));
+		uint64_t input = *((uint64_t*)(base + i));
 		uint32_t high, low;
 
 		// Split the input value into high and low parts
 		split_uint64(input, &high, &low);
 
-		xil_printf("Address:0x%08x,Value:0x%08x%08x\n",(uint32_t) (base - i), high, low);
+		xil_printf("Address:0x%08x,Value:0x%08x%08x\n",(uint32_t) (base + i), high, low);
 	}
 }
 
