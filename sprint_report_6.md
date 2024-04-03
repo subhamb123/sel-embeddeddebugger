@@ -1,6 +1,6 @@
 # Sprint 6 Report (03/02/2024 - 04/02/2024)
 
-[Video]()
+[Video](https://youtu.be/HcbLP8OQ4YY)
 
 ## What's New (User Facing)
  * FreeRTOS implementation of snapshots
@@ -10,9 +10,8 @@
 Snapshot functionality has been implemeneted into FreeRTOS applications. This will allow for snapshots to be taken and loaded into FreeRTOS instances running on the target SOM. Additionally, one of the tasks before implementing multiple threads with FreeRTOS was to check if deadlock detection between two tasks worked properly. This is important to test and document because should such a scenario happen when using multiple threads, now we know how to use another task to detect this so we can solve it and not cause further delay.
 
 
-
 ## Unfinished Work
-Adding FreeRTOS functionality to the stack decoding script still needs finished. It will trace the stack of active task when the exception occurs, however we have the goal of printing the trace stack of every task active in the FreeRTOS implementation on exception.
+Adding FreeRTOS functionality to the stack decoding script still needs finished. It will trace the stack of active task when the exception occurs, however we have the goal of printing the trace stack of every task active in the FreeRTOS implementation on exception - printing the information required for non-active tasks has proven to be more difficult than initally expected.
 
 
 ## Completed Issues/User Stories
@@ -23,8 +22,8 @@ Here are links to the issues that we completed in this sprint
  
  ## Incomplete Issues/User Stories
  Here are links to issues we worked on but did not complete in this sprint:
- * Modify decoding script to work with multithreade snapshpts https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/issues/62
- * 
+ * Print correct stack information for tasks https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/issues/64 Was originally included in issue #54; this has shown to be far more difficult than anticipated, and has been created as a separate issue.
+ * Modify decoding script to work with multithreade snapshots https://github.com/WSUCptSCapstone-F23-S24/sel-embeddeddebugger/issues/62 Stack location for non-active tasks is not being uncovered correctly, making this not possible yet.
 
 
 ## Code Files for Review
@@ -43,9 +42,8 @@ Here's what went well:
   * Successfully implementing a deadlock detector
 
 Here's what we'd like to improve:
-  * Cleaning code  
+  * Cleaning/refactoring code
 
 Here are changes we plan to implement in the next sprint:
-   * Trace call recreation of every task in a FreeRTOS snapshot
-   * Final stretch goals?
+   * Trace call recreation of every task in a FreeRTOS snapshot, not just the active one during the exception.
 
