@@ -80,7 +80,7 @@ def traceStack(registers, dataStack, symbolTable):
     functRef = stackLookup(dataStack, prevProgramCounter)
 
     # Continue tracing stack until a stack value '0' is hit
-    while stackLookup(dataStack, reg29) != 0:
+    while stackLookup(dataStack, reg29) != None:
         functRef = symbolLookup(symbolTable, functRef)
         traceStack.append(functRef)
         reg29 = stackLookup(dataStack, reg29)  
