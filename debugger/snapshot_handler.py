@@ -154,10 +154,7 @@ def generate_register_tcl():
                 
             # Write out TCL script
             g.write(f"rwr{registers[register]}{words[0].lower()} {words[1]}")
-            g.write("\n")
-
-            
-            
+            g.write("\n")    
     f.close()
 
 def generate_stack_tcl():

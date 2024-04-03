@@ -1,0 +1,563 @@
+r0: 00000000ffffffff
+
+r1: 0000000000000000
+
+r2: 0000000000000802
+
+r3: 00000000ff01002c
+
+r4: 0000000000002889
+
+r5: 000000000001b7df
+
+r6: 000000000000000a
+
+r7: 000000000000000a
+
+r8: 000000000000000a
+
+r9: 0000000000000000
+
+r10: 0000000000000001
+
+r11: 0000000000000009
+
+r12: 000000000001f700
+
+r13: 0000000000000000
+
+r14: 0000000000000084
+
+r15: 0000000000000000
+
+r16: 0000000000000000
+
+r17: 0000000000000000
+
+r18: 0000000000000000
+
+r19: 0000000000000000
+
+r20: 0000000000000000
+
+r21: 0000000000000000
+
+r22: 0000000000000000
+
+r23: 0000000000000000
+
+r24: 0000000000000000
+
+r25: 0000000000000000
+
+r26: 0000000000000000
+
+r27: 0000000000000000
+
+r28: 0000000000000000
+
+r29: 000000000001f740
+
+r30: 0000000000001250
+
+pc: 0000000000001254
+
+sp: 000000000001f740
+
+fpcr: 00000000
+
+fpsr: 00000000
+
+mpidr_el1: 0000000080000000
+
+ifsr32_el2: 00000000
+
+esr_el1: 00000000
+
+esr_el2: 02fc7626
+
+esr_el3: 1fe00000
+
+isr_el1: 00000000
+
+sctlr_el3: 00c0181d
+
+tcr_el3: 80823518
+
+contextidr_el1: 00000000
+
+cpacr_el1: 00000000
+
+actlr_el3: 00000000
+
+pmcr_el0: 41033009
+
+pmcntenset_el0: 00000000
+
+pmovsclr_el0: 00000000
+
+pmuserenr_el0: 00000000
+
+pmintenset_el1: 00000000
+
+pmevcntr0_el0: 00000000
+
+pmevcntr1_el0: 00000000
+
+pmevcntr2_el0: 00000000
+
+pmevcntr3_el0: 00000000
+
+pmevcntr4_el0: 00000000
+
+pmevcntr5_el0: 00000000
+
+pmevtyper0_el0: 00000000
+
+pmevtyper1_el0: 00000000
+
+pmevtyper2_el0: 00000000
+
+pmevtyper3_el0: 00000000
+
+pmevtyper4_el0: 00000000
+
+pmevtyper5_el0: 00000000
+
+pmccfiltr_el0: 00000000
+
+scr_el3: 00000c0e
+
+cptr_el3: 00000000
+
+mdcr_el3: 00000000
+
+cntkctl_el1: 00000000
+
+cntp_tval_el0: 71ea1ad3
+
+cntp_ctl_el0: 00000000
+
+cntv_tval_el0: 7051553c
+
+cntv_ctl_el0: 00000000
+
+cnthctl_el2: 00000003
+
+cnthp_tval_el2: 694541e0
+
+cnthp_ctl_el2: 00000002
+
+cntps_tval_el1: 293443c0
+
+gicc_ctlr: 00000000
+
+gicc_pmr: 00000000
+
+gicc_bpr: 00000002
+
+gicc_rpr: 000000ff
+
+gicc_hppir: 000003ff
+
+gicc_abpr: 00000003
+
+gicc_ahppir: 000003ff
+
+gicc_apr0: 00000000
+
+gicc_nsapr0: 00000000
+
+gicd_ctlr: 00000000
+
+gicd_ppisr: 00000000
+
+gicd_igroupr0: 00000000
+
+gicd_igroupr1: 00000000
+
+gicd_igroupr2: 00000000
+
+gicd_igroupr3: 00000000
+
+gicd_igroupr4: 00000000
+
+gicd_igroupr5: 00000000
+
+gicd_isenabler0: 0000ffff
+
+gicd_isenabler1: 00000000
+
+gicd_isenabler2: 00000000
+
+gicd_isenabler3: 00000000
+
+gicd_isenabler4: 00000000
+
+gicd_isenabler5: 00000000
+
+gicd_ispendr0: 00000000
+
+gicd_ispendr1: 00000000
+
+gicd_ispendr2: 00000000
+
+gicd_ispendr3: 00000000
+
+gicd_ispendr4: 00000000
+
+gicd_ispendr5: 00000000
+
+gicd_isactiver0: 00000000
+
+gicd_isactiver1: 00000000
+
+gicd_isactiver2: 00000000
+
+gicd_isactiver3: 00000000
+
+gicd_isactiver4: 00000000
+
+gicd_isactiver5: 00000000
+
+gicd_ipriorityr0: 00000000
+
+gicd_ipriorityr1: 00000000
+
+gicd_ipriorityr2: 00000000
+
+gicd_ipriorityr3: 00000000
+
+gicd_ipriorityr4: 00000000
+
+gicd_ipriorityr5: 00000000
+
+gicd_ipriorityr6: 00000000
+
+gicd_ipriorityr7: 00000000
+
+gicd_ipriorityr8: 00000000
+
+gicd_ipriorityr9: 00000000
+
+gicd_ipriorityr10: 00000000
+
+gicd_ipriorityr11: 00000000
+
+gicd_ipriorityr12: 00000000
+
+gicd_ipriorityr13: 00000000
+
+gicd_ipriorityr14: 00000000
+
+gicd_ipriorityr15: 00000000
+
+gicd_ipriorityr16: 00000000
+
+gicd_ipriorityr17: 00000000
+
+gicd_ipriorityr18: 00000000
+
+gicd_ipriorityr19: 00000000
+
+gicd_ipriorityr20: 00000000
+
+gicd_ipriorityr21: 00000000
+
+gicd_ipriorityr22: 00000000
+
+gicd_ipriorityr23: 00000000
+
+gicd_ipriorityr24: 00000000
+
+gicd_ipriorityr25: 00000000
+
+gicd_ipriorityr26: 00000000
+
+gicd_ipriorityr27: 00000000
+
+gicd_ipriorityr28: 00000000
+
+gicd_ipriorityr29: 00000000
+
+gicd_ipriorityr30: 00000000
+
+gicd_ipriorityr31: 00000000
+
+gicd_ipriorityr32: 00000000
+
+gicd_ipriorityr33: 00000000
+
+gicd_ipriorityr34: 00000000
+
+gicd_ipriorityr35: 00000000
+
+gicd_ipriorityr36: 00000000
+
+gicd_ipriorityr37: 00000000
+
+gicd_ipriorityr38: 00000000
+
+gicd_ipriorityr39: 00000000
+
+gicd_ipriorityr40: 00000000
+
+gicd_ipriorityr41: 00000000
+
+gicd_ipriorityr42: 00000000
+
+gicd_ipriorityr43: 00000000
+
+gicd_ipriorityr44: 00000000
+
+gicd_ipriorityr45: 00000000
+
+gicd_ipriorityr46: 00000000
+
+gicd_ipriorityr47: 00000000
+
+gicd_itargetsr0: 01010101
+
+gicd_itargetsr1: 01010101
+
+gicd_itargetsr2: 01010101
+
+gicd_itargetsr3: 01010101
+
+gicd_itargetsr4: 00000000
+
+gicd_itargetsr5: 00000000
+
+gicd_itargetsr6: 01010100
+
+gicd_itargetsr7: 01010101
+
+gicd_itargetsr8: 00000000
+
+gicd_itargetsr9: 00000000
+
+gicd_itargetsr10: 00000000
+
+gicd_itargetsr11: 00000000
+
+gicd_itargetsr12: 00000000
+
+gicd_itargetsr13: 00000000
+
+gicd_itargetsr14: 00000000
+
+gicd_itargetsr15: 00000000
+
+gicd_itargetsr16: 00000000
+
+gicd_itargetsr17: 00000000
+
+gicd_itargetsr18: 00000000
+
+gicd_itargetsr19: 00000000
+
+gicd_itargetsr20: 00000000
+
+gicd_itargetsr21: 00000000
+
+gicd_itargetsr22: 00000000
+
+gicd_itargetsr23: 00000000
+
+gicd_itargetsr24: 00000000
+
+gicd_itargetsr25: 00000000
+
+gicd_itargetsr26: 00000000
+
+gicd_itargetsr27: 00000000
+
+gicd_itargetsr28: 00000000
+
+gicd_itargetsr29: 00000000
+
+gicd_itargetsr30: 00000000
+
+gicd_itargetsr31: 00000000
+
+gicd_itargetsr32: 00000000
+
+gicd_itargetsr33: 00000000
+
+gicd_itargetsr34: 00000000
+
+gicd_itargetsr35: 00000000
+
+gicd_itargetsr36: 00000000
+
+gicd_itargetsr37: 00000000
+
+gicd_itargetsr38: 00000000
+
+gicd_itargetsr39: 00000000
+
+gicd_itargetsr40: 00000000
+
+gicd_itargetsr41: 00000000
+
+gicd_itargetsr42: 00000000
+
+gicd_itargetsr43: 00000000
+
+gicd_itargetsr44: 00000000
+
+gicd_itargetsr45: 00000000
+
+gicd_itargetsr46: 00000000
+
+gicd_itargetsr47: 00000000
+
+gicd_icfgr0: aaaaaaaa
+
+gicd_icfgr1: 55540000
+
+gicd_icfgr2: 55555555
+
+gicd_icfgr3: 55555555
+
+gicd_icfgr4: 55555555
+
+gicd_icfgr5: 55555555
+
+gicd_icfgr6: 55555555
+
+gicd_icfgr7: 55555555
+
+gicd_icfgr8: 55555555
+
+gicd_icfgr9: 55555555
+
+gicd_icfgr10: 55555555
+
+gicd_icfgr11: 55555555
+
+gicd_spisr0: 00000000
+
+gicd_spisr1: 00000000
+
+gicd_spisr2: 00000000
+
+gicd_spisr3: 00000000
+
+gicd_spisr4: 00000000
+
+gicd_spendsgir0: 00000000
+
+gicd_spendsgir1: 00000000
+
+gicd_spendsgir2: 00000000
+
+gicd_spendsgir3: 00000000
+
+far_el3: 0021c982046c170a
+
+vbar_el3: 0000000000000000
+
+ttbr0_el3: 0000000000014000
+
+mair_el3: 000000bb0400ff44
+
+amair_el3: 0000000000000000
+
+par_el1: 0000000000000000
+
+tpidr_el0: 0000000000000000
+
+tpidrro_el0: 0000000000000000
+
+tpidr_el1: 0000000000000000
+
+tpidr_el3: 00000000ffff8500
+
+rmr_el3: 0000000000000001
+
+sder32_el3: 0000000000000000
+
+cntfrq_el0: 0000000005f5dd19
+
+cntp_cval_el0: 01230c8608a41312
+
+cntv_cval_el0: 3f80e000071080f8
+
+cntvoff_el2: 8140002000001028
+
+cnthp_cval_el2: 24004501000c1809
+
+cntps_cval_el1: 82a20002c000011f
+
+cntps_ctl_el1: 00000000
+
+elr_el1: 0000000000000000
+
+elr_el2: 09c039100600c126
+
+elr_el3: 0000000000003794
+
+v0: 0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+
+v1: 0a7325203a7261620000000000000005
+
+v2: 68676665646362610000000000000000
+
+v3: 40000000000000000000000000000000
+
+v4: 00000000000000000000000000000000
+
+v5: 40100401401004014010040140100401
+
+v6: 00000000400000000000000040000000
+
+v7: e786907a992290248105703020938055
+
+v8: 10000c1d1344004888448d0143900011
+
+v9: 4406402092320c40cc54a1240492600c
+
+v10: c8449022810311823d9001099da08100
+
+v11: 6a004101485000421420da5d02394d20
+
+v12: 61400632a028050248845cd08f9c4021
+
+v13: 2864ab7c200887798c3014cad6204848
+
+v14: 11110b01d6ba672b972140393a349407
+
+v15: 0a4460e008001a64005a3410ca241090
+
+v16: ffffff80ffffffc8000000000001f700
+
+v17: 0595070f62702754a90a105650010048
+
+v18: d5640c11b82058d2a7e6a1490232d620
+
+v19: 183c481a020a09802414104103286282
+
+v20: 119293b8c458888485048020aa820e1c
+
+v21: 839130ba08010048b660501215405b1a
+
+v22: 00000644602c07307140420e13041841
+
+v23: 1941072a0900c165082a402028925a38
+
+v24: 81aa42880886e0901436242cc122e45b
+
+v25: 42e12651410421780818a0019088026d
+
+v26: 22a18942440812a4eb5a2a0177808042
+
+v27: 32140328084b442136c1e37045844866
+
+v28: 33daa4c0420833b1865020c600ec1584
+
+v29: b24009906c34c0c895e16f2d829807e0
+
+v30: 0150eb04961280361534e7046800c0c4
+
+v31: 4e09103d062401604030c6d1e4008808
