@@ -1,5 +1,14 @@
 #include "freeRTOS_snapshot.h"
 
+/* FreeRTOS includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "timers.h"
+/* Xilinx includes. */
+#include "xil_printf.h"
+#include "xparameters.h"
+
 uint64_t registersx[32] = {0};      // Definition of registersx
 
 uint32_t registers32[43] = {0};		// Definition of registers32
@@ -50,6 +59,8 @@ void printTasks()
 
 	        // Print task information
 	        for (x = 0; x < uxArraySize; x++) {
+
+	        	TaskHandle_t xTaskHandle = taskStatusArray[x].xHandle;
 	            xil_printf("Task Name: %s\n", taskStatusArray[x].pcTaskName);
 	            xil_printf("Task Number: %u\n", taskStatusArray[x].xTaskNumber);
 	            xil_printf("Task State: %d\n", taskStatusArray[x].eCurrentState);
@@ -58,6 +69,8 @@ void printTasks()
 	            xil_printf("Run Time Counter: %lu\n", taskStatusArray[x].ulRunTimeCounter);
 	            xil_printf("Stack Base Address: 0x%x\n", taskStatusArray[x].pxStackBase);
 	            xil_printf("Stack High Water Mark: %u\n", taskStatusArray[x].usStackHighWaterMark);
+	            uint64_t *sp = &xTaskHandle;
+	            xil_printf("Task Stack Pointer: 0x%016lX\n", *sp);
 	            xil_printf("Stack Size: %u\n", configMINIMAL_STACK_SIZE);
 	            xil_printf("Stack:\n");
 	            print_task_stack(taskStatusArray[x].pxStackBase);
@@ -71,9 +84,9 @@ void printTasks()
 	    }
 }
 
-void print_task_stack(long unsigned int base)
+void print_task_stack(uint64_t * base)
 {
-	for (int i = 0; i < configMINIMAL_STACK_SIZE; i += 8)
+	for (int i = 0; i < configMINIMAL_STACK_SIZE; i ++)
 	{
 		uint64_t input = *((uint64_t*)(base + i));
 		uint32_t high, low;
