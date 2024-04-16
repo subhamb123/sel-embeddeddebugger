@@ -20,7 +20,7 @@ in the future.
 Hardware:
 Xilinx Kria_KV260 Vision AI Starter Kit (SK-KV260-G)
 XDS110 JTAG Debug Probe
-A Windows PC
+A Windows or Linux PC
 
 Software:
 GCC
@@ -42,14 +42,16 @@ Currently: None
 7.  Run main.py, select desired menu option.
 
 ## Functionality
-- Read stack data, register data from the SOM.
-- Decode this stack data for its program counters and function names.
-- Load stack data and register data back onto board
+- Read stack data, register data from the SOM, in single-threaded applications and in FreeRTOS implementations.
+- Decode this stack data for its program counters and function names in single-threaded applications.
+- Load stack data and register data back onto board in single-threaded applications and in FreeRTOS implementations.
+- Detect deadlock situations in FreeRTOS implementations.
 
 ## Known Problems
-- Currently, it is only able to load a single CPU core
-- Automated testing needs to be implemented
 - Some scripts still rely on hardcoded directories
+- Correct stack ranges for inactive tasks are not being printed correctly during exception handling.
+- Stack tracing is not implemented as correct stack information is needed for implementation.
+
 
 ## Contributing
 1. Fork it!
