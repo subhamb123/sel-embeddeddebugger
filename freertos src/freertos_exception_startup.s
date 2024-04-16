@@ -1,12 +1,12 @@
 .section .text
-.global exception_startup
+.global freertos_exception_startup
 .extern registers
 
 .macro MRS_REG reg_name, dest
     MRS \dest, \reg_name
 .endm
 
-exception_startup:
+freertos_exception_startup:
     // Load registers x29 and x30 from the stack
     ldp     x29, x30, [sp], #16
     // Load registers x18 to x2 from the stack
@@ -471,5 +471,5 @@ exception_startup:
 	// Store GICD registers
 
     // Branch to the exception_handler() function
-    adr     x0, exception_handler    // Load the address of exception_handler() into x0
-    b       exception_handler        // Branch with link to exception_handler()
+    adr     x0, freertos_exception_handler    // Load the address of exception_handler() into x0
+    b       freertos_exception_handler        // Branch with link to exception_handler()
