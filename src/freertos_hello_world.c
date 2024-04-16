@@ -1,3 +1,6 @@
+//Main deadlock detector test starts line 185
+//This uses test tasks. Now we need to use actual tasks and put them in a deadlock and have the snapshot print the deadlocked tasks.
+
 /*
     Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
     Copyright (c) 2012 - 2022 Xilinx, Inc. All Rights Reserved.
@@ -179,7 +182,7 @@ int main( void )
 	for( ;; );
 }
 
-
+//This task prints which task holds which semaphore when they get deadlocked
 /*-----------------------------------------------------------*/
 static void prvTxTask( void *pvParameters )
 {
@@ -200,6 +203,7 @@ static void prvTxTask( void *pvParameters )
 	xil_printf("%s\r\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore2)));
 }
 
+//These test tasks create and take their semaphores, then tries to take the other task's semaphore
 /*-----------------------------------------------------------*/
 static void test1(void *pvParameters){
 	xSemaphore1 = xSemaphoreCreateMutex();
