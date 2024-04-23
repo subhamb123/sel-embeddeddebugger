@@ -19,19 +19,16 @@
 /* Xilinx includes. */
 #include "xil_printf.h"
 #include "xparameters.h"
-#include "semphr.h"
 
 #define TIMER_ID	1
 #define DELAY_10_SECONDS	10000UL
 #define DELAY_1_SECOND		1000UL
-#define TIMER_CHECK_THRESHOLD	10
+#define TIMER_CHECK_THRESHOLD	9
 /*-----------------------------------------------------------*/
 
 /* The Tx and Rx tasks as described at the top of this file. */
 static void prvTxTask( void *pvParameters );
 static void prvRxTask( void *pvParameters );
-static void test1(void *pvParameters);
-static void test2(void *pvParameters);
 static void vTimerCallback( TimerHandle_t pxTimer );
 /*-----------------------------------------------------------*/
 
@@ -39,15 +36,10 @@ static void vTimerCallback( TimerHandle_t pxTimer );
 file. */
 static TaskHandle_t xTxTask;
 static TaskHandle_t xRxTask;
-static TaskHandle_t test1handle;
-static TaskHandle_t test2handle;
 static QueueHandle_t xQueue = NULL;
 static TimerHandle_t xTimer = NULL;
 char HWstring[15] = "Hello World";
 long RxtaskCntr = 0;
-
-xSemaphoreHandle xSemaphore1 = NULL;
-xSemaphoreHandle xSemaphore2 = NULL;
 
 #if (configSUPPORT_STATIC_ALLOCATION == 1)
 #define QUEUE_BUFFER_SIZE		100
@@ -62,7 +54,7 @@ static StaticQueue_t xStaticQueue;
 
 int main( void )
 {
-	const TickType_t x10seconds = pdMS_TO_TICKS( DELAY_10_SECONDS );
+const TickType_t x10seconds = pdMS_TO_TICKS( DELAY_10_SECONDS );
 
 	xil_printf( "Hello from Freertos example main\r\n" );
 
@@ -77,33 +69,12 @@ int main( void )
 					tskIDLE_PRIORITY,			/* The task runs at the idle priority. */
 					&xTxTask );
 
-	xTaskCreate( test1,
-					 ( const char * ) "test1",
-					 configMINIMAL_STACK_SIZE,
-					 NULL,
-					 tskIDLE_PRIORITY,
-					 &test1handle );
-
-	xTaskCreate( test2,
-					 ( const char * ) "test2",
-					 configMINIMAL_STACK_SIZE,
-					 NULL,
-					 tskIDLE_PRIORITY,
-					 &test2handle );
-
-//	xTaskCreate( prvRxTask,
-//					 ( const char * ) "GB",
-//					 configMINIMAL_STACK_SIZE,
-//					 NULL,
-//					 tskIDLE_PRIORITY + 3,
-//					 &xRxTask );
-
-//	xTaskCreate( prvRxTask,
-//					 ( const char * ) "test",
-//					 configMINIMAL_STACK_SIZE,
-//					 NULL,
-//					 tskIDLE_PRIORITY + 2,
-//					 &xRxTask );
+	xTaskCreate( prvRxTask,
+				 ( const char * ) "GB",
+				 configMINIMAL_STACK_SIZE,
+				 NULL,
+				 tskIDLE_PRIORITY + 1,
+				 &xRxTask );
 
 	/* Create the queue used by the tasks.  The Rx task has a higher priority
 	than the Tx task, so will preempt the Tx task and remove values from the
@@ -174,7 +145,7 @@ int main( void )
 	/* If all is well, the scheduler will now be running, and the following line
 	will never be reached.  If the following line does execute, then there was
 	insufficient FreeRTOS heap memory available for the idle and/or timer tasks
-	to be created.  See the memory management section on the FreeRTOS web site
+	to be created.  See the memory management section o  the FreeRTOS web site
 	for more details. */
 	for( ;; );
 }
@@ -183,40 +154,18 @@ int main( void )
 /*-----------------------------------------------------------*/
 static void prvTxTask( void *pvParameters )
 {
-//const TickType_t x1second = pdMS_TO_TICKS( DELAY_1_SECOND );
+const TickType_t x1second = pdMS_TO_TICKS( DELAY_1_SECOND );
 
+	for( ;; )
+	{
+		/* Delay for 1 second. */
+		vTaskDelay( x1second );
 
-//		/* Delay for 1 second. */
-	while(xSemaphore1 == NULL && xSemaphore2 == NULL)
-		taskYIELD();
-//
-//		/* Send the next value on the queue.  The queue should always be
-//		empty at this point so a block time of 0 is used. */
-//		xQueueSend( xQueue,			/* The queue being written to. */
-//					HWstring, /* The address of the data being sent. */
-//					0UL );			/* The block time. */
-
-	xil_printf("%s\r\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore1)));
-	xil_printf("%s\r\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore2)));
+		txFoo(10, 20);
+	}
 }
 
 /*-----------------------------------------------------------*/
-static void test1(void *pvParameters){
-	xSemaphore1 = xSemaphoreCreateMutex();
-	xSemaphoreTake( xSemaphore1, ( TickType_t ) 10 );
-	while(xSemaphore2 == NULL)
-		taskYIELD();
-	xSemaphoreTake( xSemaphore2, ( TickType_t ) portMAX_DELAY );
-}
-
-static void test2(void *pvParameters){
-	xSemaphore2 = xSemaphoreCreateMutex();
-	xSemaphoreTake( xSemaphore2, ( TickType_t ) 10 );
-	while(xSemaphore1 == NULL)
-			taskYIELD();
-	xSemaphoreTake( xSemaphore1, ( TickType_t ) portMAX_DELAY );
-}
-
 static void prvRxTask( void *pvParameters )
 {
 char Recdstring[15] = "";
@@ -228,103 +177,12 @@ char Recdstring[15] = "";
 						Recdstring,	/* Data is read into this address. */
 						portMAX_DELAY );	/* Wait without a timeout for data. */
 
-		//xil_printf("test");
-		//char test[15] = "Tx";
-
 		/* Print the received data. */
-		//xil_printf( "Task: %s\r\n", test );
-		//xil_printf( "State: %d\r\n", eTaskGetState(xTaskGetHandle("Tx")) );
-
-		TaskStatus_t *pxTaskStatusArray;
-		volatile UBaseType_t uxArraySize, x;
-		configRUN_TIME_COUNTER_TYPE ulTotalRunTime, ulStatsAsPercentage;
-
-		// Take a snapshot of the number of tasks in case it changes while this
-		// function is executing.
-		uxArraySize = uxTaskGetNumberOfTasks();
-
-		// Allocate a TaskStatus_t structure for each task.  An array could be
-		// allocated statically at compile time.
-		pxTaskStatusArray = pvPortMalloc( uxArraySize * sizeof( TaskStatus_t ) );
-
-		if( pxTaskStatusArray != NULL )
-		{
-			// Generate raw status information about each task.
-			uxArraySize = uxTaskGetSystemState( pxTaskStatusArray, uxArraySize, &ulTotalRunTime );
-
-			// For percentage calculations.
-			//ulTotalRunTime /= 100UL;
-
-			// Avoid divide by zero errors.
-			//if( ulTotalRunTime > 0 )
-			//{
-			// For each populated position in the pxTaskStatusArray array,
-			// format the raw data as human readable ASCII data
-			for( x = 0; x < uxArraySize; x++ )
-			{
-				// What percentage of the total run time has the task used?
-				// This will always be rounded down to the nearest integer.
-				// ulTotalRunTimeDiv100 has already been divided by 100.
-				//ulStatsAsPercentage = pxTaskStatusArray[ x ].ulRunTimeCounter / ulTotalRunTime;
-
-//						if( ulStatsAsPercentage > 0UL )
-//						{
-//							sprintf( pcWriteBuffer, "%s\t\t%lu\t\t%lu%%\r\n", pxTaskStatusArray[ x ].pcTaskName, pxTaskStatusArray[ x ].ulRunTimeCounter, ulStatsAsPercentage );
-//						}
-//						else
-//						{
-//							// If the percentage is zero here then the task has
-//							// consumed less than 1% of the total run time.
-//							sprintf( pcWriteBuffer, "%s\t\t%lu\t\t<1%%\r\n", pxTaskStatusArray[ x ].pcTaskName, pxTaskStatusArray[ x ].ulRunTimeCounter );
-//						}
-
-				xil_printf( "Handle: %d\n", pxTaskStatusArray[ x ].xHandle);
-				xil_printf( "Task: %s\n", pxTaskStatusArray[ x ].pcTaskName);
-				xil_printf( "Number: %d\n", pxTaskStatusArray[ x ].xTaskNumber);
-				xil_printf( "State: %d\n", pxTaskStatusArray[ x ].eCurrentState);
-				xil_printf( "Current Priority: %d\n", pxTaskStatusArray[ x ].uxCurrentPriority);
-				xil_printf( "Base Priority: %d\n", pxTaskStatusArray[ x ].uxBasePriority);
-				xil_printf( "Runtime Counter: %d\n", pxTaskStatusArray[ x ].ulRunTimeCounter);
-				xil_printf( "Stack Space Remaining: %d\n\n", pxTaskStatusArray[ x ].usStackHighWaterMark);
-
-				//pcWriteBuffer += strlen( ( char * ) pcWriteBuffer );
-			}
-			//}
-
-		    // The array is no longer needed, free the memory it consumes.
-			vPortFree( pxTaskStatusArray );
-		}
-
-//		TaskHandle_t xHandle;
-//		TaskStatus_t xTaskDetails;
-//
-//		// Obtain the handle of a task from its name.
-//		xHandle = xTaskGetHandle( "Tx" );
-//
-//		// Check the handle is not NULL.
-//		configASSERT( xHandle );
-//
-//		// Use the handle to obtain further information about the task.
-//		vTaskGetInfo( xHandle,
-//		              &xTaskDetails,
-//		              pdTRUE, // Include the high water mark in xTaskDetails.
-//		              eInvalid ); // Include the task state in xTaskDetails.
-//		xil_printf( "Handle: %d\n", xTaskDetails.xHandle);
-//		xil_printf( "Task: %s\n", xTaskDetails.pcTaskName);
-//		xil_printf( "Number: %d\n", xTaskDetails.xTaskNumber);
-//		xil_printf( "State: %d\n", xTaskDetails.eCurrentState);
-//		xil_printf( "Current Priority: %d\n", xTaskDetails.uxCurrentPriority);
-//		xil_printf( "Base Priority: %d\n", xTaskDetails.uxBasePriority);
-//		xil_printf( "Runtime Counter: %d\n", xTaskDetails.ulRunTimeCounter);
-//		xil_printf( "Stack Space Remaining: %d\n\n", xTaskDetails.usStackHighWaterMark);
-
-		xil_printf("%s\n", xQueueGetMutexHolder(xQueue));
-
-		RxtaskCntr=10;
-		break;
+		xil_printf( "Rx task received string from Tx task: %s\r\n", Recdstring );
+		RxtaskCntr++;
+		*((int*) 0xFFFFFFFF) = 42; // throw exception
 	}
 }
-
 /*-----------------------------------------------------------*/
 static void vTimerCallback( TimerHandle_t pxTimer )
 {
@@ -352,3 +210,34 @@ static void vTimerCallback( TimerHandle_t pxTimer )
 	vTaskDelete( xTxTask );
 }
 
+
+// Extra calls for more tracing potential
+
+void txFoo(int a, int b) {
+    volatile int local_array[5] = {1, 2, 3, 4, 5};
+    printf("foo: %d %d\n", a, b);
+}
+
+void txBar() {
+    char buffer[10] = "abcdefghi";
+    printf("bar: %s\n", buffer);
+
+	/* Send the next value on the queue.  The queue should always be
+	empty at this point so a block time of 0 is used. */
+	xQueueSend( xQueue,			/* The queue being written to. */
+				HWstring, /* The address of the data being sent. */
+				0UL );			/* The block time. */
+
+    //*((int*) 0xFFFFFFFF) = 42; // throw exception
+}
+
+void rxFoo(int a, int b) {
+    volatile int local_array[5] = {1, 2, 3, 4, 5};
+    printf("foo: %d %d\n", a, b);
+}
+
+void rxBar() {
+    char buffer[10] = "abcdefghi";
+    printf("bar: %s\n", buffer);
+    //*((int*) 0xFFFFFFFF) = 42; // throw exception
+}
