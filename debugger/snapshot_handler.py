@@ -65,10 +65,12 @@ def write_output(recieved_data):
     i = 1
     with open("registers.txt", 'w') as f:
         f.write(recieved_data[0])
-        for item in recieved_data[1:]:
+        for item in recieved_data[i:]:
             if (item == ""):
+                i += 1
                 continue
             if (item == "REGISTER_END"):
+                print("REGISTER_END ", i)
                 i += 1
                 break
             f.write("\n")
@@ -77,11 +79,14 @@ def write_output(recieved_data):
 
     with open("stack.txt", 'w') as f:
         f.write(recieved_data[i])
-        for item in recieved_data[i+1:]:
+        i += 1
+        for item in recieved_data[i:]:
             if (item == ""):
+                i += 1
                 continue
             if (item == "STACK_END"):
-                i += 2
+                print("STACK_END ", i)
+                i += 1
                 break
             f.write("\n")
             f.write(item)
@@ -89,11 +94,14 @@ def write_output(recieved_data):
 
     with open("data.txt", 'w') as f:
         f.write(recieved_data[i])
-        for item in recieved_data[i+1:]:
+        i += 1
+        for item in recieved_data[i:]:
             if (item == ""):
+                i += 1
                 continue
             if (item == "DATA_END"):
-                i += 2
+                print("DATA_END ", i)
+                i += 1
                 break
             f.write("\n")
             f.write(item)
@@ -101,7 +109,23 @@ def write_output(recieved_data):
             
     with open("tasks.txt", 'w') as f:
         f.write(recieved_data[i])
-        for item in recieved_data[i+1:]:
+        i += 1
+        for item in recieved_data[i:]:
+            if (item == ""):
+                i += 1
+                continue
+            if (item == "TASK_END"):
+                print("TASK_END ", i)
+                i += 1
+                break
+            f.write("\n")
+            f.write(item)
+            i += 1
+    
+    with open("semaphores.txt", 'w') as f:
+        f.write(recieved_data[i])
+        i += 1
+        for item in recieved_data[i:]:
             if (item == ""):
                 continue
             f.write("\n")
