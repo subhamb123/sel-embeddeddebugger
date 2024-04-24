@@ -29,39 +29,58 @@ The steps below can be used to implement the parser. For every program counter w
 
 def readTaskStacks(filePath):
     tasks = {}
-    current_task = None
+    currentTask = None
+    currentTaskSP = None
 
     with open(filePath, 'r') as file:
         for line in file:
             if line.startswith("Task Name:"):
-                current_task = line.split(":")[1].strip()
-                tasks[current_task] = []
+                currentTask = line.split(":")[1].strip()
+                tasks[currentTask] = {'stack_data': [], 'stack_pointer': None}
+            elif line.startswith("Task Stack Pointer:"):
+                if currentTask is None:
+                    raise ValueError("No task name found before stack pointer data.")
+                currentTaskSP = int(line.split(":")[1].strip(), 16)
+                tasks[currentTask]['stack_pointer'] = currentTaskSP
             elif line.startswith("Address:") and "Value:" in line:
-                if current_task is None:
+                if currentTask is None:
                     raise ValueError("No task name found before stack data.")
                 addressValue = line.strip().replace('Address:', '').replace('Value:', '').split(',')
                 address = int(addressValue[0].strip(), 16)
                 value = int(addressValue[1].strip(), 16)
-                tasks[current_task].append((address, value))
+                tasks[currentTask]['stack_data'].append((address, value))
     return tasks
 
 
 def matchValuesToSymbols(tasksData, symbolTable):
     tasks_with_symbols = {}
 
-    for task, stack_data in tasksData.items():
-        task_symbols = []
-        for _, value in reversed(stack_data):  # Iterate through the stack values, bottom up
-            for symbol_entry in symbolTable:
-                symbolAddress = symbol_entry['Address']
-                symbolSize = symbol_entry['Size']
-                if value > symbolAddress and (value - symbolSize) < symbolAddress: # Valid symbol range
-                    task_symbols.append(symbol_entry['Name'])
-                    break  # Stop searching for symbols once a match is found
-        tasks_with_symbols[task] = task_symbols
+    for task, data in tasksData.items():
+        running = True
+        stack_data = data['stack_data']
+        stack_pointer = data['stack_pointer']
+        task_trace = []  # Initialize stack trace for the current task
+        taskSP = stack_pointer + 800
+
+        while running:
+            nextTaskSP = stackLookup(stack_data, taskSP)    # Location of next item in linked list
+            taskSP += 8     # Move to function that SP points to
+            functSP = stackLookup(stack_data, taskSP)
+            
+            # Ensure valid functSP, prevents extraneous "prvTaskExitError" in trace stack
+            if functSP == None or nextTaskSP == 2965947086361143593:  #0x2929292929292929
+                break
+
+            functRef = symbolLookup(symbolTable, functSP)
+            if functRef == None:    # No matching function, break look
+                break
+
+            taskSP = nextTaskSP     # Continue to next item in linked list
+            task_trace.append(functRef)
+
+        tasks_with_symbols[task] = task_trace
 
     return tasks_with_symbols
-
 
 def symbolLookup(symbolTable, exceptionAddress):
     for entry in symbolTable:
@@ -212,11 +231,12 @@ def main():
     symbolTable = readSymbolsFromFile('symbolTable.txt')
     tasksWithSymbols = matchValuesToSymbols(tasksData, symbolTable)
 
+    # Prints out stack traces - Move to new function!
     for task, symbols in tasksWithSymbols.items():
-        print("Task:", task)
+        print(f"Task: {task}")
         print("Symbols:")
         for symbol in symbols:
-            print(symbol)
+            print(f"{symbol['functionName']} (0x{symbol['Address']:08X})")
         print()
 
 
