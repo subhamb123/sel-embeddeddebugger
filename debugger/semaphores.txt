@@ -1,1 +1,2 @@
-Semaphore info here
+xSemaphore1 is null
+xSemaphore2 is null

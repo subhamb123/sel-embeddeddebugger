@@ -8,6 +8,7 @@
 /* Xilinx includes. */
 #include "xil_printf.h"
 #include "xparameters.h"
+#include "semphr.h"
 
 uint64_t registersx[32] = {0};      // Definition of registersx
 
@@ -40,6 +41,26 @@ const uint64_t el3_stack_size = (uintptr_t)&_STACK_SIZE;
 const uint64_t el2_stack_size = (uintptr_t)&_EL2_STACK_SIZE;
 const uint64_t el1_stack_size = (uintptr_t)&_EL1_STACK_SIZE;
 const uint64_t el0_stack_size = (uintptr_t)&_EL0_STACK_SIZE;
+
+void printSemaphores()
+{
+	if (xSemaphore1 != NULL)
+	{
+		xil_printf("xSemaphore1 Mutex Holder: %s\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore1)));
+	}
+	else
+	{
+		xil_printf("xSemaphore1 is null\n");
+	}
+	if (xSemaphore2 != NULL)
+	{
+		xil_printf("xSemaphore2 Mutex Holder: %s\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore2)));
+	}
+	else
+	{
+		xil_printf("xSemaphore2 is null\n");
+	}
+}
 
 void printTasks()
 {
@@ -579,6 +600,8 @@ void freertos_exception_handler()
     print_data(addresses, type, SIZE);
     xil_printf("DATA_END\n");
 	printTasks();
+	xil_printf("TASK_END\n");
+	printSemaphores();
 	xil_printf("END\n"); // send end signal
 	for(;;){
 	}

@@ -19,6 +19,7 @@
 /* Xilinx includes. */
 #include "xil_printf.h"
 #include "xparameters.h"
+#include "semphr.h"
 
 #define TIMER_ID	1
 #define DELAY_10_SECONDS	10000UL
@@ -40,6 +41,9 @@ static QueueHandle_t xQueue = NULL;
 static TimerHandle_t xTimer = NULL;
 char HWstring[15] = "Hello World";
 long RxtaskCntr = 0;
+
+SemaphoreHandle_t xSemaphore1 = NULL;
+SemaphoreHandle_t xSemaphore2 = NULL;
 
 #if (configSUPPORT_STATIC_ALLOCATION == 1)
 #define QUEUE_BUFFER_SIZE		100

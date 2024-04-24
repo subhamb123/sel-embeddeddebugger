@@ -70,7 +70,6 @@ def write_output(recieved_data):
                 i += 1
                 continue
             if (item == "REGISTER_END"):
-                print("REGISTER_END ", i)
                 i += 1
                 break
             f.write("\n")
@@ -85,7 +84,6 @@ def write_output(recieved_data):
                 i += 1
                 continue
             if (item == "STACK_END"):
-                print("STACK_END ", i)
                 i += 1
                 break
             f.write("\n")
@@ -100,7 +98,6 @@ def write_output(recieved_data):
                 i += 1
                 continue
             if (item == "DATA_END"):
-                print("DATA_END ", i)
                 i += 1
                 break
             f.write("\n")
@@ -115,7 +112,6 @@ def write_output(recieved_data):
                 i += 1
                 continue
             if (item == "TASK_END"):
-                print("TASK_END ", i)
                 i += 1
                 break
             f.write("\n")
@@ -123,13 +119,14 @@ def write_output(recieved_data):
             i += 1
     
     with open("semaphores.txt", 'w') as f:
-        f.write(recieved_data[i])
-        i += 1
-        for item in recieved_data[i:]:
-            if (item == ""):
-                continue
-            f.write("\n")
-            f.write(item)
+        if (i < len(recieved_data)):
+            f.write(recieved_data[i])
+            i += 1
+            for item in recieved_data[i:]:
+                if (item == ""):
+                    continue
+                f.write("\n")
+                f.write(item)
             
 
 def read_data():
