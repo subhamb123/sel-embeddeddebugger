@@ -1,2 +1,4 @@
-xSemaphore1 is null
-xSemaphore2 is null
+Name: xSemaphore1
+xSemaphore1 Mutex Holder: GB
+Name: xSemaphore2
+xSemaphore2 Mutex Holder: Tx

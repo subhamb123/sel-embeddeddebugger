@@ -44,6 +44,7 @@ const uint64_t el0_stack_size = (uintptr_t)&_EL0_STACK_SIZE;
 
 void printSemaphores()
 {
+	xil_printf("Name: xSemaphore1\n");
 	if (xSemaphore1 != NULL)
 	{
 		xil_printf("xSemaphore1 Mutex Holder: %s\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore1)));
@@ -52,6 +53,7 @@ void printSemaphores()
 	{
 		xil_printf("xSemaphore1 is null\n");
 	}
+	xil_printf("Name: xSemaphore2\n");
 	if (xSemaphore2 != NULL)
 	{
 		xil_printf("xSemaphore2 Mutex Holder: %s\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore2)));
