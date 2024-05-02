@@ -9,6 +9,7 @@
 /* Xilinx includes. */
 #include "xil_printf.h"
 #include "xparameters.h"
+#include "semphr.h"
 
 extern uint64_t registers[32]; 		// Declaration of registers array
 
@@ -41,6 +42,11 @@ extern const int _EL2_STACK_SIZE;
 extern const int _EL1_STACK_SIZE;
 extern const int _EL0_STACK_SIZE;
 
+extern char HWstring[15];
+extern long RxtaskCntr;
+extern SemaphoreHandle_t xSemaphore1;
+extern SemaphoreHandle_t xSemaphore2;
+
 // section type for data dump
 
 // Define an enumerated type with 8 types
@@ -62,7 +68,8 @@ extern void freertos_exception_startup(void);
 #define SIZE 20                       // Size of addresses array
 #define RANGE 30                      // Range of addresses
 
-void print_tasks();
+void printTasks();
+void printSemaphores();
 void print_task_stack(uint64_t * base);
 void split_uint64(uint64_t input, uint32_t *high, uint32_t *low);
 void split_int128(__int128_t input, uint32_t *part1, uint32_t *part2, uint32_t *part3, uint32_t *part4);

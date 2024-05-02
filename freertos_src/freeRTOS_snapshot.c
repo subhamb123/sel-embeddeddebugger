@@ -1,4 +1,14 @@
-#include "snapshot.h"
+#include "freeRTOS_snapshot.h"
+
+/* FreeRTOS includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "timers.h"
+/* Xilinx includes. */
+#include "xil_printf.h"
+#include "xparameters.h"
+#include "semphr.h"
 
 uint64_t registersx[32] = {0};      // Definition of registersx
 
@@ -32,6 +42,85 @@ const uint64_t el2_stack_size = (uintptr_t)&_EL2_STACK_SIZE;
 const uint64_t el1_stack_size = (uintptr_t)&_EL1_STACK_SIZE;
 const uint64_t el0_stack_size = (uintptr_t)&_EL0_STACK_SIZE;
 
+void printSemaphores()
+{
+	xil_printf("Name: xSemaphore1\n");
+	if (xSemaphore1 != NULL)
+	{
+		xil_printf("xSemaphore1 Mutex Holder: %s\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore1)));
+	}
+	else
+	{
+		xil_printf("xSemaphore1 is null\n");
+	}
+	xil_printf("Name: xSemaphore2\n");
+	if (xSemaphore2 != NULL)
+	{
+		xil_printf("xSemaphore2 Mutex Holder: %s\n", pcTaskGetName(xQueueGetMutexHolder(xSemaphore2)));
+	}
+	else
+	{
+		xil_printf("xSemaphore2 is null\n");
+	}
+}
+
+void printTasks()
+{
+	 TaskStatus_t *taskStatusArray;
+	    volatile UBaseType_t uxArraySize, x;
+
+	    // Get the number of tasks in the system
+	    uxArraySize = uxTaskGetNumberOfTasks();
+
+	    // Allocate memory for the task status array
+	    taskStatusArray = pvPortMalloc(uxArraySize * sizeof(TaskStatus_t));
+
+	    // Make sure memory allocation is successful
+	    if (taskStatusArray != NULL) {
+	        // Get the task status for all tasks in the system
+	        uxArraySize = uxTaskGetSystemState(taskStatusArray, uxArraySize, NULL);
+
+	        // Print task information
+	        for (x = 0; x < uxArraySize; x++) {
+
+	        	TaskHandle_t xTaskHandle = taskStatusArray[x].xHandle;
+	            xil_printf("Task Name: %s\n", taskStatusArray[x].pcTaskName);
+	            xil_printf("Task Number: %u\n", taskStatusArray[x].xTaskNumber);
+	            xil_printf("Task State: %d\n", taskStatusArray[x].eCurrentState);
+	            xil_printf("Current Priority: %u\n", taskStatusArray[x].uxCurrentPriority);
+	            xil_printf("Base Priority: %u\n", taskStatusArray[x].uxBasePriority);
+	            xil_printf("Run Time Counter: %lu\n", taskStatusArray[x].ulRunTimeCounter);
+	            xil_printf("Stack Base Address: 0x%x\n", taskStatusArray[x].pxStackBase);
+	            xil_printf("Stack High Water Mark: %u\n", taskStatusArray[x].usStackHighWaterMark);
+	            uint64_t *sp = (uint64_t*) xTaskHandle;
+	            xil_printf("Task Stack Pointer: 0x%016lX\n", *sp);
+	            xil_printf("Stack Size: %u\n", configMINIMAL_STACK_SIZE);
+	            xil_printf("Stack:\n");
+	            print_task_stack(taskStatusArray[x].pxStackBase);
+	            xil_printf("\n");
+
+
+	        }
+
+	        // Free the allocated memory
+	        vPortFree(taskStatusArray);
+	    }
+}
+
+void print_task_stack(uint64_t * base)
+{
+	for (int i = 0; i < configMINIMAL_STACK_SIZE; i ++)
+	{
+		uint64_t input = *((uint64_t*)(base + i));
+		uint32_t high, low;
+
+		// Split the input value into high and low parts
+		split_uint64(input, &high, &low);
+
+		xil_printf("Address:0x%08x,Value:0x%08x%08x\n",(uint32_t) (base + i), high, low);
+	}
+}
+
 void split_uint64(uint64_t input, uint32_t *high, uint32_t *low)
 {
     // Mask for extracting the lower 32 bits
@@ -61,6 +150,7 @@ enum section valid_address(uintptr_t address, int j, int addressesSize)
 		{
 			return INVALID;
 		}
+
 	if ((address % 0x8) != 0) // not aligned
 	{
 		return INVALID;
@@ -178,7 +268,6 @@ void print_x_sp_pc_registers(uintptr_t addresses[], enum section type[], int add
 			xil_printf("r%d:0x%08x%08x\n", i, high, low);
 
 		}
-
 		enum section current_type = valid_address(registersx[i], j, addressesSize);
 
 		if (current_type != INVALID)
@@ -496,13 +585,13 @@ void get_range(uint32_t address,enum section sec, int *low, int *high)
 	    }
 }
 
-void exception_handler()
+void freertos_exception_handler()
 {
 
-	uintptr_t addresses[SIZE] = {0}; // holds valid addresses
+	uintptr_t addresses[SIZE] = {0};
 	enum section type[SIZE];
 	xil_printf("\nSTART\n"); // send start signal
-	print_x_sp_pc_registers(addresses, type, SIZE);
+  	print_x_sp_pc_registers(addresses, type, SIZE);
 	print_32_bit_system_registers();
 	print_gicr_registers();
 	print_64_bit_system_registers();
@@ -510,7 +599,11 @@ void exception_handler()
 	xil_printf("REGISTER_END\n"); // end stack delimiter
 	print_stack(addresses, type, SIZE);
     xil_printf("STACK_END\n"); // end stack delimiter
-	print_data(addresses, type, SIZE);
+    print_data(addresses, type, SIZE);
+    xil_printf("DATA_END\n");
+	printTasks();
+	xil_printf("TASK_END\n");
+	printSemaphores();
 	xil_printf("END\n"); // send end signal
 	for(;;){
 	}

@@ -19,6 +19,7 @@
 /* Xilinx includes. */
 #include "xil_printf.h"
 #include "xparameters.h"
+#include "semphr.h"
 
 #define TIMER_ID	1
 #define DELAY_10_SECONDS	10000UL
@@ -40,6 +41,9 @@ static QueueHandle_t xQueue = NULL;
 static TimerHandle_t xTimer = NULL;
 char HWstring[15] = "Hello World";
 long RxtaskCntr = 0;
+
+SemaphoreHandle_t xSemaphore1 = NULL;
+SemaphoreHandle_t xSemaphore2 = NULL;
 
 #if (configSUPPORT_STATIC_ALLOCATION == 1)
 #define QUEUE_BUFFER_SIZE		100
@@ -149,7 +153,48 @@ const TickType_t x10seconds = pdMS_TO_TICKS( DELAY_10_SECONDS );
 	for more details. */
 	for( ;; );
 }
+/*-----------------------------------------------------------*/
+void takeSemaphore1(){
+	xSemaphore1 = xSemaphoreCreateMutex();
+	xSemaphoreTake( xSemaphore1, ( TickType_t ) 10 );
+}
 
+void takeSemaphore2(){
+	xSemaphore2 = xSemaphoreCreateMutex();
+	xSemaphoreTake( xSemaphore2, ( TickType_t ) 10 );
+}
+
+/*-----------------------------------------------------------*/
+// Extra calls for more tracing potential
+
+void txFoo(int a, int b) {
+    volatile int local_array[5] = {1, 2, 3, 4, 5};
+    printf("foo: %d %d\n", a, b);
+}
+
+void txBar() {
+    char buffer[10] = "abcdefghi";
+    printf("bar: %s\n", buffer);
+
+	/* Send the next value on the queue.  The queue should always be
+	empty at this point so a block time of 0 is used. */
+	xQueueSend( xQueue,			/* The queue being written to. */
+				HWstring, /* The address of the data being sent. */
+				0UL );			/* The block time. */
+
+    //*((int*) 0xFFFFFFFF) = 42; // throw exception
+}
+
+void rxFoo(int a, int b) {
+    volatile int local_array[5] = {1, 2, 3, 4, 5};
+    printf("foo: %d %d\n", a, b);
+}
+
+void rxBar() {
+    char buffer[10] = "abcdefghi";
+    printf("bar: %s\n", buffer);
+    //*((int*) 0xFFFFFFFF) = 42; // throw exception
+}
 
 /*-----------------------------------------------------------*/
 static void prvTxTask( void *pvParameters )
@@ -160,6 +205,7 @@ const TickType_t x1second = pdMS_TO_TICKS( DELAY_1_SECOND );
 	{
 		/* Delay for 1 second. */
 		vTaskDelay( x1second );
+		takeSemaphore2();
 
 		/* Send the next value on the queue.  The queue should always be
 		empty at this point so a block time of 0 is used. */
@@ -183,7 +229,9 @@ char Recdstring[15] = "";
 
 		/* Print the received data. */
 		xil_printf( "Rx task received string from Tx task: %s\r\n", Recdstring );
+		takeSemaphore1();
 		RxtaskCntr++;
+
 		*((int*) 0xFFFFFFFF) = 42; // throw exception
 	}
 }
@@ -213,4 +261,3 @@ static void vTimerCallback( TimerHandle_t pxTimer )
 	vTaskDelete( xRxTask );
 	vTaskDelete( xTxTask );
 }
-
