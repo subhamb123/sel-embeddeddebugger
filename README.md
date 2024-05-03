@@ -38,8 +38,17 @@ Currently: None
 3.  Ensure system can communicate with SOM by opening serial connection (for example, with putty)
 4.  Create a new application project, for the KV260 platform using the following .xsa file (https://github.com/Xilinx/kria-vitis-platforms/tree/main/kv260)
 5.  Create a 'hello, world' project, and debug this project to ensure SOM communication. This will be seen in a serial connection from step 3
-6.  Clone main branch into workspace - ensure snapshot.c is included in the build.
-7.  Run main.py, select desired menu option.
+6.  Move src files from repo to src folder on workspace, src is for standalone_pus_cortexa53_0, freertos src is for freertos10_xilinx_psu_cortexa53_0
+7.  Platform files must be modified for the exception handler to be called during an exception 
+    For standalone_pus_cortexa53_0 modify
+    Workspace\kv260_ispMipiRx_vcu_DP\psu_cortexa53_0\standalone_psu_cortexa53_0\bsp\psu_cortexa53_0\libsrc\standalone_v8_1\src\asm_vectors.S
+    line 227 to bne    exception_startup
+    For freertos10_xilinx_psu_cortexa53_0 modify
+    Workspace\kv260_ispMipiRx_vcu_DP\psu_cortexa53_0\freertos10_xilinx_psu_cortexa53_0\bsp\psu_cortexa53_0\libsrc\freertos10_xilinx_v1_13\src\Source\portable\GCC\ARM_CA53\port_asm_vectors.S
+    Workspace\kv260_ispMipiRx_vcu_DP\psu_cortexa53_0\freertos10_xilinx_psu_cortexa53_0\bsp\psu_cortexa53_0\libsrc\freertos10_xilinx_v1_13\src\port_asm_vectors.S
+    line 246 to bl   freertos_exception_startup
+    Make sure to clean the platform before building
+8.  Run main.py, select desired menu option.
 
 ## Functionality
 - Read stack data, register data from the SOM, in single-threaded applications and in FreeRTOS implementations.
