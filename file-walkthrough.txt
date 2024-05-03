@@ -1,0 +1,25 @@
+1: Read README for initial steps to start program.
+2: File explanations:
+2.1: src
+	These files are the project files for a single-threaded instance running on the KV260 platform. Drag these into your own project and debug the project.
+2.1.1: freertos_hello_world.c
+	This C file is launched when the application is launched. It initializes several tasks, and starts functions in the Tx and Rx tasks. The Tx has extraneous functions in it for debugging the stack decoder. The Rx has an intentional exception being thrown - when this exception is hit, it enters freeRTOS_snapshot.c
+
+2.1.2: freeRTOS_snapshot
+	This C file is launched when an exception has occured. When this file is entered, the registers, stack data, semaphores, are loaded, and sent through the COM port to write to a host PC for creating a snapshot.
+
+2.2: debugger - This is for our single-threaded implementation of our debugger. The code to communicate with the SOM, and decode stacks, are here
+2.2.1: snapshot_handler.py
+	Note: This script has hardcoded directories, please replace with your own directories!
+	This script will launch a dialog to either read from the board, or write back to the board. The former will read the data from the board as an exception occurs, and generate a list of registers, tasks from FreeRTOS, semaphores, and the stack of addresses and values. The latter will use the most recent registers.txt and stack.txt to write data back to the board. Note, this writeback can be done at any point of execution in the SOM.
+
+2.2.2: extractSymbolTable.py
+	Note: This script has hardcoded directories, please replace with your own directories!
+
+	This script runs the .elf file that is generated during after the vitis execution, and uses objdump from vitis's installation to generate a symbol table. This is outputted to extractedSymbolTable.txt - this file is used for tracing the function stack.
+
+2.2.3: StackDecode.py
+	For single-threaded applications. This script reads the stack file, register file and uses the extracted symbol table to generate the stack of functions that were executed during the exception.
+
+2.2.4: FreeRTOS-StackDecode.py
+	Functions just as StackDecode, but also reads the tasks to recreat the stack of each task that was active during the exception. For non-active tasks, it also outputs the state of each task as it were during the time of exception.
